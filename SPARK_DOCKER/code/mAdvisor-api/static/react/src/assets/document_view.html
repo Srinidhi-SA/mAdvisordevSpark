@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <title>mAdvisor</title>
+      <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+      <!-- Custom Fonts -->
+      <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="css/animate.css">
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link href="css/bootstrap-slider.css" rel="stylesheet">
+      <link href="css/style.css?v=6234992" rel="stylesheet">
+      <link href="css/c3.css?v=6234992" rel="stylesheet">
+      <link rel="icon" href="images/favicon.ico" />
+      <link rel="stylesheet" href="css/fancy_fileupload.css?v=6234992" type="text/css" media="all" />
+      <link href="css/theme.ice.css" rel="stylesheet">
+      <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css" />
+	  
+	  <style>
+	 .split-panel-container {
+    width: 100%;
+    height: 100%;
+    display: table;
+}
+
+.drag-handle {
+    width: 7px;
+    background-color: #1cb4e8;
+    border-left: 1px dotted #ffffff;
+    border-right: 1px dotted #ffffff;
+    cursor: ew-resize; /* or col-resize ? */
+}
+
+.split-panel-container > div {
+    display: table-cell;
+	vertical-align:top;
+}
+
+.column-left, .column-right {
+    background-color: #e0e0e0;
+    overflow: hidden;
+    position: relative;
+}
+
+.content-panel {
+    position: relative;
+	vertical-align:top;
+	}
+	  
+	  </style>
+	  
+   </head>
+   <body>
+      <div class="modal fade" id="modal_badscan" tabindex="-1" role="dialog" aria-labelledby="modal_badscan_modalTitle" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Send feedback to the team</h4>
+               </div>
+               <div class="modal-body">
+                  <!-- Wrapper for slides -->
+                  <div class="form-group">
+                     <label for="txt_bscan">Tell us how would we improve?</label>
+                     <input type="text" class="form-control" id="txt_bscan" placeholder="Enter text">
+                     <p>For technical support, please contact info@madvisor-dev.marlabs.com</p>
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Main Wrapper ** Mandatory -->
+      <div class="main_wrapper">
+         <!-- Header Menu -->
+         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div>
+               <div style="opacity: 0; transform: scaleX(0); transform-origin: left center; transition: transform 800ms linear 0s; width: 100%; will-change: transform, opacity; height: 3px; background-color: rgb(20, 128, 113); position: absolute;"></div>
+               <div style="display: table; clear: both;"></div>
+            </div>
+            <div class="navbar-header">
+               <div class="brand-wrapper">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#side-menu"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                  <div class="brand-name-wrapper"><a class="navbar-brand" href="javascript:;"></a></div>
+               </div>
+            </div>
+            <div class="dropdown ma-user-nav">
+               <a class="dropdown-toggle" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
+                  <i class="avatar-img img-circle">K</i><img src="" alt="M" class="avatar-img img-circle hide"><!-- react-text: 67 -->&nbsp;<!-- /react-text --><span class="user-name">kalyan</span><span class="caret"></span>
+               </a>
+               <ul class="dropdown-menu dropdown-menu-right">
+                  <li>
+                     <a href="/user-profile">
+                        <i class="zmdi zmdi-account-o zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 74 -->&nbsp;&nbsp;Profile<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a href="userManual/UserManual.html" target="_blank">
+                        <i class="zmdi zmdi-help-outline zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 78 -->&nbsp;&nbsp;User Manual<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a href="javascript:;" class="logout">
+                        <i class="zmdi zmdi-sign-in zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 82 -->&nbsp;&nbsp;Logout<!-- /react-text -->
+                     </a>
+                  </li>
+               </ul>
+            </div>
+            <div class="clearfix"></div>
+         </nav>
+         <!--/.Header Menu --> 
+         <!-- Side bar Main Menu -->
+         <div class="side-menu collapse navbar-collapse" id="side-menu">
+            <div class="side-menu-container">
+               <ul class="nav navbar-nav">
+                  <li>
+                     <a class="sdb" href="/signals">
+                        <i class="fa fa-podcast fa-2x" aria-hidden="true"></i><br><!-- react-text: 39 -->SIGNALS<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a class=" sdb active" href="/apps" aria-current="page">
+                        <i class="fa fa-cubes fa-2x" aria-hidden="true"></i><br><!-- react-text: 44 -->APPS<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a class="sdb" href="/data">
+                        <i class="fa fa-database fa-2x" aria-hidden="true"></i><br><!-- react-text: 49 -->DATA<!-- /react-text -->
+                     </a>
+                  </li>
+                  <div></div>
+               </ul>
+            </div>
+         </div>
+         <!-- ./Side bar Main Menu --> 
+         <!-- Main Content starts with side-body -->
+         <div class="side-body">
+            <div class="page-head">
+               <div class="row">
+                  <div class="col-md-7">
+                     <h3 class="xs-mt-0 nText">Intelligent Text Extractor</h3>
+                  </div>
+               </div>
+            </div>
+            <div class="main-content">
+               <section class="ocr_section">
+                  <div class="tab-container">
+                     <ul class="nav nav-tabs cst_ocr_tabs">
+               <li class=""><a href="dashboard_ocr.html" ><i class="fa fa-tachometer fa-lg"></i> Dashboard</a></li>
+               <li class="active"><a href="create_ocr_project.html"><i class="fa fa-book fa-lg"></i> Projects</a></li>
+               <li class=""><a href="ocr_configure.html"><i class="fa fa-sliders fa-lg"></i> Configure </a></li>
+               <li class=""><a href="ocr_reviewers.html"><i class="fa fa-users fa-lg"></i> Reviewers </a></li>
+               <li class=""><a href="users.html"><i class="fa fa-user fa-lg"></i> Users </a></li>
+            </ul>
+                  </div>
+                  <div class="container-fluid">
+                     <div class="xs-mt-20"></div>
+					 <!-- OCR Screen Highlight and Bad Scan elements -->
+					<button class="btn btn-warning pull-right" data-toggle="modal" data-target="#modal_badscan"><i class="fa fa-info-circle"></i> Bad Scan</button>
+					
+					<div class="form-group pull-right ocr_highlightblock">
+					<label class="control-label xs-mb-0" for="select_confidence">Highlight fields with confidence less than &nbsp;&nbsp;</label>
+					<select class="form-control inline-block 1-100" id="select_confidence">
+					 
+					</select>
+					</div>
+					<!-- End OCR Screen Highlight and Bad Scan elements -->		
+                     <div class="xs-mt-20"></div>
+
+<div class="input-group">
+<input class="form-control" placeholder="Enter text..." aria-label="...">
+	<div class="input-group-btn">
+		<button type="button" class="btn btn-default"><i class="fa fa-check"></i></button>
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<span class="caret"></span>
+			<span class="sr-only">Toggle Dropdown</span>
+		</button>
+		<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="#"><i class="fa fa-minus-circle"></i> Not Clear</a></li>
+				<li><a href="#"><i class="fa fa-external-link"></i> Properties</a></li> 
+		</ul>
+	</div>
+</div>					 
+			
+
+					 
+					 <div class="row">
+						<div class="col-md-12">
+						
+			<div class="row">
+			<div class="col-md-6">Original</div>
+			<div class="col-md-6">OCR</div>
+			</div>
+			<div class="split-panel-container" data-bind="panelSplitter: true">
+				<div class="column-left">
+					<div class="content-panel">    
+					<img src="images/scanned-invoice.jpg" class="img-responsive">
+					</div>
+				</div>
+			<div class="drag-handle"></div>
+				<div class="column-right">
+					<div class="content-panel">    
+					<img src="images/scanned-invoice_changes.jpg" class="img-responsive">
+					</div>
+				</div>
+			</div>
+						
+						
+						
+				 
+						
+						
+						</div>
+					 </div>
+                     <div class="xs-mt-20"></div>
+                     <div class="ma-datatable-footer" id="idOcrViewPagination">
+                        <div class="dataTables_paginate">
+                           <ul class="pagination pagination-md">
+                              <li class="disabled"><a role="button" href="#" tabindex="-1" style="pointer-events: none;"><span aria-label="First">«</span></a></li>
+                              <li class="disabled"><a role="button" href="#" tabindex="-1" style="pointer-events: none;"><span aria-label="Previous">‹</span></a></li>
+                              <li class="active"><a role="button" href="#">1</a></li>
+                              <li class=""><a role="button" href="#">2</a></li>
+                              <li class=""><a role="button" href="#">3</a></li>
+                              <li class="disabled"><a role="button" href="#" tabindex="-1" style="pointer-events: none;"><span aria-label="More">…</span></a></li>
+                              <li class=""><a role="button" href="#">10</a></li>
+                              <li class=""><a role="button" href="#"><span aria-label="Next">›</span></a></li>
+                              <li class=""><a role="button" href="#"><span aria-label="Last">»</span></a></li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="xs-mt-20"></div>
+                     <hr>
+                     <div class="xs-mt-20"></div>
+                     <div class="row">
+                        <div class="col-md-6 col-md-offset-6 text-right">
+                           
+                           <button class="btn btn-primary"><i class="fa fa-check-circle"></i> &nbsp; Mark as complete</button>
+                        </div>
+                     </div>
+                     <div class="xs-mt-20"></div>
+                  </div>
+               </section>
+            </div>
+         </div>
+         <!-- /. Main Content ends with side-body -->
+      </div>
+      <!-- /. Main Wrapper ** Mandatory --> 
+      <!-- Bootstrap core JavaScript
+         ================================================== --> 
+      <!-- Placed at the end of the document so the pages load faster --> 
+      <script src="js/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/bootstrap-slider.js"></script>
+      <script src="js/bootbox.min.js"></script>
+      <script src="js/wow.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+	  
+	  
+	  <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js"></script>
+	  
+      <script src="js/uiScripts.js"></script>
+      <script>
+	  
+		 
+			var $select = $(".1-100");
+			for (i=1;i<=100;i++){
+				$select.append($('<option></option>').val(i).html(i))
+			}
+		 
+
+	  ko.bindingHandlers.panelSplitter = {
+    init: function(element, valueAccessor) {
+        $(element).find(".drag-handle").on("mousedown", function (e) {
+            element.initialWidth = parseInt($(element).find(".column-left").width(), 10);
+            element.startX = e.screenX;
+            element.dragging = true;
+        });
+        
+        $(document).on("dragstart", function (e) {
+            return !element.dragging;
+        });
+        
+        $(document).on("selectstart", function () {
+            return !element.dragging;
+        });
+        
+        $(document).on("mouseup", function () {
+            element.dragging = false;
+        });
+        
+        $(document).on("mouseleave", function () {
+            element.dragging = false;
+        });
+        
+        $(document).on("mousemove", function (e) {
+            if (element.dragging) {
+                var width = element.initialWidth + e.screenX - element.startX;
+                width = Math.max(width, 1);
+                $(element).find(".column-left").css("width", width + "px");
+                element.lastX = e.screenX;
+                return false;
+            }
+        });
+    }
+};
+
+ko.applyBindings();
+		  
+		  
+      </script>
+   </body>
+</html>

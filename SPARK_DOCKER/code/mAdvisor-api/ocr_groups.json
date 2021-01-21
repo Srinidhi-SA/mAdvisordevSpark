@@ -1,0 +1,20 @@
+{
+  "auth_group": [
+    {
+      "id": "1",
+      "name": "Admin"
+    },
+    {
+      "id": "2",
+      "name": "Superuser"
+    },
+    {
+      "id": "3",
+      "name": "ReviewerL1"
+    },
+    {
+      "id": "4",
+      "name": "ReviewerL2"
+    }
+  ]
+}

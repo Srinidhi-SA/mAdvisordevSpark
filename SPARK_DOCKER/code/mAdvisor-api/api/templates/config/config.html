@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/css/joblog.css">
+</head>
+<body>
+    <h1>
+        <a href="/api/config/dataset">Dataset</a>
+        <a href="/api/config/errand">Errand</a>
+        <a href="/api/config/trainer">Model</a>
+        <a href="/api/config/score">Score</a>
+		<a href="/api/job/render_html">DashBoard</a>
+    </h1>
+	<h1>{{type}}</h1>
+	<table>
+		<tr>
+			<td>ID and Name</td>
+		</tr>
+		{% for detail in details %}
+			<tr>
+				<td><a href="/api/configpath/{{type}}/{{detail.0}}">ID:{{detail.0}} NAME:{{detail.1}}</a></td>
+			</tr>
+		{% endfor %}
+
+	</table>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+{"source":"class=src>([^<]*?)<",
+   "block":"(?is)class=\"g-section news sfe-break-bottom-16[^>]*?>(.*?)</div>[^<]*?</div>",
+   "title":"<a[^>]*?>([^<]*?)</a>",
+   "final_url":"href=\"([^\"]*?)\"",
+   "date":"class=date>([^<]*?)<",
+   "desc":"(?is)google_ad_section_end[^>]*?>(.*?)</div>"
+}

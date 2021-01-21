@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <title>mAdvisor</title>
+      <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+      <!-- Custom Fonts -->
+      <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="css/animate.css">
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link href="css/bootstrap-slider.css" rel="stylesheet">
+      <link href="css/style.css?v=6234992" rel="stylesheet">
+      <link href="css/c3.css?v=6234992" rel="stylesheet">
+      <link rel="icon" href="images/favicon.ico" />
+      <link rel="stylesheet" href="css/fancy_fileupload.css?v=6234992" type="text/css" media="all" />
+      <link href="css/theme.ice.css" rel="stylesheet">
+      <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css" />
+      <link rel="stylesheet" href="https://rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css" type="text/css" />
+   </head>
+   <body>
+      
+	   
+	  
+	  
+      <!-- Main Wrapper ** Mandatory -->
+      <div class="main_wrapper">
+         <!-- Header Menu -->
+         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div>
+               <div style="opacity: 0; transform: scaleX(0); transform-origin: left center; transition: transform 800ms linear 0s; width: 100%; will-change: transform, opacity; height: 3px; background-color: rgb(20, 128, 113); position: absolute;"></div>
+               <div style="display: table; clear: both;"></div>
+            </div>
+            <div class="navbar-header">
+               <div class="brand-wrapper">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#side-menu"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                  <div class="brand-name-wrapper"><a class="navbar-brand" href="javascript:;"></a></div>
+               </div>
+            </div>
+            <div class="dropdown ma-user-nav">
+               <a class="dropdown-toggle" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
+                  <i class="avatar-img img-circle">K</i><img src="" alt="M" class="avatar-img img-circle hide"><!-- react-text: 67 -->&nbsp;<!-- /react-text --><span class="user-name">kalyan</span><span class="caret"></span>
+               </a>
+               <ul class="dropdown-menu dropdown-menu-right">
+                  <li>
+                     <a href="/user-profile">
+                        <i class="zmdi zmdi-account-o zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 74 -->&nbsp;&nbsp;Profile<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a href="userManual/UserManual.html" target="_blank">
+                        <i class="zmdi zmdi-help-outline zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 78 -->&nbsp;&nbsp;User Manual<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a href="javascript:;" class="logout">
+                        <i class="zmdi zmdi-sign-in zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 82 -->&nbsp;&nbsp;Logout<!-- /react-text -->
+                     </a>
+                  </li>
+               </ul>
+            </div>
+            <div class="clearfix"></div>
+         </nav>
+         <!--/.Header Menu --> 
+         <!-- Side bar Main Menu -->
+         <div class="side-menu collapse navbar-collapse" id="side-menu">
+            <div class="side-menu-container">
+               <ul class="nav navbar-nav">
+                  <li>
+                     <a class="sdb" href="/signals">
+                        <i class="fa fa-podcast fa-2x" aria-hidden="true"></i><br><!-- react-text: 39 -->SIGNALS<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a class=" sdb active" href="/apps" aria-current="page">
+                        <i class="fa fa-cubes fa-2x" aria-hidden="true"></i><br><!-- react-text: 44 -->APPS<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a class="sdb" href="/data">
+                        <i class="fa fa-database fa-2x" aria-hidden="true"></i><br><!-- react-text: 49 -->DATA<!-- /react-text -->
+                     </a>
+                  </li>
+                   
+               </ul>
+            </div>
+         </div>
+         <!-- ./Side bar Main Menu --> 
+         <!-- Main Content starts with side-body -->
+         <div class="side-body">
+            <div class="page-head">
+               <div class="row">
+                  <div class="col-md-7">
+                     <h3 class="xs-mt-0 nText">Intelligent Text Extractor</h3>
+                  </div>
+               </div>
+            </div>
+            <div class="main-content">
+               <section class="ocr_section">
+                  <div class="tab-container">
+                     <ul class="nav nav-tabs cst_ocr_tabs">
+                        <li class=""><a href="dashboard_ocr.html" ><i class="fa fa-tachometer fa-lg"></i> Dashboard</a></li>
+                        <li class=""><a href="create_ocr_project.html"><i class="fa fa-book fa-lg"></i> Projects</a></li>
+                        <li class="active"><a href="ocr_configure.html"><i class="fa fa-sliders fa-lg"></i> Configure </a></li>
+                        <li class=""><a href="ocr_reviewers.html"><i class="fa fa-users fa-lg"></i> Reviewers </a></li>
+                        <li class=""><a href="users.html"><i class="fa fa-user fa-lg"></i> Users </a></li>
+                     </ul>
+                  </div>
+                  <div class="container-fluid">
+                     
+                     <div class="row">
+                        <div class="col-md-3 col-sm-12">
+							<h4 class="nText">Stages</h4>
+                        </div>
+						
+						 
+                        
+                     </div>
+                      
+					
+					<section>
+						<div class="row">
+							<div class="col-md-12">
+							<ul class="nav nav-tabs">
+								<li class="active"><a href="ocr_configure.html">Initial Review</a></li>
+								<li><a href="ocr_configure_secondary_review.html">Secondary Review</a></li>
+								
+							</ul>
+							<!-- Preliminary form -->
+							<div class="ocr_configure xs-p-20">
+							<div class="row">
+                        <!-- <label class="control-label col-md-2" for="sel_project">Select Project</label>
+						 <div class="col-md-3">
+							<select class="form-control" id="sel_project">
+								<option>Select Project...</option>
+								<option>Diagnostic</option>
+								<option>Project 2</option>
+								<option>Project 3</option>
+								
+							</select>
+						 </div> -->
+						 <div class="col-md-12">
+						  <div class="form-group">
+						  
+                                <div class="checkbox checbox-switch switch-success">
+                                    <label>
+                                        <input type="checkbox" name="auto_review_assignment" checked="" />
+                                        <span></span>
+                                        Enable automatic reviewer assignment<br>
+										<small>when enabled, documents that enter workflow will be assigned to reviewers according to your choices below</small>
+                                    </label>
+                                </div>
+                            </div>
+							
+							
+						 
+						 </div>
+						 
+                     </div><hr/>
+					  <div class="row">
+						<div class="col-md-12">
+							<h4>Select how to assign documents</h4>
+							<div class="row">
+							<div class="col-md-8">
+								<div class="ma-radio">
+									<input type="radio" name="assign_doc" id="rad1">
+									<label for="rad1">Distribute documents randomnly and evenly to all reviewers</label>
+								</div>
+								<div class="ma-radio">
+								<input type="radio" name="assign_doc" id="rad2" >
+								<label for="rad2">Distribute documents randomnly and evenly over selected reviewers</label>
+								</div>
+								
+								
+								<label class="label-control col-md-5 xs-ml-50" for="num_drev">Maximum number of documents per reviewer</label>
+								<div class="col-md-3"><input type="number" class="form-control inline" id="num_drev" placeholder="Enter Number..."></div>
+								
+							</div>
+							<div class="col-md-6">
+							
+								
+							</div>
+							</div>
+							
+							
+						</div>
+						
+						
+					  </div>
+					 <hr/>
+					 <div class="row">
+						<div class="col-md-12">
+							<h4>Reviewers (2)
+							
+									<div class="pull-right xs-mb-10">
+										<input type="text" class="form-control" placeholder="Search..." />
+									</div>
+									
+									</h4>
+								 
+									
+								 <div class="clearfix"></div>
+								 
+								<div class="table-responsive">
+								
+								<table class="table table-bordered table-hover cst_table " style="background:#FFF;">
+									<thead>
+									<tr>
+										<th class="text-center xs-pr-5" style="width:80px;">
+											<div class="ma-checkbox">
+											<input id="chk_user_all" type="checkbox" class="needsclick">
+											<label for="chk_user_all"> </label>
+											</div>
+										</th>
+										<th>NAME</th>
+										<th>EMAIL</th>
+									</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="text-center">
+											<div class="ma-checkbox inline">
+											<input id="chk_user1" type="checkbox" class="needsclick" checked>
+											<label for="chk_user1"> </label>
+											</div>
+											</td>
+											<td>Ada Lovelace</td>
+											<td>adalove@marlabs.com</td>
+										</tr>
+										<tr>
+											<td class="text-center">
+											<div class="ma-checkbox inline">
+											<input id="chk_user2" type="checkbox" class="needsclick">
+											<label for="chk_user2"> </label>
+											</div>
+											</td>
+											<td>Grace Hopper</td>
+											<td>ghoper@marlabs.com</td>
+										</tr>
+										<tr>
+											<td class="text-center">
+											<div class="ma-checkbox inline">
+											<input id="chk_user3" type="checkbox" class="needsclick" checked>
+											<label for="chk_user3"> </label>
+											</div>
+											</td>
+											<td>Margaret Hamilton</td>
+											<td>mhamilton@marlabs.com</td>
+										</tr>
+										<tr>
+											<td class="text-center">
+											<div class="ma-checkbox inline">
+											<input id="chk_user4" type="checkbox" class="needsclick">
+											<label for="chk_user4"> </label>
+											</div>
+											</td>
+											<td>Joan Clarke</td>
+											<td>jaonk@marlabs.com</td>
+										</tr>
+									</tbody>
+								</table>
+								</div>
+				  
+								 
+								
+							
+							 
+							 
+								
+							</div>
+						</div>
+						
+						
+					 
+					 <hr/>
+					  <div class="row">
+						<div class="col-md-12">
+							<h4>How would you like to assign any remaining documents?</h4>
+							<div class="ma-radio">
+								<input type="radio" name="assign_remaning_doc" id="asn1" >
+								<label for="asn1">Continue to distribute even if limits are met</label>
+							</div>
+							<div class="ma-radio">
+								<input type="radio" name="assign_remaning_doc" id="asn2" >
+								<label for="asn2">Leave unassigned and move to backlogs</label>
+							</div>
+							<div class="ma-radio">
+								<input type="radio" name="assign_remaning_doc" id="asn3" >
+								<label for="asn3">Select reviewers to assign</label>
+							</div>
+						</div>
+						
+						
+					  </div> <hr/>
+					 <div class="xs-mt-20"></div>
+                     <div class="row">
+                        <div class="col-md-6 col-md-offset-6 text-right">
+                           
+                           <button class="btn btn-default"> &nbsp; Cancel</button> <button class="btn btn-primary"><i class="fa fa-check-circle"></i> &nbsp; Save</button>
+                        </div>
+                     </div>
+							
+							</div>
+							<!-- Preliminary Form end -->
+							</div>
+						</div>
+						
+						
+					
+					</section>
+
+					
+                     
+                  </div>
+               </section>
+            </div>
+         </div>
+         <!-- /. Main Content ends with side-body -->
+      </div>
+      <!-- /. Main Wrapper ** Mandatory --> 
+      <!-- Bootstrap core JavaScript
+         ================================================== --> 
+      <!-- Placed at the end of the document so the pages load faster --> 
+      <script src="js/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/bootstrap-slider.js"></script>
+      <script src="js/bootbox.min.js"></script>
+      <script src="js/wow.min.js"></script>
+      
+      <script src="js/bootstrap-multiselect.js"></script>
+      <script src="js/uiScripts.js"></script>
+   </body>
+</html>

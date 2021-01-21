@@ -1,0 +1,177 @@
+import React from "react";
+import {MainHeader} from "../common/MainHeader";
+import {Tabs,Tab,Pagination,Tooltip,OverlayTrigger,Popover} from "react-bootstrap";
+import {Link, Redirect} from "react-router-dom";
+import store from "../../store";
+import {connect} from "react-redux";
+import {APPID4,APPNAME4} from "../../helpers/helper.js";
+import {AudioFileUpload} from "./AudioFileUpload";
+import {AppsLoader} from "../common/AppsLoader";
+import {getAudioFile,getAudioFileList,storeAudioSearchElement,handleAudioDelete,handleAudioRename} from "../../actions/appActions";
+import {STATIC_URL} from "../../helpers/env.js"
+import {isEmpty,SEARCHCHARLIMIT,getUserDetailsOrRestart} from "../../helpers/helper";
+import {DetailOverlay} from "../common/DetailOverlay";
+import Dialog from 'react-bootstrap-dialog'
+import Breadcrumb from 'react-breadcrumb';
+import {AudioFileCard} from "./AudioFileCard";
+import {LatestAudioFile} from "./LatestAudioFiles";
+var dateFormat = require('dateformat');
+
+@connect((store) => {
+	return {login_response: store.login.login_response,
+        currentAppId:store.apps.currentAppId,
+        audioFileSummaryFlag:store.apps.audioFileSummaryFlag,
+        audioFileSlug:store.apps.audioFileSlug,
+        audioList:store.apps.audioList,
+        audio_search_element:store.apps.audio_search_element
+		};
+})
+
+
+export class AudioFileList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleSelect = this.handleSelect.bind(this);
+  }
+  componentWillMount(){
+	  var pageNo = 1;
+	  if(this.props.history.location.search.indexOf("page") != -1){
+			pageNo = this.props.history.location.search.split("page=")[1];
+			this.props.dispatch(getAudioFileList(pageNo));
+		}else{
+			this.props.dispatch(getAudioFileList(pageNo));
+		}
+  }
+  handleAudioDelete(slug){
+	  this.props.dispatch(handleAudioDelete(slug,this.refs.dialog));
+  }
+  handleAudioRename(slug,name){
+	  this.props.dispatch(handleAudioRename(slug,this.refs.dialog,name));
+  }
+  getAudioFileSummary(slug){
+	 this.props.dispatch(getAudioFile(slug));
+  }
+  _handleKeyPress = (e) => {
+	  if (e.key === 'Enter') {
+		  if (e.target.value != "" && e.target.value != null)
+		  this.props.history.push('/apps/audio?search=' + e.target.value + '')
+		  this.props.dispatch(storeAudioSearchElement(e.target.value));
+		  this.props.dispatch(getAudioFileList(1));
+
+	  }
+  }
+	onChangeOfSearchBox(e){
+		if(e.target.value==""||e.target.value==null){
+			this.props.dispatch(storeAudioSearchElement(""));
+			this.props.history.push('/apps/audio')
+			this.props.dispatch(getAudioFileList(1));
+
+		}else if (e.target.value.length > SEARCHCHARLIMIT) {
+			this.props.history.push('/apps/audio?search=' + e.target.value + '')
+			this.props.dispatch(storeAudioSearchElement(e.target.value));
+			this.props.dispatch(getAudioFileList(1));
+		}
+	}
+  render() {
+    if(store.getState().apps.audioFileSummaryFlag){
+        let _link = "/apps/audio/"+store.getState().apps.audioFileSlug;
+        return(<Redirect to={_link}/>);
+    }
+    const audioList = store.getState().apps.audioList.data;
+
+    if (audioList) {
+		const pages = store.getState().apps.audioList.total_number_of_pages;
+		const current_page = store.getState().apps.current_page;
+	
+		let paginationTag = null
+        const audioFileList = <AudioFileCard data={audioList}/>
+		if(pages > 1){
+			paginationTag = <Pagination  ellipsis bsSize="medium" maxButtons={10} onSelect={this.handleSelect} first last next prev boundaryLinks items={pages} activePage={current_page}/>
+		}
+		
+		return (
+				<div className="side-body">
+				<LatestAudioFile props={this.props}/>
+				<div className="main-content">
+
+					<div className="row">
+					{/* <div className="col-md-8">
+                     
+                    <h3 className="xs-mt-0 text-capitalize">Media Files</h3>
+                    </div>*/}
+					  
+						<div className="col-md-12">
+							
+							<div class="btn-toolbar pull-right">
+				<div class="input-group">
+				
+				<div className="search-wrapper">
+					<form>
+					<input type="text" name="audio_file" onKeyPress={this._handleKeyPress.bind(this)} onChange={this.onChangeOfSearchBox.bind(this)} title="Media Files" id="audio_file" className="form-control search-box" placeholder="Search Audio files..." required />
+					<span className="zmdi zmdi-search form-control-feedback"></span>
+					<button className="close-icon" type="reset"></button>
+					</form>
+				</div>
+
+				</div>
+                  <div class="btn-group hidden">
+                    <button type="button" data-toggle="dropdown" title="Sorting" class="btn btn-default dropdown-toggle" aria-expanded="false">
+                      <i class="zmdi zmdi-hc-lg zmdi-sort-asc"></i>
+                    </button>
+                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                        <li>
+                          <a href="#" ><i class="zmdi zmdi-sort-amount-asc"></i>&nbsp;&nbsp;Name Ascending</a>
+                        </li>
+                        <li>
+                          <a href="#" ><i class="zmdi zmdi-sort-amount-desc"></i>&nbsp;&nbsp;Name Descending</a>
+                        </li>
+                        <li>
+                          <a href="#" ><i class="zmdi zmdi-calendar-alt"></i>&nbsp;&nbsp;Date Ascending</a>
+                        </li>
+                        <li>
+                          <a href="#" ><i class="zmdi zmdi-calendar"></i>&nbsp;&nbsp;Date Descending</a>
+                        </li>
+                    </ul>
+                  </div>
+				  </div>	
+							
+						</div>	<div class="clearfix"></div>
+				</div>
+				
+				<div class="clearfix xs-m-10"></div>
+				
+				<div className="row">
+				{audioFileList}
+				<div className="clearfix"></div>
+				</div>
+				<div className="ma-datatable-footer"  id="idPagination">
+				<div className="dataTables_paginate">
+				{paginationTag}
+				</div>
+				</div>
+				</div>
+				 <Dialog ref="dialog" />
+				 <AppsLoader match={this.props.match}/>
+				</div>
+
+		);
+	}else {
+		return (
+				   <div>
+		            <img id="loading" src={ STATIC_URL + "assets/images/Preloader_2.gif"} />
+		          </div>
+		)
+	}
+  }
+
+  handleSelect(eventKey) {
+
+	  if (this.props.audio_search_element) {
+		  this.props.history.push('/apps/audio?search=' + this.props.model_search_element+'?page='+eventKey+'')
+	  } else
+		  this.props.history.push('/apps/audio?page='+eventKey+'')
+
+		  this.props.dispatch(getAudioFileList(eventKey));
+  }
+
+}

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <title>mAdvisor</title>
+      <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+      <!-- Custom Fonts -->
+      <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="css/animate.css">
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link href="css/bootstrap-slider.css" rel="stylesheet">
+      <link href="css/style.css?v=6234992" rel="stylesheet">
+      <link href="css/c3.css?v=6234992" rel="stylesheet">
+      <link rel="icon" href="images/favicon.ico" />
+      <link rel="stylesheet" href="css/fancy_fileupload.css?v=6234992" type="text/css" media="all" />
+      <link href="css/theme.ice.css" rel="stylesheet">
+      <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css" />
+      <link rel="stylesheet" href="https://rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css" type="text/css" />
+   </head>
+   <body>
+      <!-- Instructions Modal Popup -->
+      <div class="modal fade" id="create_newproject" tabindex="-1" role="dialog" aria-labelledby="CreateNewProject" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+			<div class="modal-header">
+				<h3>New Project</h3>
+			</div>
+               <div class="modal-body">			
+                  
+				   <form>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="form-group">
+                              <label for="pName" class="form-label">Project Name <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="pName" placeholder="Project Name">						 
+                           </div>
+                        </div> 
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="form-group">
+                              <label for="uEmail" class="form-label">Email <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="uEmail" placeholder="Email" value="sejal.oroosh@marlabs.com">						 
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="uRoles" class="form-label">Roles <span class="text-danger">*</span></label>	
+                              <ul class="list-unstyled">
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" checked name="roles_type" id="roles_type1"><label for="roles_type1">Admin</label></div>
+                                 </li>
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" name="roles_type" id="roles_type2"><label for="roles_type2">Reviewer L1</label></div>
+                                 </li>
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" name="roles_type" id="roles_type3"><label for="roles_type3">Reviewer L2</label></div>
+                                 </li>
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" name="roles_type" id="roles_type3"><label for="roles_type3">Superuser</label></div>
+                                 </li>
+                              </ul>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label for="ustatus" class="form-label">Status <span class="text-danger">*</span></label>
+                           <ul class="list-unstyled">
+                              <li>
+                                 <div class="ma-radio inline"><input type="radio" checked name="status_type" id="uStatus_active"><label for="uStatus_active">Active</label></div>
+                              </li>
+                              <li>
+                                 <div class="ma-radio inline"><input type="radio"  name="status_type" id="uStatus_inactive"><label for="uStatus_inactive">Inactive</label></div>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+                  </form>
+				  
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> 
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- End Instructions Modal Popup -->
+      <!-- Equal, Greater Than and Less Than Modal Popup -->
+      <div class="modal fade" id="modal_equal" tabindex="-1" role="dialog" aria-labelledby="modal_badscan_modalTitle" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Equal</h4>
+               </div>
+               <div class="modal-body">
+                  <!-- Wrapper for slides -->
+                  <div class="form-group">
+                     <label for="txt_bscan">Enter the value:</label>
+                     <input type="text" class="form-control" id="txt_novalue" placeholder="Enter number">
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Main Wrapper ** Mandatory -->
+      <div class="main_wrapper">
+         <!-- Header Menu -->
+         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div>
+               <div style="opacity: 0; transform: scaleX(0); transform-origin: left center; transition: transform 800ms linear 0s; width: 100%; will-change: transform, opacity; height: 3px; background-color: rgb(20, 128, 113); position: absolute;"></div>
+               <div style="display: table; clear: both;"></div>
+            </div>
+            <div class="navbar-header">
+               <div class="brand-wrapper">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#side-menu"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                  <div class="brand-name-wrapper"><a class="navbar-brand" href="javascript:;"></a></div>
+               </div>
+            </div>
+            <div class="dropdown ma-user-nav">
+               <a class="dropdown-toggle" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
+                  <i class="avatar-img img-circle">K</i><img src="" alt="M" class="avatar-img img-circle hide"><!-- react-text: 67 -->&nbsp;<!-- /react-text --><span class="user-name">kalyan</span><span class="caret"></span>
+               </a>
+               <ul class="dropdown-menu dropdown-menu-right">
+                  <li>
+                     <a href="/user-profile">
+                        <i class="zmdi zmdi-account-o zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 74 -->&nbsp;&nbsp;Profile<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a href="userManual/UserManual.html" target="_blank">
+                        <i class="zmdi zmdi-help-outline zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 78 -->&nbsp;&nbsp;User Manual<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a href="javascript:;" class="logout">
+                        <i class="zmdi zmdi-sign-in zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 82 -->&nbsp;&nbsp;Logout<!-- /react-text -->
+                     </a>
+                  </li>
+               </ul>
+            </div>
+            <div class="clearfix"></div>
+         </nav>
+         <!--/.Header Menu --> 
+         <!-- Side bar Main Menu -->
+         <div class="side-menu collapse navbar-collapse" id="side-menu">
+            <div class="side-menu-container">
+               <ul class="nav navbar-nav">
+                  <li>
+                     <a class="sdb" href="/signals">
+                        <i class="fa fa-podcast fa-2x" aria-hidden="true"></i><br><!-- react-text: 39 -->SIGNALS<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a class=" sdb active" href="/apps" aria-current="page">
+                        <i class="fa fa-cubes fa-2x" aria-hidden="true"></i><br><!-- react-text: 44 -->APPS<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a class="sdb" href="/data">
+                        <i class="fa fa-database fa-2x" aria-hidden="true"></i><br><!-- react-text: 49 -->DATA<!-- /react-text -->
+                     </a>
+                  </li>
+                  <div></div>
+               </ul>
+            </div>
+         </div>
+         <!-- ./Side bar Main Menu --> 
+         <!-- Main Content starts with side-body -->
+         <div class="side-body">
+            <div class="page-head">
+               <div class="row">
+                  <div class="col-md-7">
+                     <h3 class="xs-mt-0 nText">Intelligent Text Extractor</h3>
+                  </div>
+               </div>
+            </div>
+            <div class="main-content">
+               <section class="ocr_section">
+                  <div class="tab-container">
+                     <ul class="nav nav-tabs cst_ocr_tabs">
+                        <li class=""><a href="dashboard_ocr.html" ><i class="fa fa-tachometer fa-lg"></i> Dashboard</a></li>
+                        <li class="active"><a href="create_ocr_project.html"><i class="fa fa-book fa-lg"></i> Projects</a></li>
+                         <li class=""><a href="ocr_configure.html"><i class="fa fa-sliders fa-lg"></i> Configure </a></li>
+                        <li class=""><a href="ocr_reviewers.html"><i class="fa fa-users fa-lg"></i> Reviewers </a></li>
+                        <li class=""><a href="users.html"><i class="fa fa-user fa-lg"></i> Manage Users </a></li>
+                     </ul>
+                  </div>
+                  <div class="container-fluid">
+                     <div class="xs-mt-30"></div>
+                     <div class="row">
+                        <div class="col-sm-6">
+                          <!-- <h4 class="xs-mt-0 inline-block xs-mr-10 box-shadow">10 <br><small class="text-primary">PROJECTS</small></h4>
+                           <h4 class="xs-mt-0 inline-block xs-mr-10 box-shadow">30 <br><small class="text-primary">DOCUMENETS</small></h4>
+                           <h4 class="xs-mt-0 inline-block box-shadow">15 <br><small class="text-primary">REVIEWERS</small></h4> -->
+                        
+			<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="create_ocr_project.html"><i class="fa fa-arrow-circle-left"></i> Projects</a></li>
+			<li class="breadcrumb-item active"><a href="#">FormReturn OMR</a></li>
+			</ol>
+						
+						</div>
+                        <div class="col-sm-6 text-right">
+                           
+                        </div>
+                     </div>
+                     <!--  <div class="row">
+                        <div class="col-sm-6">
+                         
+                         
+                        </div>
+                             <div class="col-sm-6 text-right"> 
+                         <button class="btn btn-default disabled" id="btn_r1"><i class="fa fa-file-text"></i> Recognize</button> 
+                         
+                             </div> 
+                           </div> -->
+                     <div class="xs-mt-20"></div>
+					 
+					
+					 
+			<div class="panel">
+			 
+			<div class="panel-body">
+				<div class="xs-mt-3 xs-mb-3 text-center">
+				 
+				<div class="icon-container">
+					<div class="icon "><i class="fa fa-upload fa-2x xs-mt-10"></i></div>
+					<span class="class">Add a workflow by clicking on the <a href="#" class="inline-block"><i class="fa fa-plus"></i></a> to get started</span>
+				</div>
+				 
+				 
+				</div>
+			</div>
+			</div>
+					 
+					 
+					
+                     
+					 
+                     
+				  </div>
+               </section>
+            </div>
+         </div>
+         <!-- /. Main Content ends with side-body -->
+      </div>
+      <!-- /. Main Wrapper ** Mandatory --> 
+      <!-- Bootstrap core JavaScript
+         ================================================== --> 
+      <!-- Placed at the end of the document so the pages load faster --> 
+      <script src="js/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/bootstrap-slider.js"></script>
+      <script src="js/bootbox.min.js"></script>
+      <script src="js/wow.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+      <script src="js/uiScripts.js"></script>
+      <script>
+         wow = new WOW(
+         	{
+         		boxClass:     'wow',      // default
+         		animateClass: 'animated', // default
+         		offset:       0,          // default
+         		mobile:       true,       // default
+         		live:         true        // default
+         	}
+         )
+         wow.init();
+          
+         
+         setTimeout(function(){
+             $('#ocr_Instructions_modal').modal('hide')
+         }, 30000);
+         
+         function selectRow(row)
+         {
+             var firstInput = row.getElementsByTagName('input')[0];
+             firstInput.checked = !firstInput.checked;
+         	$("#btn_r1,#btn_r2").removeClass("disabled"); 
+         }
+         
+         $('table.cst_table .editCell').click(function () {
+             var cellId = [$(this).attr('class'), $(this).parent('tr').attr('id')];
+             
+             if ($(this).attr("contentEditable") == true) {
+                 console.debug('Cell', cellId, 'is now *not* editable');
+                 $(this).attr("contentEditable", "false");
+             } 
+             else {        
+                 console.debug('Cell', cellId, 'is now editable');
+                 $(this).attr("contentEditable", "true");
+                 $(this).select();
+             }
+         })
+         
+          
+               $(function(){
+                   $('#status1').editable({
+                       value: 2,    
+                       source: [
+                             {value: 1, text: 'Assignee 1'},
+                             {value: 2, text: 'Assignee 2'},
+                             {value: 3, text: 'Assignee 3'}
+                          ]
+                   });
+               }); 
+      </script>
+   </body>
+</html>

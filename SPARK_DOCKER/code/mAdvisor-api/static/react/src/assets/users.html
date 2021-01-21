@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <title>mAdvisor</title>
+      <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+      <!-- Custom Fonts -->
+      <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="css/animate.css">
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link href="css/bootstrap-slider.css" rel="stylesheet">
+      <link href="css/style.css?v=6234992" rel="stylesheet">
+      <link href="css/c3.css?v=6234992" rel="stylesheet">
+      <link rel="icon" href="images/favicon.ico" />
+      <link rel="stylesheet" href="css/fancy_fileupload.css?v=6234992" type="text/css" media="all" />
+      <link href="css/theme.ice.css" rel="stylesheet">
+      <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css" />
+      <link rel="stylesheet" href="https://rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css" type="text/css" />
+   </head>
+   <body>
+      <!-- Add User Modal Popup -->
+      <div class="modal fade" id="modal_adduser" tabindex="-1" role="dialog" aria-labelledby="modal_badscan_modalTitle" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Add User</h4>
+               </div>
+               <div class="modal-body xs-pt-20">
+                  <form>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="ufName" class="form-label">First Name <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="ufName" placeholder="First Name">						 
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="ulName" class="form-label">Last Name</label>					
+                              <input type="text" class="form-control" id="ulName" placeholder="Last Name">					
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="uEmail" class="form-label">Email <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="uEmail" placeholder="Email">						 
+                           </div>
+                        </div>
+						<div class="col-md-6">
+                           <div class="form-group">
+                              <label for="uPassword" class="form-label">Password <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="uPassword" placeholder="Password">						 
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="uRoles" class="form-label">Roles <span class="text-danger">*</span></label>	
+                              <ul class="list-unstyled">
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" name="roles_type" id="rad1"><label for="rad1">Admin</label></div>
+                                 </li>
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" name="roles_type" id="rad2"><label for="rad2">Reviewer L1</label></div>
+                                 </li>
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" name="roles_type" id="rad3"><label for="rad3">Reviewer L2</label></div>
+                                 </li>
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" name="roles_type" id="rad4"><label for="rad4">Superuser</label></div>
+                                 </li>
+                              </ul>
+                           </div>
+                        </div>
+						<div class="col-md-6">
+                        <div class="form-group">
+                           <label for="ustatus" class="form-label">Status <span class="text-danger">*</span></label>
+                           <ul class="list-unstyled">
+                              <li>
+                                 <div class="ma-radio inline"><input type="radio" name="status_type" id="uStatus_active"><label for="uStatus_active">Active</label></div>
+                              </li>
+                              <li>
+                                 <div class="ma-radio inline"><input type="radio" name="status_type" id="uStatus_inactive"><label for="uStatus_inactive">Inactive</label></div>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+					 </div>
+					<div class="row">
+                        <div class="col-md-12">
+						
+						<div class="ma-checkbox inline"><input id="chk_dim1" type="checkbox" checked class="needsclick"><label for="chk_dim1"> Notify user by email that they have been added</label></div>
+                           							
+                        </div>
+						
+						</div>
+						
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Add User</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Edit User Modal Popup -->
+      <div class="modal fade" id="modal_edituser" tabindex="-1" role="dialog" aria-labelledby="modal_badscan_modalTitle" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">User Details</h4>
+				  
+				  
+               </div> <form>
+               <div class="modal-body xs-pt-20">
+					 
+					 
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="ufName" class="form-label">First Name <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="ufName" placeholder="First Name" value="Sejal" disabled>						 
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="ulName" class="form-label">Last Name</label>					
+                              <input type="text" class="form-control" id="ulName" placeholder="Last Name" value="Oroosh" disabled>					
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="form-group">
+                              <label for="uEmail" class="form-label">Email <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="uEmail" placeholder="Email" value="sejal.oroosh@marlabs.com" disabled>						 
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="uRoles" class="form-label">Roles <span class="text-danger">*</span></label>	
+                              <select class="form-control" id="uRoles" disabled>
+								<option>Admin</option>
+								<option>Reviewer L1</option>
+								<option>Reviewer L2</option>
+								<option>Superuser</option>								
+							  </select>
+							  
+							  
+                           </div>
+                        </div>
+						 <div class="col-md-6">
+                        <div class="form-group">
+                           <label for="ustatus" class="form-label">Status <span class="text-danger">*</span></label>
+						   
+						    <select class="form-control" id="uRoles" disabled>
+								<option selected>Active</option>
+								<option>Inactive</option>						
+							  </select>
+						   
+                           
+                        </div>
+						</div>
+						</div>
+						
+                     
+                 
+               </div>
+               <div class="modal-footer">
+			    <button class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+               </div> </form>
+            </div>
+         </div>
+      </div>
+      <!-- Main Wrapper ** Mandatory -->
+      <div class="main_wrapper">
+         <!-- Header Menu -->
+         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div>
+               <div style="opacity: 0; transform: scaleX(0); transform-origin: left center; transition: transform 800ms linear 0s; width: 100%; will-change: transform, opacity; height: 3px; background-color: rgb(20, 128, 113); position: absolute;"></div>
+               <div style="display: table; clear: both;"></div>
+            </div>
+            <div class="navbar-header">
+               <div class="brand-wrapper">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#side-menu"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                  <div class="brand-name-wrapper"><a class="navbar-brand" href="javascript:;"></a></div>
+               </div>
+            </div>
+            <div class="dropdown ma-user-nav">
+               <a class="dropdown-toggle" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
+                  <i class="avatar-img img-circle">K</i><img src="" alt="M" class="avatar-img img-circle hide"><!-- react-text: 67 -->&nbsp;<!-- /react-text --><span class="user-name">kalyan</span><span class="caret"></span>
+               </a>
+               <ul class="dropdown-menu dropdown-menu-right">
+                  <li>
+                     <a href="/user-profile">
+                        <i class="zmdi zmdi-account-o zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 74 -->&nbsp;&nbsp;Profile<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a href="userManual/UserManual.html" target="_blank">
+                        <i class="zmdi zmdi-help-outline zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 78 -->&nbsp;&nbsp;User Manual<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a href="javascript:;" class="logout">
+                        <i class="zmdi zmdi-sign-in zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 82 -->&nbsp;&nbsp;Logout<!-- /react-text -->
+                     </a>
+                  </li>
+               </ul>
+            </div>
+            <div class="clearfix"></div>
+         </nav>
+         <!--/.Header Menu --> 
+         <!-- Side bar Main Menu -->
+         <div class="side-menu collapse navbar-collapse" id="side-menu">
+            <div class="side-menu-container">
+               <ul class="nav navbar-nav">
+                  <li>
+                     <a class="sdb" href="/signals">
+                        <i class="fa fa-podcast fa-2x" aria-hidden="true"></i><br><!-- react-text: 39 -->SIGNALS<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a class=" sdb active" href="/apps" aria-current="page">
+                        <i class="fa fa-cubes fa-2x" aria-hidden="true"></i><br><!-- react-text: 44 -->APPS<!-- /react-text -->
+                     </a>
+                  </li>
+                  <li>
+                     <a class="sdb" href="/data">
+                        <i class="fa fa-database fa-2x" aria-hidden="true"></i><br><!-- react-text: 49 -->DATA<!-- /react-text -->
+                     </a>
+                  </li>
+                  <div></div>
+               </ul>
+            </div>
+         </div>
+         <!-- ./Side bar Main Menu --> 
+         <!-- Main Content starts with side-body -->
+         <div class="side-body">
+            <div class="page-head">
+               <div class="row">
+                  <div class="col-md-7">
+                     <h3 class="xs-mt-0 nText">Intelligent Text Extractor</h3>
+                  </div>
+               </div>
+            </div>
+            <div class="main-content">
+               <section class="ocr_section">
+                  <div class="tab-container">
+                     <ul class="nav nav-tabs cst_ocr_tabs">
+                        <li class=""><a href="dashboard_ocr.html" ><i class="fa fa-tachometer fa-lg"></i> Dashboard</a></li>
+                        <li class=""><a href="create_ocr_project.html"><i class="fa fa-book fa-lg"></i> Projects</a></li>
+                        <li class=""><a href="ocr_configure.html"><i class="fa fa-sliders fa-lg"></i> Configure </a></li>
+                        <li class=""><a href="ocr_reviewers.html"><i class="fa fa fa-users fa-lg"></i> Reviewers </a></li>
+                        <li class="active"><a href="users.html"><i class="fa fa-user fa-lg"></i> Users </a></li>
+                     </ul>
+                  </div>
+                  <div class="container-fluid">
+                     
+                     <div class="row">
+                        <div class="col-md-3 col-sm-12">
+							<h4 class="nText">Manage users</h4>
+                        </div>
+						
+						 
+                        
+                     </div>
+                     <div class="xs-mt-20"></div>
+						<div class="row">
+							<div class="col-md-8">
+							<ul class="nav nav-tabs">
+								<li class="active"><a href="javascript:;">All</a></li>
+								<li><a href="javascript:;">Admin</a></li>
+								<li><a href="javascript:;">Superuser</a></li>
+								<li><a href="javascript:;">Reviewer L1</a></li>
+								<li><a href="javascript:;">Reviewer L2</a></li>
+								
+							</ul>
+							</div>
+							 
+							<div class="col-md-4 col-sm-12 text-right">
+                           <div class="form-inline">
+                              <a class="btn btn-info btn-rounded xs-mr-10" data-toggle="modal" data-target="#modal_adduser" id="btn_ceate_user" title="Add User"><i class="fa fa-plus "></i> <i class="fa fa-user-o "></i></a> 
+                              <div class="form-group pull-right"><input type="text" id="search" class="form-control btn-rounded" placeholder="Search user..."></div>
+							
+							<div class="btn-group xs-mr-10">
+   <button type="button" title="Sorting" class="btn btn-default dropdown-toggle" data-toggle="dropdown">ACTION <span class="caret"></span></button>
+   <ul role="menu" class="dropdown-menu dropdown-menu-right">
+	  <li>
+         <a href="#">
+            <i class="fa fa-plus-circle text-primary"></i> Activate
+         </a>
+      </li>
+      <li>
+         <a href="#">
+            <i class="fa fa-minus-circle text-warning"></i> Deactivate
+         </a>
+      </li>
+      <li>
+         <a href="#">
+            <i class="fa fa-trash text-danger"></i> Delete
+         </a>
+      </li>
+   </ul>
+</div>
+
+						  </div>
+                        </div>
+							 
+						</div>
+                     <div class="row">
+                        <div class="col-sm-12">
+						 <div class="table-responsive">
+							
+                           <table class="table table-condensed table-hover cst_table ">
+                              <thead>
+                                 <tr>
+                                    <th class="text-center">
+											<div class="ma-checkbox">
+											<input type="checkbox" id="row1" value="row1">
+											<label for="row1" class="radioLabels"></label>
+											</div>
+									</th>
+                                    <th>First Name</th>
+                                    <th>
+                                       Last Name
+                                    </th>
+                                    <th>
+                                       Email
+                                    </th>
+                                    <th>
+                                       Roles
+                                    </th>
+                                    <th>
+                                       Date Joined
+                                    </th>
+                                    <th>
+                                       Last Login
+                                    </th>
+                                    <th>
+                                       Status
+                                    </th>
+                                     
+                                 </tr>
+                              </thead>
+                              <tbody class="no-border-x">
+                                 <tr>
+                                    <td align="center">
+													<div class="ma-checkbox">
+													<input type="checkbox" id="row2" value="row2">
+													<label for="row2" class="radioLabels"></label>
+													</div>
+                                    </td>
+                                    <td>
+                                       <a href="#" data-toggle="modal" data-target="#modal_edituser">Sejal</a>
+                                    </td>
+                                    <td>
+                                       Oroosh
+                                    </td>
+                                    <td>
+                                       sejal.oroosh@marlabs.com
+                                    </td>
+                                    <td>
+                                       Admin
+                                    </td>
+                                    <td>
+                                       10/11/2020
+                                    </td>
+                                    <td>
+                                       20:10 PM
+                                    </td>
+                                    <td>
+                                       <label class="label-success">Active</label>
+                                    </td>
+                                 </tr>
+                                 <tr>
+                                    <td align="center">
+										<div class="ma-checkbox">
+										<input type="checkbox" id="row3" value="row3">
+										<label for="row3" class="radioLabels"></label>
+										</div>
+                                    </td>
+                                    <td>
+                                       <a href="#">Akaash</a>
+                                    </td>
+                                    <td>
+                                       Pande
+                                    </td>
+                                    <td>
+                                       akaash.pande@marlabs.com
+                                    </td>
+                                    <td>
+                                       Superuser
+                                    </td>
+                                    <td>
+                                       01/06/2018
+                                    </td>
+                                    <td>
+                                       17:15 PM
+                                    </td>
+                                    <td>
+                                       <label class="label-warning">Inctive</label>
+                                    </td>
+                                 </tr>
+                                 <tr>
+                                    <td align="center">
+											<div class="ma-checkbox">
+											<input type="checkbox" id="row4" value="row4">
+											<label for="row4" class="radioLabels"></label>
+											</div>
+                                    </td>
+                                    <td>
+                                       <a href="#">Sandeep</a>
+                                    </td>
+                                    <td>
+                                       Gupta
+                                    </td>
+                                    <td>sandeep.gupta@marlabs.com</td>
+                                    <td>Reviewer L1</td>
+                                    <td>
+                                       20/03/2019
+                                    </td>
+                                    <td>
+                                       18:32 PM
+                                    </td>
+                                    <td>
+                                       <label class="label-success">Active</label>
+                                    </td>
+                                 </tr>
+                                 <tr>
+                                    <td align="center">
+										<div class="ma-checkbox">
+										<input type="checkbox" id="row5" value="row5">
+										<label for="row5" class="radioLabels"></label>
+										</div>
+                                    </td>
+                                    <td>
+                                       <a href="javascript:;">Kalyan</a>
+                                    </td>
+                                    <td>
+                                       Gupta
+                                    </td>
+                                    <td>kalyan.k@marlabs.com</td>
+                                    <td>Reviewer L2</td>
+                                    <td>
+                                       20/06/2014
+                                    </td>
+                                    <td>
+                                       17:32 PM
+                                    </td>
+                                    <td>
+                                       <label class="label-danger">Delete</label>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+						 </div>
+						</div>
+                     </div>
+					 <div class="xs-mb-20"></div>
+                  </div>
+               </section>
+            </div>
+         </div>
+         <!-- /. Main Content ends with side-body -->
+      </div>
+      <!-- /. Main Wrapper ** Mandatory --> 
+      <!-- Bootstrap core JavaScript
+         ================================================== --> 
+      <!-- Placed at the end of the document so the pages load faster --> 
+      <script src="js/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/bootstrap-slider.js"></script>
+      <script src="js/bootbox.min.js"></script>
+      <script src="js/wow.min.js"></script>
+      <script type="text/javascript" src="https://rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+      <script type="text/javascript" src="https://rawgit.com/wenzhixin/bootstrap-table/master/src/extensions/editable/bootstrap-table-editable.js"></script>
+      <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+      <script src="js/uiScripts.js"></script>
+   </body>
+</html>

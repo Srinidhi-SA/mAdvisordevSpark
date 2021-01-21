@@ -1,0 +1,44 @@
+[1mdiff --git a/bi/algorithms/autoML/Feature_Engineering.py b/bi/algorithms/autoML/Feature_Engineering.py[m
+[1mindex de8340b..997c0fb 100644[m
+[1m--- a/bi/algorithms/autoML/Feature_Engineering.py[m
+[1m+++ b/bi/algorithms/autoML/Feature_Engineering.py[m
+[36m@@ -250,16 +250,16 @@[m [mclass FeatureEngineeringAutoMl:[m
+                         {'name': i + '_lt', 'dtype': str(data[i].dtype), 'created': True})[m
+ [m
+ [m
+[31m-                elif data[i].nunique() > 0.5 * data[i].count():[m
+[31m-                    print(i + '_bins')[m
+[31m-                    start = time.time()[m
+[31m-                    data[i + '_bins'] = self.bin_columns(data[i])[m
+[31m-                    end = time.time()[m
+[31m-                    print(i + '_bins', end - start)[m
+[31m-                    bin_list.append(i)[m
+[31m-                    self.one_click['created_feature'].append([m
+[31m-                        {'name': i + '_bins', 'dtype': str(data[i].dtype), 'created': True})[m
+[31m-                    self.one_click['bin_columns'] = bin_list[m
+[32m+[m[32m                # elif data[i].nunique() > 0.5 * data[i].count():[m
+[32m+[m[32m                #     print(i + '_bins')[m
+[32m+[m[32m                #     start = time.time()[m
+[32m+[m[32m                #     data[i + '_bins'] = self.bin_columns(data[i])[m
+[32m+[m[32m                #     end = time.time()[m
+[32m+[m[32m                #     print(i + '_bins', end - start)[m
+[32m+[m[32m                #     bin_list.append(i)[m
+[32m+[m[32m                #     self.one_click['created_feature'].append([m
+[32m+[m[32m                #         {'name': i + '_bins', 'dtype': str(data[i].dtype), 'created': True})[m
+[32m+[m[32m                #     self.one_click['bin_columns'] = bin_list[m
+ [m
+             else:[m
+                 if data[i].nunique() > 0.1 * data[i].count():[m
+[1mdiff --git a/bi/master.py b/bi/master.py[m
+[1mindex f1f5df7..04d0aee 100644[m
+[1m--- a/bi/master.py[m
+[1m+++ b/bi/master.py[m
+[36m@@ -51,7 +51,7 @@[m [mdef main(configJson):[m
+             debugMode = True[m
+             ignoreMsg = True[m
+             # Test Configs are defined in bi/settings/configs/localConfigs[m
+[31m-            jobType = "training"[m
+[32m+[m[32m            jobType = "metaData"[m
+             if jobType == "testCase":[m
+                 configJson = get_test_configs(jobType,testFor = "chisquare")[m
+             else:[m

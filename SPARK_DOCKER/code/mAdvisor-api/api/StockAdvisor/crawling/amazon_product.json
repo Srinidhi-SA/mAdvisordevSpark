@@ -1,0 +1,5 @@
+{"source":"Amazon",
+   "title":"id=\"productTitle\"[^>]*?>(.*?)</h1>",
+   "mrp":"class=\"a-text-strike\"[^>]*?>(.*?)</td>",
+   "avp":"id=\"priceblock_ourprice\"[^>]*?>(.*?)</span>\\s*?<span"
+}

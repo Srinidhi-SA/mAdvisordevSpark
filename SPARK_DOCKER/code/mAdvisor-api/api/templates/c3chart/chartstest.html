@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://c3js.org/js/jquery-1.11.0.min-910066fb.js"></script>
+    <script src="http://c3js.org/js/d3-3.5.6.min-77adef17.js"></script>
+    <script src="http://c3js.org/js/c3.min-33bf6bcd.js"></script>
+    <script src="http://localhost:9000/static/js/charts_function.js"></script>
+
+    <title>C3.js | D3-based reusable chart library</title>
+<link href="http://c3js.org/css/normalize-e465cb86.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="http://c3js.org/css/foundation.min-978d4ce8.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="http://c3js.org/css/tomorrow-d7cf0921.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="http://c3js.org/css/c3-b03125fa.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="http://c3js.org/css/style-99fb8989.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="http://c3js.org/css/samples/simple_multiple-da39a3ee.css" media="screen" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+    <div id="chart1">
+
+    </div>
+    <div id="chart2">
+
+    </div>
+    <div id="chart3">
+
+    </div>
+    <div id="chart4">
+
+    </div>
+    <div id="chart5">
+
+    </div>
+    <div id="chart6">
+
+    </div>
+    <div id="chart7">
+
+    </div>
+    <div id="chart8">
+
+    </div>
+    <div id="chart9">
+
+    </div>
+    <div id="chart10">
+
+    </div>
+    <div id="chart11">
+
+    </div>
+    <div id="chart12">
+
+    </div>
+    <div id="chart13">
+
+    </div>
+
+    <div id="chart14">
+
+    </div>
+    <div id="chart15">
+
+    </div>
+    <div id="chart16">
+
+    </div>
+    <div id="chart17">
+
+    </div>
+    <div id="chart18">
+
+    </div>
+    <div id="chart19">
+
+    </div>
+
+    <div id="chart121">
+    </div>
+
+</body>
+<script>
+$( document ).ready(function() {
+   $.ajax({
+    url: 'http://localhost:9000/api/errand/get_results?errand_id=213',
+    type: 'get',
+    headers: {
+        'Authorization': 'JWT  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFua3VzaCIsInVzZXJfaWQiOjEsImVtYWlsIjoiYW5rdXNoQG1hcmxhYnMuY29tIiwiZXhwIjoxNTkzMjg3ODc4fQ.td68LdsjFA91bY5YR9ZnVrb3hkCp8hEkDh5bFmlpc8M',   //If your header name has spaces or any other char not appropriate
+    },
+    dataType: 'json',
+    success: function (data) {
+        console.info(data);
+        card_data = data['dimensions']['narratives']['cards']
+        i = 1
+        card_data.forEach(
+            function(item, index){
+                card1 = item['card1']['chart_c3'];
+                card1.bindto = '#chart'+ i;
+                c3.generate(card1);
+                i++;
+            }
+        )
+
+        card_data = data['dimensions']['narratives']['main_card']['charts']['effect_size']['chart_c3']
+        card_data.bindto = '#chart'+ i;
+        c3.generate(card_data);
+        i++;
+
+        card_data = data['measures']['narratives']['cards']
+        card_data.forEach(
+            function(item, index){
+
+                card0 = item['card0']['chart_c3'];
+                card0.bindto = '#chart' + i;
+                c3.generate(card0);
+                i++;
+
+
+                card2 = item['card2']['chart_c3'];
+                card2.bindto = '#chart' + i;
+                c3.generate(card2);
+                i++;
+
+
+                card3 = item['card3']['chart_c3'];
+                card3.bindto = '#chart' + i;
+                c3.generate(card3);
+                i++;
+            }
+        )
+
+    }
+});
+
+});
+
+</script>
+</html>

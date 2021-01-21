@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "civic-reserve-282812",
+  "private_key_id": "58af0fa09c1cad8836b4c1c3ec1bb552ebaeafc9",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDq0be1f4ikSrKm\nk7I5sOxh5Im2D/DO79V2+zxMsbUqOsle7qG4+6P0x3B/pQGg2bp59vtMiPEwrjC6\nm+ZAQCXOR+2AfbmjtseE9owNdvsRVEl4EMZFd57xF1fzsix3DpUrr5yWVkxVu3Oc\n+LCQuIEYN/elzL6udLZG3K6MppImom4y/w/Wbjv5PZ0R5aY6lfgWb24K//kwoKvr\n4QJxR8aIlVTZ9RP2yGNv7BlRMf8CMBWj1MeQ+WsSJ+UPIsE8poSaqEwaNhYxB+gT\nvNrKBSuEhYRGmzxe5HUeE8n0QKUc8vn8V8jM3UCB+o0ZEVYoUYjTbxthe4JfZnTU\nX1CUMdP/AgMBAAECggEAShizJ4p+y5jmlrm0W5AAh0NeURzml+YGLe1JMcpBqHm0\nYUhbr8t4CR2F2kFvKhqKRUIyOgxcT0goCDp5hXy4cUcxIoKJuadLfiFuQDFzOByo\nskJYzkLY3KrJDhUDAu6PE6Huf2Hr5IGqEbZHwOL3mXTPqHnbEaGygtnQGoHVTGsK\nLo6Bgv/XBYd9rrBZeqDDC1fqT8HgNVfnZL6wzpZyqVs2ybiunT6fIDp+7rZmUiJN\n3kapM9IoftCR1JP52Q6Cuv8HDUt/tKQl9GwgMDddlajcSWZSFOVUZX55+Pic5vEi\ny/8O/F4MLfzeVKgjnBiW8ndhvnHeMAFBQknOp+ZAgQKBgQD2QahXYA9ilVLmZvPP\neJfu+jES2lksV+/8hdiePSBwzlK/78cdu5nhhQ0H86rRo6bnSOmYdAHjblJYP/0K\n/CLuZVlEfIOQzNc6GFYSDy+cWJh9zWxRuxJ5Du/a6wsC/kePpbCw0l0nKh7ar1p9\npcxYLlh4NQq87i3OIZi8f09OlwKBgQD0HDYjTNvnFuM/Dv4EkrnUq837oJsdXq4m\nk5yTLdMkNqvzbhkPzq0EdQCNJDiU83k8m9QETNtzOiclKDR8wCm3kExUnC4mttW8\nPFdgflSlSvFCdZX3eXED8mKgzozO/LnA7cEA3Ie3vvA+B8onYvnQJiYiKSCyAjZb\nlmoR7mY62QKBgQDo//zBF4HXHESA/h5oSsku84klNnWzUE0g2J+6MUoVkhKXys7S\noiOaT2KiCHqyuq58He/wMKtsvoCpQXoyP5jpiflppIpzom1uaYJeugGpY+Z8+bYo\nquFyq6BkuYoEvgWFtBc3ZwN+wArLjakIQ6zSLp/EtSNA2fd7FyzGBYtLZwKBgCj7\nz48PqV/b9N0ybC1iYPa2vYeAiGpe6ggqAkCnkepjj2z4UBbaUSwNZMFNkn5XfkRR\nuT/bk4B+A/J2FJHZRWe/P0F5UzpGug23Z8gYjaeOtIC+8yWwauwJtstewj9CKQGe\nKSg23kZYNUeE0UjZki2DKiXUF9wrCOtJjpdiGiHJAoGAMpZuv4lpf/UVC6fjEb0C\nWqChxjM0ewwhO16CUcP+xeuwaGbDUZLiKP5EGAHEwU2X/NkPnRWHUefhPEbaMHk2\nQf+q79BojfcbNdBFF3hCrRXK2Ueb0bJl0ESIXbAOYX/wnAgu2pkgg9NFbanDSypS\nQv+vBodGb2bHVYBEDrmpvNE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "madvisor-ite@civic-reserve-282812.iam.gserviceaccount.com",
+  "client_id": "114255987141432793588",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/madvisor-ite%40civic-reserve-282812.iam.gserviceaccount.com"
+}

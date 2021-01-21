@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/css/joblog.css">
+</head>
+<body>
+
+   <h1>
+        <a href="/api/config/dataset">Dataset</a>
+        <a href="/api/config/errand">Errand</a>
+        <a href="/api/config/trainer">Model</a>
+        <a href="/api/config/score">Score</a>
+       <a href="/api/job/render_html">DashBoard</a>
+   </h1>
+   <div>
+       <h1 align="middle"><a href="/">mAdvisor Dashboard</a></h1>
+   </div>
+
+    <table width="100%">
+        <tr>
+            <th>Job ID</th>
+            <th>Submitted On</th>
+            <th>Submitted By</th>
+            <th>Job Status</th>
+            <th>Job Final Status</th>
+            <th>Job Type</th>
+            <th>Note</th>
+            <th>Input Details</th>
+            <th>Action</th>
+            <th>Killed</th>
+        </tr>
+        {% for job in jobs %}
+        <tr>
+            <td><a href="{{ job.name }}">{{ job.code }}</a></td>
+            <td>{{ job.submitted_on }}</td>
+            <td>{{ job.submitted_by }}</td>
+            <td>{{ job.status }}</td>
+            <td>{{ job.final_status }}</td>
+            <td>{{ job.job_type }}</td>
+            <td>{{ job.note|make_list|slice:':25'|join:'' }}</td>
+            <td data-toggle="tooltip" title="{{job.input_details}}">{{ job.input_details|make_list|slice:':25'|join:'' }}</td>
+            <td>
+                {% if job.status == "running" %}
+                    <a href="render_html" >Refresh</a> <br><br>
+                    {% if user.is_superuser == True %}
+                        <a href="{{job.id}}/kill">Kill</a>
+                    {% endif %}
+                {% elif job.final_status == "killed" %}
+                    <a href="{{job.id}}/resubmit_job">Resubmit</a>
+                {% endif %}
+            </td>
+            <td>{{job.killed_on}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <title>mAdvisor</title>
+      <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+      <!-- Custom Fonts -->
+      <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="css/animate.css">
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link href="css/bootstrap-slider.css" rel="stylesheet">
+      <link href="css/style.css?v=6234992" rel="stylesheet">
+      <link href="css/c3.css?v=6234992" rel="stylesheet">
+      <link rel="icon" href="images/favicon.ico" />
+      <link rel="stylesheet" href="css/fancy_fileupload.css?v=6234992" type="text/css" media="all" />
+      <link href="css/theme.ice.css" rel="stylesheet">
+      <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css" />
+      <link rel="stylesheet" href="https://rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css" type="text/css" />
+   </head>
+   <body>
+      <!-- Add User Modal Popup -->
+      <div class="modal fade" id="modal_adduser" tabindex="-1" role="dialog" aria-labelledby="modal_badscan_modalTitle" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Add User</h4>
+               </div>
+               <div class="modal-body xs-pt-20">
+                  <form>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="ufName" class="form-label">First Name <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="ufName" placeholder="First Name">						 
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="ulName" class="form-label">Last Name</label>					
+                              <input type="text" class="form-control" id="ulName" placeholder="Last Name">					
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="uEmail" class="form-label">Email <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="uEmail" placeholder="Email">						 
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="uPassword" class="form-label">Password <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="uPassword" placeholder="Password">						 
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="uRoles" class="form-label">Roles <span class="text-danger">*</span></label>	
+                              <ul class="list-unstyled">
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" name="roles_type" id="rad1"><label for="rad1">Admin</label></div>
+                                 </li>
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" name="roles_type" id="rad2"><label for="rad2">Reviewer L1</label></div>
+                                 </li>
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" name="roles_type" id="rad3"><label for="rad3">Reviewer L2</label></div>
+                                 </li>
+                                 <li>
+                                    <div class="ma-radio inline"><input type="radio" name="roles_type" id="rad4"><label for="rad4">Superuser</label></div>
+                                 </li>
+                              </ul>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label for="ustatus" class="form-label">Status <span class="text-danger">*</span></label>
+                           <ul class="list-unstyled">
+                              <li>
+                                 <div class="ma-radio inline"><input type="radio" name="status_type" id="uStatus_active"><label for="uStatus_active">Active</label></div>
+                              </li>
+                              <li>
+                                 <div class="ma-radio inline"><input type="radio" name="status_type" id="uStatus_inactive"><label for="uStatus_inactive">Inactive</label></div>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="ma-checkbox inline"><input id="chk_dim1" type="checkbox" checked class="needsclick"><label for="chk_dim1"> Notify user by email that they have been added</label></div>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Add User</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Edit User Modal Popup -->
+      <div class="modal fade" id="modal_edituser" tabindex="-1" role="dialog" aria-labelledby="modal_badscan_modalTitle" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">User Details</h4>
+               </div>
+               <form>
+                  <div class="modal-body xs-pt-20">
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="ufName" class="form-label">First Name <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="ufName" placeholder="First Name" value="Sejal" disabled>						 
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="ulName" class="form-label">Last Name</label>					
+                              <input type="text" class="form-control" id="ulName" placeholder="Last Name" value="Oroosh" disabled>					
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="form-group">
+                              <label for="uEmail" class="form-label">Email <span class="text-danger">*</span></label>						 
+                              <input type="text" class="form-control" id="uEmail" placeholder="Email" value="sejal.oroosh@marlabs.com" disabled>						 
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="uRoles" class="form-label">Roles <span class="text-danger">*</span></label>	
+                              <select class="form-control" id="uRoles" disabled>
+                                 <option>Admin</option>
+                                 <option>Reviewer L1</option>
+                                 <option>Reviewer L2</option>
+                                 <option>Superuser</option>
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label for="ustatus" class="form-label">Status <span class="text-danger">*</span></label>
+                              <select class="form-control" id="uRoles" disabled>
+                                 <option selected>Active</option>
+                                 <option>Inactive</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="modal-footer">
+                     <button class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</button>
+                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+      <!-- Main Wrapper ** Mandatory -->
+      <div class="main_wrapper">
+      <!-- Header Menu -->
+      <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+         <div>
+            <div style="opacity: 0; transform: scaleX(0); transform-origin: left center; transition: transform 800ms linear 0s; width: 100%; will-change: transform, opacity; height: 3px; background-color: rgb(20, 128, 113); position: absolute;"></div>
+            <div style="display: table; clear: both;"></div>
+         </div>
+         <div class="navbar-header">
+            <div class="brand-wrapper">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#side-menu"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+               <div class="brand-name-wrapper"><a class="navbar-brand" href="javascript:;"></a></div>
+            </div>
+         </div>
+         <div class="dropdown ma-user-nav">
+            <a class="dropdown-toggle" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
+               <i class="avatar-img img-circle">K</i><img src="" alt="M" class="avatar-img img-circle hide"><!-- react-text: 67 -->&nbsp;<!-- /react-text --><span class="user-name">kalyan</span><span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+               <li>
+                  <a href="/user-profile">
+                     <i class="zmdi zmdi-account-o zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 74 -->&nbsp;&nbsp;Profile<!-- /react-text -->
+                  </a>
+               </li>
+               <li>
+                  <a href="userManual/UserManual.html" target="_blank">
+                     <i class="zmdi zmdi-help-outline zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 78 -->&nbsp;&nbsp;User Manual<!-- /react-text -->
+                  </a>
+               </li>
+               <li>
+                  <a href="javascript:;" class="logout">
+                     <i class="zmdi zmdi-sign-in zmdi-hc-lg" aria-hidden="true"></i><!-- react-text: 82 -->&nbsp;&nbsp;Logout<!-- /react-text -->
+                  </a>
+               </li>
+            </ul>
+         </div>
+         <div class="clearfix"></div>
+      </nav>
+      <!--/.Header Menu --> 
+      <!-- Side bar Main Menu -->
+      <div class="side-menu collapse navbar-collapse" id="side-menu">
+         <div class="side-menu-container">
+            <ul class="nav navbar-nav">
+               <li>
+                  <a class="sdb" href="/signals">
+                     <i class="fa fa-podcast fa-2x" aria-hidden="true"></i><br><!-- react-text: 39 -->SIGNALS<!-- /react-text -->
+                  </a>
+               </li>
+               <li>
+                  <a class=" sdb active" href="/apps" aria-current="page">
+                     <i class="fa fa-cubes fa-2x" aria-hidden="true"></i><br><!-- react-text: 44 -->APPS<!-- /react-text -->
+                  </a>
+               </li>
+               <li>
+                  <a class="sdb" href="/data">
+                     <i class="fa fa-database fa-2x" aria-hidden="true"></i><br><!-- react-text: 49 -->DATA<!-- /react-text -->
+                  </a>
+               </li>
+               <div></div>
+            </ul>
+         </div>
+      </div>
+      <!-- ./Side bar Main Menu --> 
+      <!-- Main Content starts with side-body -->
+      <div class="side-body">
+      <div class="page-head">
+         <div class="row">
+            <div class="col-md-7">
+               <h3 class="xs-mt-0 nText">Intelligent Text Extractor</h3>
+            </div>
+         </div>
+      </div>
+      <div class="main-content">
+      <section class="ocr_section">
+         <div class="tab-container">
+            <ul class="nav nav-tabs cst_ocr_tabs">
+               <li class=""><a href="dashboard_ocr.html" ><i class="fa fa-tachometer fa-lg"></i> Dashboard</a></li>
+               <li class=""><a href="create_ocr_project.html"><i class="fa fa-book fa-lg"></i> Projects</a></li>
+               <li class=""><a href="ocr_configure.html"><i class="fa fa-sliders fa-lg"></i> Configure </a></li>
+               <li class="active"><a href="ocr_reviewers.html"><i class="fa fa-users fa-lg"></i> Reviewers </a></li>
+               <li class=""><a href="users.html"><i class="fa fa-user fa-lg"></i> Users </a></li>
+            </ul>
+         </div>
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-6 col-sm-12">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item"><a href="ocr_reviewers.html"><i class="fa fa-arrow-circle-left"></i> Reviewers</a></li>
+                     <li class="breadcrumb-item"><a href="ocr_reviewer.html">Reviewer 1</a></li>
+					  <li class="breadcrumb-item active"><a href="#">Diabetes</a></li>
+                  </ol>
+               </div>
+                
+            </div>
+            <div class="row">
+               <div class="col-sm-12">
+                  <div class="table-responsive">
+                     <table class="table table-condensed table-hover cst_table ">
+                        <thead>
+                           <tr>
+                              <th></th>
+                              <th><i class="fa fa-file-text-o"></i></th>
+                              <th>Name</th>
+                              <th class="dropdown" >
+                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle cursor" title="Status" aria-expanded="true">
+                                 <span>Status</span> <b class="caret"></b>
+                                 </a>
+                                 <ul class="dropdown-menu scrollable-menu">
+                                    <li><a class="cursor" name="ready to verify">Ready to Verify</a></li>
+                                    <li><a class="cursor" name="ready to export">Ready to Export</a></li>
+                                 </ul>
+                              </th>
+                               
+                              <th class="dropdown" >
+                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle cursor" title="Fields" aria-expanded="true">
+                                 <span>Fields</span> <b class="caret"></b>
+                                 </a>
+                                 <ul class="dropdown-menu scrollable-menu">
+                                    <li><a class="cursor" name="delete" data-toggle="modal" data-target="#modal_equal">Equal</a></li>
+                                    <li><a class="cursor" name="rename" data-toggle="modal" data-target="#modal_equal">Greater than</a></li>
+                                    <li><a class="cursor" name="replace" data-toggle="modal" data-target="#modal_equal">Less than</a></li>
+                                 </ul>
+                              </th>
+                              <th class="dropdown" >
+                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle cursor" title="Accuracy" aria-expanded="true">
+                                 <span>ACCURACY</span> <b class="caret"></b>
+                                 </a>
+                                 <ul class="dropdown-menu scrollable-menu">
+                                    <li><a class="cursor" name="delete" data-toggle="modal" data-target="#modal_equal">Equal</a></li>
+                                    <li><a class="cursor" name="rename" data-toggle="modal" data-target="#modal_equal">Greater than</a></li>
+                                    <li><a class="cursor" name="replace" data-toggle="modal" data-target="#modal_equal">Less than</a></li>
+                                 </ul>
+                              </th>
+                              <th class="text-center">Created</th>
+                              <th class="text-center">Modified</th>
+                              <th class="text-center">Modified By</th>
+                           </tr>
+                        </thead>
+                        <tbody class="no-border-x">
+                           <tr onclick="selectRow(this)">
+                              <td align="center">
+                                 <div class="ma-checkbox">
+                                    <input type="checkbox" id="row1" value="row1">
+                                    <label for="row1" class="radioLabels"></label>
+                                 </div>
+                              </td>
+                               <td>
+                                 <i class="fa fa-file-text"></i>
+                              </td>
+                              <td>
+                                 <a href="document_view.html">Diabetest Doc Invoice</a>
+                              </td>
+                              <td>
+                                 <div class="progress">
+                                    <div class="progress-bar bg-success progress-bar-striped " style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">Progressing 70%</div>
+                                 </div>
+                              </td> 
+                              <td class="text-center">10</td>
+                              <td class="text-center">70</td>
+                              <td class="text-center">08/01/2020</td>
+                              <td class="text-center">12/01/2020</td>
+                              <td class="text-center">xyz</td>
+                           </tr>
+                           <tr onclick="selectRow(this)">
+                              <td align="center">
+                                 <div class="ma-checkbox">
+                                    <input type="checkbox" id="row2" value="row2">
+                                    <label for="row2" class="radioLabels"></label>
+                                 </div>
+                              </td>
+                              <td>
+                                 <i class="fa fa-file-text"></i>
+                              </td>
+                              <td>
+                                 <a href="document_view.html">Markshee Doc</a>
+                              </td>
+                              <td>Ready to Export </td> 
+                              <td class="text-center">04</td>
+                              <td class="text-center"> 60
+                              </td>
+                              <td  class="text-center">01/01/2020</td>
+                              <td class="text-center">05/01/2020</td>
+                              <td class="text-center">abc</td>
+                           </tr>
+                           <tr onclick="selectRow(this)">
+                              <td align="center">
+                                 <div class="ma-checkbox">
+                                    <input type="checkbox" id="row3" value="row3">
+                                    <label for="row3" class="radioLabels"></label>
+                                 </div>
+                              </td>
+                              <td>
+                                 <i class="fa fa-file-text"></i>
+                              </td>
+                              <td>
+                                 <a href="document_view.html">Invoice_x</a>
+                              </td>
+                              <td>Ready to Verify</td> 
+                              <td class="text-center">30</td>
+                              <td class="text-center">30</td>
+                              <td class="text-center">05/02/2020</td>
+                              <td class="text-center">10/02/2020</td>
+                              <td class="text-center">Rajesh</td>
+                           </tr>
+                           <tr onclick="selectRow(this)">
+                              <td align="center">
+                                 <div class="ma-checkbox">
+                                    <input type="checkbox" id="row4" value="row4">
+                                    <label for="row4" class="radioLabels"></label>
+                                 </div>
+                              </td>
+                               <td>
+                                 <i class="fa fa-file-text"></i>
+                              </td>
+                              <td>
+                                 <a href="document_view.html">Joan account</a>
+                              </td>
+                              <td>Ready to Recognize</td> 
+                              <td class="text-center">40</td>
+                              <td class="text-center">30</td>
+                              <td class="text-center">15/01/2020</td>
+                              <td class="text-center">19/01/2020</td>
+                              <td class="text-center">xyz</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="ma-datatable-footer" id="idSignalPagination">
+                     <div class="dataTables_paginate">
+                        <ul class="pagination pagination-md">
+                           <li class="disabled"><a role="button" href="#" tabindex="-1" style="pointer-events: none;"><span aria-label="First">«</span></a></li>
+                           <li class="disabled"><a role="button" href="#" tabindex="-1" style="pointer-events: none;"><span aria-label="Previous">‹</span></a></li>
+                           <li class="active"><a role="button" href="#">1</a></li>
+                           <li class=""><a role="button" href="#">2</a></li>
+                           <li class=""><a role="button" href="#">3</a></li>
+                           <li class=""><a role="button" href="#"><span aria-label="Next">›</span></a></li>
+                           <li class=""><a role="button" href="#"><span aria-label="Last">»</span></a></li>
+                        </ul>
+                     </div>
+                  </div>
+      </section>
+      </div>
+      </div>
+      <!-- /. Main Content ends with side-body -->
+      </div>
+      <!-- /. Main Wrapper ** Mandatory --> 
+      <!-- Bootstrap core JavaScript
+         ================================================== --> 
+      <!-- Placed at the end of the document so the pages load faster --> 
+      <script src="js/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/bootstrap-slider.js"></script>
+      <script src="js/bootbox.min.js"></script>
+      <script src="js/wow.min.js"></script>
+      <script type="text/javascript" src="https://rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+      <script type="text/javascript" src="https://rawgit.com/wenzhixin/bootstrap-table/master/src/extensions/editable/bootstrap-table-editable.js"></script>
+      <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+      <script src="js/uiScripts.js"></script>
+   </body>
+</html>

@@ -1,0 +1,5 @@
+six==1.10.0
+watson-developer-cloud==0.26.1
+beautifulsoup4==4.6.0
+simplejson==3.11.1
+findspark==1.1.0

@@ -1,0 +1,319 @@
+[
+  {
+    "model": "api.customapps",
+    "pk": 2,
+    "fields": {
+      "app_id": 1,
+      "name": "opportunity_scoring",
+      "slug": "opportunity-scoring-ctm5azoj61",
+      "displayName": "OPPORTUNITY SCORING",
+      "description": "To predict sales opportunities that are more likely to win/lose.",
+      "tags": "Sales,Marketing",
+      "iconName": "icon_oppr.png",
+      "app_url": "apps/opportunity-scoring-ctm5azoj61/models",
+      "created_at": "2017-12-18T09:56:28.667Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "CLASSIFICATION",
+      "rank": 4
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 3,
+    "fields": {
+      "app_id": 2,
+      "name": "automated_prediction",
+      "slug": "automated-prediction-30vq9q5scd",
+      "displayName": "AUTOMATED PREDICTION",
+      "description": "To build machine learning models to predict the outcome of any target attribute.",
+      "tags": "Marketing,Operations",
+      "iconName": "icon_prediction.png",
+      "app_url": "apps/automated-prediction-30vq9q5scd/models",
+      "created_at": "2018-01-18T07:44:00.027Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "CLASSIFICATION",
+      "rank": 0
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 4,
+    "fields": {
+      "app_id": 3,
+      "name": "robo_advisor_insights",
+      "slug": "robo-advisor-insights-y3l4sbws6s",
+      "displayName": "ROBO-ADVISOR INSIGHTS",
+      "description": "To help wealth managers  and investment advisors to analyze customer portfolio.",
+      "tags": "Finance,Wealth Management",
+      "iconName": "icon_robo.png",
+      "app_url": "apps-robo",
+      "created_at": "2018-01-18T07:46:45.561Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "ROBO",
+      "rank": 14
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 5,
+    "fields": {
+      "app_id": 4,
+      "name": "speech_analytics",
+      "slug": "speech-analytics-msgw3mdr12",
+      "displayName": "SPEECH ANALYTICS",
+      "description": "To extract sentiments, emotions and context from audio/voice.",
+      "tags": "Marketing,Customer Service",
+      "iconName": "icon_speak.png",
+      "app_url": "apps/audio",
+      "created_at": "2018-01-18T07:48:23.690Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "SPEECH",
+      "rank": 12
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 6,
+    "fields": {
+      "app_id": 5,
+      "name": "stock_sense",
+      "slug": "stock-sense-8sc9wwscyt",
+      "displayName": "STOCK  SENSE",
+      "description": "To find and analyze correlation between contents of news articles and stock prices and extract meaningful insights",
+      "tags": "Finance,Investment Banking",
+      "iconName": "apps_icon1.png",
+      "app_url": "apps-stock-advisor",
+      "created_at": "2018-01-18T07:49:23.880Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "STOCK_SENSE",
+      "rank": 2
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 7,
+    "fields": {
+      "app_id": 6,
+      "name": "churn_prediction",
+      "slug": "churn-prediction-l2bqshznbo",
+      "displayName": "CHURN PREDICTION",
+      "description": "Use machine learning models to predict when a customer is going to churn",
+      "tags": "Marketing,Customer Experience",
+      "iconName": "app_empExit_icon.png",
+      "app_url": "apps/churn-prediction-l2bqshznbo/models",
+      "created_at": "2018-01-18T07:50:32.083Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "CLASSIFICATION",
+      "rank": 5
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 8,
+    "fields": {
+      "app_id": 7,
+      "name": "re_admission_prediction",
+      "slug": "readmission-prediction-qx2tf1yex7",
+      "displayName": "Readmission Prediction",
+      "description": "Analyze patient data to predict the probability of readmission.",
+      "tags": "Healthcare",
+      "iconName": "app_Hospital_icon.png",
+      "app_url": "apps/readmission-prediction-qx2tf1yex7/models",
+      "created_at": "2018-01-18T07:51:44.187Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "CLASSIFICATION",
+      "rank": 6
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 9,
+    "fields": {
+      "app_id": 8,
+      "name": "physician_attrition",
+      "slug": "physician-attrition-sp7upy9gko",
+      "displayName": "Physician Attrition",
+      "description": "Analyze historical transactional and behavioral data to calculate attrition for the physicians.",
+      "tags": "Healthcare",
+      "iconName": "app_stethoscope_icon.png",
+      "app_url": "apps/physician-attrition-sp7upy9gko/models",
+      "created_at": "2018-01-18T07:52:21.396Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "CLASSIFICATION",
+      "rank": 7
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 10,
+    "fields": {
+      "app_id": 9,
+      "name": "credit_card_fraud",
+      "slug": "credit-card-fraud-wlxpnuw8lv",
+      "displayName": "Credit Card Fraud",
+      "description": "Predict which all customers are likely to commit a credit card fraud.",
+      "tags": "Consumer Finance",
+      "iconName": "app_swipeCard_icon.png",
+      "app_url": "apps/credit-card-fraud-wlxpnuw8lv/models",
+      "created_at": "2018-01-18T07:53:13.539Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "CLASSIFICATION",
+      "rank": 8
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 11,
+    "fields": {
+      "app_id": 10,
+      "name": "claims_prediction",
+      "slug": "claims-prediction-8nfnqxgc7x",
+      "displayName": "Claims Prediction",
+      "description": "Predict Insurance claim payments based on the characteristics of the insured customer.",
+      "tags": "Finance,Insurance",
+      "iconName": "app_docPen_icon.png",
+      "app_url": "apps/claims-prediction-8nfnqxgc7x/models",
+      "created_at": "2018-01-18T07:54:07.706Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "CLASSIFICATION",
+      "rank": 9
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 12,
+    "fields": {
+      "app_id": 11,
+      "name": "asset_health_prediction",
+      "slug": "asset-health-prediction-km85tcg7zy",
+      "displayName": "Asset Health Prediction",
+      "description": "Triangulate sensor data to analyze and predict the health deterioration in devices.",
+      "tags": "Manufacturing,IOT",
+      "iconName": "app_sifiSignal_icon.png",
+      "app_url": "apps/asset-health-prediction-km85tcg7zy/models",
+      "created_at": "2018-01-18T07:55:06.819Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "CLASSIFICATION",
+      "rank": 10
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 13,
+    "fields": {
+      "app_id": 12,
+      "name": "employee_attrition",
+      "slug": "employee-attrition-6flbrhbc99",
+      "displayName": "EMPLOYEE ATTRITION",
+      "description": "Analyse employee behavior over a period of time and predict who are the likely candidates for attrition.",
+      "tags": "Human Resources",
+      "iconName": "app_empAttrition_icon.png",
+      "app_url": "apps/employee-attrition-6flbrhbc99/models",
+      "created_at": "2018-01-18T07:56:08.617Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "CLASSIFICATION",
+      "rank": 11
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 14,
+    "fields": {
+      "app_id": 13,
+      "name": "regression_app",
+      "slug": "regression-app-6u8ybu4vdr",
+      "displayName": "AUTOMATED REGRESSION",
+      "description": "Use machine learning algorithms to predict the value of target measure by building models based on multiple predictors.",
+      "tags": "Human Resources",
+      "iconName": "icon_machineLearning.png",
+      "app_url": "apps/regression-app-6u8ybu4vdr/models",
+      "created_at": "2018-04-25T11:09:57.808Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "REGRESSION",
+      "rank": 1
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 15,
+    "fields": {
+      "app_id": 14,
+      "name": "lex",
+      "slug": "lex-sjmsqgmplr",
+      "displayName": "LEX",
+      "description": "To extract sentiments, emotions and context from audio/voice.",
+      "tags": "Marketing,Customer Service",
+      "iconName": "app_lex1.png",
+      "app_url": "apps/lex-sjmsqgmplr/models",
+      "created_at": "2018-04-25T11:09:57.808Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "LEX",
+      "rank": 13
+    }
+  },
+  {
+    "model": "api.customapps",
+    "pk": 16,
+    "fields": {
+      "app_id": 15,
+      "name": "ocr",
+      "slug": "ocr-mq44ewz7bp",
+      "displayName": "OCR",
+      "description": "To extract sentiments, emotions and context from audio/voice.",
+      "tags": "Marketing,Customer Service",
+      "iconName": "app_lex1.png",
+      "app_url": "apps/ocr-mq44ewz7bp/models",
+      "created_at": "2018-04-25T11:09:57.808Z",
+      "created_by": 3,
+      "status": "Active",
+      "live_status": "0",
+      "viewed": false,
+      "app_type": "OCR",
+      "rank": 3
+    }
+  } 
+
+]
+

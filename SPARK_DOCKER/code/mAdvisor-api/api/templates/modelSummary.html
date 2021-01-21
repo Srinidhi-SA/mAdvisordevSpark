@@ -1,0 +1,437 @@
+<html>
+<title>summary</title>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <style>
+    .progress-bar {
+      position: relative;
+      height: 65px;
+      width: 65px;
+      background-color: white !important;
+      -webkit-print-color-adjust: exact;
+      color: #00998c !important;
+      box-shadow: none !important;
+      margin: auto;
+      float: none;
+    }
+
+    .progress-bar div {
+      position: absolute;
+      height: 65px;
+      width: 65px;
+      border-radius: 50%;
+    }
+
+    .progress-bar div span {
+      position: absolute;
+      font-family: Arial;
+      font-size: 16px;
+      line-height: 54px;
+      height: 54px;
+      width: 54px;
+      left: 6px;
+      top: 6px;
+      text-align: center;
+      border-radius: 50%;
+      background-color: white !important;
+      -webkit-print-color-adjust: exact;
+    }
+
+    .progress-bar .background {
+      background-color: rgb(214, 214, 214) !important;
+      -webkit-print-color-adjust: exact;
+    }
+
+    .progress-bar .rotate {
+      background-color: rgb(0, 153, 140) !important;
+      -webkit-print-color-adjust: exact;
+      clip: rect(0 33px 68px 0);
+      -webkit-print-color-adjust: exact;
+    }
+
+    .progress-bar .left {
+      clip: rect(0 33px 68px 0);
+      opacity: 1;
+      background-color: rgb(214, 214, 214) !important;
+      -webkit-print-color-adjust: exact;
+    }
+
+    .progress-bar .right {
+      clip: rect(0 33px 68px 0);
+      transform: rotate(180deg);
+      opacity: 0;
+      background-color: rgb(0, 153, 140) !important;
+      -webkit-print-color-adjust: exact;
+    }
+
+    @keyframes toggle {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .header {
+      font-size: 20px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .contain {
+      padding: 5px 80px;
+    }
+
+    #table {
+      margin-top: 15px;
+      width: 50%;
+      font-size: 14px;
+    }
+
+    #table th {
+      width: 20%;
+      text-align: center;
+      padding-bottom: 10px;
+    }
+
+    #table td {
+      padding-bottom: 15px;
+    }
+
+    .list-unstyled li {
+      display: block;
+      overflow: hidden;
+      padding: 3px 10px 3px 0px;
+    }
+
+    .bullets_primary li::before {
+      display: inline-block;
+      vertical-align: middle;
+      width: 6px;
+      height: 6px;
+      border-radius: 10px;
+      background-color: #00998c !important;
+      -webkit-print-color-adjust: exact;
+      margin-right: 8px;
+      content: '';
+    }
+
+    .apps_table_style {
+      background-color: #ffffff;
+      color: #000;
+      width: 100%;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .apps_table_style thead {
+      background-color: #00998c !important;
+      color: #fff !important;
+      -webkit-print-color-adjust: exact;
+    }
+
+    .apps_table_style th.left_highlilght {
+      background-color: #c3e37e !important;
+      -webkit-print-color-adjust: exact;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .apps_table_style>tbody>tr>th {
+      border: 1px solid #dfdfdf;
+      padding: 10px 10px;
+      line-height: 1.42857143;
+      vertical-align: top;
+    }
+
+    .apps_table_style>tbody>tr>td {
+      border: 1px solid #dfdfdf;
+      padding: 10px 10px;
+      line-height: 1.42857143;
+      vertical-align: top;
+      font-weight: 300;
+    }
+
+    .apps_table_style>thead>tr>th {
+      padding: 10px 10px;
+      color: #ffffff !important;
+      -webkit-print-color-adjust: exact;
+    }
+
+    .feature_table_style {
+      background-color: #ffffff;
+      border: 1px solid #dfdfdf !important;
+      -webkit-print-color-adjust: exact;
+      color: #000;
+      width: 100%;
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+
+    .feature_table_style thead th {
+      background-color: #00998c !important;
+      -webkit-print-color-adjust: exact;
+      color: #fff !important;
+      padding: 10px 10px;
+    }
+
+    .feature_table_style>tbody>tr>th {
+      border: 1px solid #dfdfdf !important;
+      -webkit-print-color-adjust: exact;
+      padding: 5px 10px;
+      vertical-align: top;
+      width: 70%;
+    }
+
+    .feature_table_style>tbody>tr>td {
+      border: 1px solid #dfdfdf;
+      padding: 5px 10px;
+      vertical-align: top;
+      font-weight: 300;
+    }
+
+    .pl-30 {
+      padding-left: 30px;
+    }
+
+    #algoList {
+      margin-top: 20px;
+    }
+
+    .printBtn {
+      background-color: #3b998c;
+      border: none;
+      color: #fff;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-weight: 600;
+      position: absolute;
+      right: 80px;
+      top: 15px;
+      z-index: 9999;
+    }
+
+    .scroll {
+      max-height: 500px;
+      overflow-y: auto;
+      display: block;
+      overflow-x: hidden;
+      margin-bottom: 20px;
+    }
+
+  </style>
+  <script>
+    function printPage() {
+      window.print();
+      // $(".featureTab").removeClass("scroll");
+      // $(".featureTab").addClass("scroll");
+    }
+    (function ($) {
+      $.fn.loading = function () {
+        var DEFAULTS = {
+          backgroundColor: '#b3cef6',
+          progressColor: '#4b86db',
+          percent: 0,
+          duration: 2000
+        };
+
+        $(this).each(function () {
+          var $target = $(this);
+
+          var opts = {
+            backgroundColor: $target.data('color') ? $target.data('color').split(',')[0] : DEFAULTS.backgroundColor,
+            progressColor: $target.data('color') ? $target.data('color').split(',')[1] : DEFAULTS.progressColor,
+            percent: $target.data('percent') ? $target.data('percent') : DEFAULTS.percent,
+            duration: $target.data('duration') ? $target.data('duration') : DEFAULTS.duration
+          };
+
+          $target.append('<div class="background"></div><div class="rotate"></div><div class="left"></div><div class="right"></div><div class=""><span>' + opts.percent + '%</span></div>');
+
+          $target.find('.background').css('background-color', opts.backgroundColor);
+          $target.find('.left').css('background-color', opts.backgroundColor);
+          $target.find('.rotate').css('background-color', opts.progressColor);
+          $target.find('.right').css('background-color', opts.progressColor);
+
+          var $rotate = $target.find('.rotate');
+          setTimeout(function () {
+            $rotate.css({
+              'transition': 'transform ' + opts.duration + 'ms linear',
+              'transform': 'rotate(' + opts.percent * 3.6 + 'deg)'
+            });
+          }, 1);
+
+          if (opts.percent > 50) {
+            var animationRight = 'toggle ' + (opts.duration / opts.percent * 50) + 'ms step-end';
+            var animationLeft = 'toggle ' + (opts.duration / opts.percent * 50) + 'ms step-start';
+            $target.find('.right').css({
+              animation: animationRight,
+              opacity: 1
+            });
+            $target.find('.left').css({
+              animation: animationLeft,
+              opacity: 0
+            });
+          }
+        });
+      }
+    })(jQuery);
+  </script>
+</head>
+
+<body>
+  <div class="contain">
+    <button class="printBtn" onclick="printPage()">
+      <span class="glyphicon glyphicon-download-alt"></span>
+      Print</button>
+    <div id="summary"></div>
+  </div>
+  <script>
+
+    var response;
+    var summary;
+    var URL= "{{Response}}"
+
+    async function getData() {
+      let response = await fetch(URL);
+      let data = await response.json()
+      return data;
+    }
+
+    getData()
+      .then(data => {
+        response = data;
+        responseNode = response.modelDetail.data.model_summary.listOfCards;
+        for (var i = 0; i < responseNode.length; i++) {
+          var htmlChild = document.createElement('div');
+          {
+            responseNode[i].cardWidth === 100 ?
+            htmlChild.classList.add("col-md-12") :
+            htmlChild.classList.add("col-md-6")
+          }
+          var inner = "";
+          for (var j = 0; j < responseNode[i].cardData.length; j++) {
+            if (responseNode[i].cardData[j].dataType == "html") {
+              inner += responseNode[i].cardData[j].data;
+              if (j == responseNode[i].cardData.length - 1) {
+                htmlChild.innerHTML = inner;
+                document.getElementById("summary").appendChild(htmlChild);
+                $(".progress-bar").loading();
+              }
+            }
+            else if (responseNode[i].cardData[j].dataType == "table") {
+              if (responseNode[i].cardData[j].data.tableType == "circularChartTable") {
+                htmlChild.classList.remove("col-md-6")
+                htmlChild.classList.add("col-md-12")
+                var chart = circularChart(responseNode[i].cardData[j].data.tableData);
+                inner += chart;
+                if (j == responseNode[i].cardData.length - 1) {
+                  htmlChild.innerHTML = inner;
+                  document.getElementById("summary").appendChild(htmlChild);
+                }
+              }
+              else if (responseNode[i].cardData[j].data.tableType == "confusionMatrix") {
+                var matrixData = confusionMatrix(responseNode[i].cardData[j].data.tableData);
+                inner += matrixData;
+                if (j == responseNode[i].cardData.length - 1) {
+                  htmlChild.innerHTML = inner;
+                  document.getElementById("summary").appendChild(htmlChild);
+                }
+              }
+            }
+          }
+
+        }
+      });
+
+    function circularChart(summary) {
+
+      var str = "";
+      str += "<table id='table'>"
+      for (var row = 0; row < 1; row++) {
+        str += "<tr>"; // open HTML row
+        for (var col = 0; col < summary[row].length; col++)
+          str += "<th>" + summary[row][col] + "</th>";
+        str += "</tr>"; // close HTML row
+
+      }
+      for (var row = 1; row < summary.length; row++) {
+        str += "<tr>"; // open HTML row
+        for (var col = 0; col < 1; col++)
+          str += "<td>" + summary[row][col] + "</td>";
+
+        for (var col = 1; col < summary[row].length; col++)
+          str += "<td>" + `<div class="progress-bar" data-percent=${summary[row][col]} data-duration="1000" data-color="#d6d6d6,#00998c"></div>` + "</td>";
+
+        str += "</tr>"; // close HTML row
+
+      }
+      str += "</table>"
+
+
+      $(".progress-bar").loading();
+
+      return str;
+    }
+
+    // function featureTable(featureTabData) {
+    //   var str = "";
+
+    //   str += "<thead>";
+    //   str += "<tr>";
+    //   str += `<th colspan='2' class='text-center'>Feature Importance</th>`;
+    //   str += "</tr>";
+    //   str += "</thead>";
+    //   str += "<tr>";
+    //   str += `<th>Variable Name</th>`;
+    //   str += `<th>Relative Importance</th>`;
+    //   str += "</tr>";
+
+    //   for (var row = 0; row < featureTabData.length; row++) {
+    //     str += "<tr>"; // open HTML row
+    //     str += "<td>" + featureTabData[row][0] + "</td>";
+    //     str += "<td>" + featureTabData[row][1] + "</td>";
+    //     str += "</tr>"; // close HTML row
+    //   }
+
+    //   var table = document.getElementById("featureTable");
+    //   table.innerHTML = str;
+    //   $(".featureTab").addClass("scroll");
+    // }
+
+    function confusionMatrix(matrixTable) {
+      var str = "";
+      str += "<table class='apps_table_style'>"
+      str += "<thead>";
+      str += "<tr>";
+      str += `<th colspan= ${matrixTable.length + 1}  class='text-center'>Actual</th>`;
+      str += "<tr>";
+      str += "</thead>"; // close HTML row
+
+      for (var row = 0; row < 1; row++) {
+        str += "<tr>"; // open HTML row
+        str += `<th rowspan=${matrixTable.length} class="left_highlilght">Predicted</th>`;
+        for (var col = 0; col < matrixTable[row].length; col++)
+          str += "<th>" + matrixTable[row][col] + "</th>";
+        str += "</tr>"; // close HTML row
+
+      }
+
+      for (var row = 1; row < matrixTable.length; row++) {
+        str += "<tr>"; // open HTML row
+        for (var col = 0; col < matrixTable[row].length; col++)
+          str += "<td>" + matrixTable[row][col] + "</td>";
+        str += "</tr>"; // close HTML row
+      }
+      str += "</table>"
+
+      return str;
+    }
+
+  </script>
+</body>
+
+</html>
