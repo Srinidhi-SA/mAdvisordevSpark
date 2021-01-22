@@ -1,6 +1,7 @@
 #! /bin/sh
 python3 setup.py bdist_egg
 cp -r dist/marlabs_bi_jobs-0.0.0-py3.6.egg SPARK_DOCKER/
+ls -l SPARK_DOCKER/
 cd API-CODE
 rm -r mAdvisordevApiUI
 git clone https://Srinidhi-SA:Sri160293@github.com/Srinidhi-SA/mAdvisordevApiUI.git

@@ -1,7 +1,7 @@
-jinja2
 numpy
-pandas
-pattern
-pyhocon
 scipy
+pyhocon
+pandas
 statsmodels
+jinja2
+pattern
