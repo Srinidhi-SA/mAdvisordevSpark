@@ -104,6 +104,7 @@ def main(configJson):
     print("55555555555555555555555555555555555555",messages_for_API)
     messages_for_API = json.dumps(messages_for_API)
     print("---------------------start ---------------------", messages_for_API)
+    print("---------------------Pipeline------------------")
     try:
         res = requests.put(url=initialMessageURL,data=messages_for_API)
     except Exception as e:
