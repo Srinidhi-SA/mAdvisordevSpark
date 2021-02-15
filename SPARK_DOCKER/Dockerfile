@@ -1,4 +1,6 @@
-FROM ubuntu:16.04 
+FROM ubuntu:18.04
+ENV TZ=US
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 LABEL project="apache-spark"
 RUN useradd -u 404 spark 
 MAINTAINER marlabs
