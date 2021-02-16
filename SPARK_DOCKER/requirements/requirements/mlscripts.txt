@@ -1,7 +1,7 @@
 pyarrow==0.12.1
 py4j==0.10.7
 statsmodels==0.9.0
-scikit-learn==0.20.3
+scikit-learn==0.23.2
 argparse==1.4.0
 statistics==1.0.3.5
 xgboost==0.82
@@ -14,7 +14,7 @@ pyhocon==0.3.51
 pyspark==2.4.0
 chain==1.0
 sklearn-pandas==1.8.0
-sklearn2pmml==0.43.0
+sklearn2pmml==0.61.0
 scikit2pmml==0.0.2
 regex==2019.03.12
 datetime==4.3
@@ -37,3 +37,4 @@ torch
 lightgbm==2.3.1
 mlxtend==0.17.2
 pyspark2pmml
+joblib==0.16.0

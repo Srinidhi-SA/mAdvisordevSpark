@@ -70,7 +70,7 @@ class ParserConfig(object):
             return dict1
         for option in options:
             try:
-                if self.config.get(section, option).strip() is "":
+                if self.config.get(section, option).strip() == "":
                     dict1[option] = None
                 else:
                     dict1[option] = list(map(str.strip,self.config.get(section, option).strip().split(',')))
