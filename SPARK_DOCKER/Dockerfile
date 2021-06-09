@@ -74,10 +74,10 @@ RUN mv mysql-connector-java-5.1.41.jar /usr/local/spark-2.4.0-bin-hadoop2.7/jars
 COPY startup.sh $SPARK_HOME/
 RUN apt-get update && apt-get install docker.io -y 
 WORKDIR /home/mAdvisor/mAdvisor-api/
-COPY marlabs_bi_jobs-0.0.0-py3.6.egg /home/mAdvisor/mAdvisor-api/scripts 
+COPY marlabs_bi_jobs-0.0.0-py3.6.egg /home/mAdvisor/mAdvisor-api/scripts/
 RUN chmod +x $SPARK_HOME/startup.sh 
-WORKDIR /home/mAdvisor/mAdvisor-api/
-#RUN chmod +x /home/mAdvisor/mAdvisor-api/scripts/marlabs_bi_jobs-0.0.0-py3.6.egg
+RUN ls -l /home/mAdvisor/mAdvisor-api/scripts/
+RUN chmod +x /home/mAdvisor/mAdvisor-api/scripts/marlabs_bi_jobs-0.0.0-py3.6.egg
 EXPOSE 8080 4040 6379
 WORKDIR /home/mAdvisor/mAdvisor-api/
 RUN mkdir server_log
