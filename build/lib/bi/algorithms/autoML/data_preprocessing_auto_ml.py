@@ -3,9 +3,11 @@ import pandas as pd
 import numpy as np
 import re
 import pint
+import sys
 from pint import UnitRegistry
 import random
 import pickle
+import time
 from validate_email import validate_email
 from scipy import stats
 from bi.algorithms.autoML.utils_automl import *
@@ -41,19 +43,21 @@ class DataPreprocessingAutoML:
 
     def drop_constant_unique_cols(self):
         if not self._pandas_flag:
-           new_df  = self.data_frame.select([col for col in self.data_frame.columns if 1<self.data_frame.select(col).distinct().count()<self.data_frame.count()or (col==self.target)])
-           self.data_frame = new_df
+            cnt = self.data_frame.agg(*(F.countDistinct(c).alias(c) for c in self.data_frame.columns)).first()
+            self.data_frame = self.data_frame.drop(*[c for c in cnt.asDict() if cnt[c] == 1 or cnt[c] == self.data_frame.count()])
         else:
            # self.data_frame  = self.data_frame.loc[:, (self.data_frame .nunique() != 1)]
            # new_df  = self.data_frame.loc[:, (self.data_frame.nunique() != self.data_frame .shape[0])]
            # if self.target not in new_df.columns:
            #     new_df[self.target] = self.data_frame[self.target]
            # self.data_frame = new_df
+           self.data_frame = self.data_frame.apply(lambda col: pd.to_datetime(col, errors='ignore') if col.dtypes == object else col, axis=0)
            self.data_frame = self.data_frame.loc[:, (self.data_frame.nunique() != 1)]
            float_df = self.data_frame.loc[:, (self.data_frame.dtypes == 'float64')]
+           date_df = self.data_frame[self.datetime_cols]
            int_df = self.data_frame.loc[:, (self.data_frame.dtypes == 'int64')]
            other_df  = self.data_frame .loc[:, ((self.data_frame.dtypes=='object')&(self.data_frame.nunique()!=self.data_frame.shape[0]))]
-           new_df = pd.concat([other_df, float_df, int_df], axis=1)
+           new_df = pd.concat([other_df, float_df, int_df , date_df], axis=1)
            #new_df = new_df.loc[:, (new_df.nunique() != new_df.shape[0])]
            #new_df  = self.data_frame .loc[:, (self.data_frame.nunique() != self.data_frame .shape[0])]
            #new_df=self.data_frame
@@ -76,8 +80,10 @@ class DataPreprocessingAutoML:
     def drop_null_cols(self):
         '''Dropping columns with more than 75% null values'''
         if not self._pandas_flag:
-            filter_cols = [col for col in self.data_frame.columns if self.data_frame.filter((self.data_frame[col] == "") | (self.data_frame[col].isNull())).count() < 0.75*self.data_frame.count()]
-            self.data_frame  = self.data_frame.select(filter_cols)
+            cnt = self.data_frame.agg(*(F.count(c).alias(c) for c in self.data_frame.columns)).first()
+            self.data_frame = self.data_frame.drop(*[c for c in cnt.asDict() if cnt[c] < 0.75*self.data_frame.count()])
+            # filter_cols = [col for col in self.data_frame.columns if self.data_frame.filter((self.data_frame[col] == "") | (self.data_frame[col].isNull())).count() < 0.75*self.data_frame.count()]
+            # self.data_frame  = self.data_frame.select(filter_cols)
         else:
             self.data_frame  = self.data_frame .loc[:, (self.data_frame.isna().sum() < (0.75 * self.data_frame.shape[0]))]
         def dropped_col_update(list_element):
@@ -91,49 +97,47 @@ class DataPreprocessingAutoML:
         self.data_change_dict['Column_settings'] = [dropped_col_update(list_element) for list_element in self.data_change_dict['Column_settings']]
 
     def dimension_measure(self, columns):
-            """Identifies columns which are measures and have been wrongly identified as dimension
-            returns a list of columns to be converted to measure and removes the rows which have other than numeric
-            for that particular column"""
-            # column_val = self.data_frame[column]
-            print(self.numeric_cols,"=======================")
-            if not self._pandas_flag:
-                for column in columns:
-                    r1 = random.randint(0, self.data_frame.count() - 1)
-                    if re.match("^\d*[.]?\d*$", str(self.data_frame.collect()[r1][column])):
-                        self.data_frame = self.data_frame.withColumn("is_numeric_col",\
-                                        col(column).\
-                                        rlike("^[0-9]+[.]{0,1}[0-9]*\s*$"))
-                        val_count = self.data_frame.cube("is_numeric_col").count()
-                        val_count_list =list(map(lambda row: row.asDict(), val_count.collect()))
-                        dict_vals = {each['is_numeric_col']:each['count']/self.data_frame.count()\
-                                                    for each in val_count_list}
-                        if 'False' in dict_vals.keys():
-                            if dict_vals[False] <= 0.01:
-                                self.data_frame = self.data_frame.filter(self.data_frame.is_numeric_col.isin([True]))
-                                self.data_frame = self.data_frame.drop('is_numeric_col')
-                                self.data_change_dict["MeasureColsToDim"].append(column)
-                                self.dimension_cols.remove(column)
-                                ## below line code change during optimization
-                                self.data_frame = self.data_frame.withColumn(column, self.data_frame[column].cast("float"))
-                                self.numeric_cols.append(column)
-            else:
-                for column in columns:
-                    column_val = self.data_frame[column]
-                    updated_row_num = self.data_frame[column].index
-                    r1 = random.randint(0, len(updated_row_num) - 1)
-                    if re.match("^\d*[.]?\d*$", str(self.data_frame.iloc[r1][column])):
-                        # out=column_val.str.isdigit()
-                        out = column_val.str.contains("^[0-9]+[.]{0,1}[0-9]*\s*$")
-                        if out[out == False].count() <= 0.01 * self.data_frame.shape[0]:
-                            row_index = out.index[out == False].tolist()
-
-                            self.data_frame = self.data_frame.drop(row_index, axis=0)
+        """Identifies columns which are measures and have been wrongly identified as dimension
+        returns a list of columns to be converted to measure and removes the rows which have other than numeric
+        for that particular column"""
+        # column_val = self.data_frame[column]
+        if not self._pandas_flag:
+            for column in columns:
+                r1 = random.randint(0, self.data_frame.count() - 1)
+                if re.match("^\d*[.]?\d*$", str(self.data_frame.collect()[r1][column])):
+                    self.data_frame = self.data_frame.withColumn("is_numeric_col",\
+                                    col(column).\
+                                    rlike("^[0-9]+[.]{0,1}[0-9]*\s*$"))
+                    val_count = self.data_frame.cube("is_numeric_col").count()
+                    val_count_list =list(map(lambda row: row.asDict(), val_count.collect()))
+                    dict_vals = {each['is_numeric_col']:each['count']/self.data_frame.count()\
+                                                for each in val_count_list}
+                    if False in dict_vals.keys():
+                        if dict_vals[False] <= 0.01:
+                            self.data_frame = self.data_frame.filter(self.data_frame.is_numeric_col.isin([True]))
+                            self.data_frame = self.data_frame.drop('is_numeric_col')
                             self.data_change_dict["MeasureColsToDim"].append(column)
                             self.dimension_cols.remove(column)
                             ## below line code change during optimization
-                            self.data_frame[column] = pd.to_numeric(self.data_frame[column])
+                            self.data_frame = self.data_frame.withColumn(column, self.data_frame[column].cast("float"))
                             self.numeric_cols.append(column)
-            print(self.numeric_cols,self.dimension_cols)
+        else:
+            for column in columns:
+                column_val = self.data_frame[column]
+                updated_row_num = self.data_frame[column].index
+                r1 = random.randint(0, len(updated_row_num) - 1)
+                if re.match("^\d*[.]?\d*$", str(self.data_frame.iloc[r1][column])):
+                    # out=column_val.str.isdigit()
+                    out = column_val.str.contains("^[0-9]+[.]{0,1}[0-9]*\s*$")
+                    if out[out == False].count() <= 0.01 * self.data_frame.shape[0]:
+                        row_index = out.index[out == False].tolist()
+
+                        self.data_frame = self.data_frame.drop(row_index, axis=0)
+                        self.data_change_dict["MeasureColsToDim"].append(column)
+                        self.dimension_cols.remove(column)
+                        ## below line code change during optimization
+                        self.data_frame[column] = pd.to_numeric(self.data_frame[column])
+                        self.numeric_cols.append(column)
 
     def dimension_measure_test(self, columns):
         for column in columns:
@@ -338,11 +342,30 @@ class DataPreprocessingAutoML:
             return out_dict
 
     def data_preprocessing_run(self):
+        start_time=time.time()
         self.drop_duplicate_rows()
+        print("time taken for drop_duplicate_rows:{} seconds".format((time.time()-start_time)))
+
+        start_time=time.time()
         self.drop_constant_unique_cols()
+        print("time taken for drop_constant_unique_cols:{} seconds".format((time.time()-start_time)))
+
+        start_time=time.time()
         self.drop_null_cols()
+        print("time taken for drop_null_cols:{} seconds".format((time.time()-start_time)))
+        start_time=time.time()
         self.dimension_measure(self.dimension_cols)
+        print("time taken for dimension_measure:{} seconds".format((time.time()-start_time)))
+
         # self.handle_outliers()
+        start_time=time.time()
         self.measure_col_imputation(self.numeric_cols)
+        print("time taken for measure_col_imputation:{} seconds".format((time.time()-start_time)))
+
+        start_time=time.time()
         self.dim_col_imputation(self.dimension_cols)
+        print("time taken for dim_col_imputation:{} seconds".format((time.time()-start_time)))
+
+        start_time=time.time()
         self.date_col_imputation(self.datetime_cols)
+        print("time taken for date_col_imputation:{} seconds".format((time.time()-start_time)))

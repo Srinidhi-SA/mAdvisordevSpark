@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+	<meta charset='UTF-8'>
+	<title>Simple Loader</title>
+	
+<style>
+#overlay{
+    	display: none;
+	position: fixed;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: #DBDBDB;
+	opacity: 0.8;
+	z-index:1001;
+}
+
+#overlay-content{ 
+	position: absolute;
+	display: none;
+	
+	padding: 16px;
+	border: 16px solid #00998c;
+	background-color: white;
+	z-index:1002;
+}
+</style>
+</head>
+
+<body>
+	
+<div id="overlay">
+	<div id="overlay-content" class="text-center">
+		<img src="images/welcome_message.gif" width="100">
+	This will all vanish in 5 seconds ...
+	</div>
+</div>
+
+<h1>Dashboard</h1>
+<p>Signals</p>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script>
+$.fn.center = function () {
+  this.css("position","absolute");
+  this.css("top", Math.max(0, (
+    ($(window).height() - $(this).outerHeight()) / 2) + 
+     $(window).scrollTop()) + "px"
+  );
+  this.css("left", Math.max(0, (
+    ($(window).width() - $(this).outerWidth()) / 2) + 
+     $(window).scrollLeft()) + "px"
+  );
+  return this;
+}
+
+$("#overlay").show();
+$("#overlay-content").show().center();
+
+setTimeout(function(){    
+  $("#overlay").fadeOut();
+}, 5000);
+</script>
+</body>
+</html>

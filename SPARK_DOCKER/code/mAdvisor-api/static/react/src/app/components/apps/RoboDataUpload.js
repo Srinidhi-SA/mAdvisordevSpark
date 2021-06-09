@@ -1,16 +1,14 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Link, Redirect} from "react-router-dom";
-import {push} from "react-router-redux";
 import Dialog from 'react-bootstrap-dialog'
-import {Modal,Button,Tab,Row,Col,Nav,NavItem} from "react-bootstrap";
+import {Modal,Button} from "react-bootstrap";
 import store from "../../store";
 import {openRoboDataPopup,closeRoboDataPopup,saveFilesToStore,uploadFiles,clearRoboDataUploadFiles} from "../../actions/appActions";
 import Dropzone from 'react-dropzone'
 import {CUSTOMERDATA,HISTORIALDATA,EXTERNALDATA} from "../../helpers/helper"
 
 @connect((store) => {
-	return {login_response: store.login.login_response, 
+	return {
 		appsRoboShowModal: store.apps.appsRoboShowModal,
 		customerDataUpload:store.apps.customerDataUpload,
 		historialDataUpload:store.apps.historialDataUpload,

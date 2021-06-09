@@ -1,15 +1,9 @@
 export default function reducer(state = {
 		dataSourceList:{},
 		fileUpload:{},
-		selectedDataSrcType:"fileUpload"
+		selectedDataSrcType:"fileUpload",
+		dataSourceLoaderFlag: true
 }, action) {
-	if(window.location.href.includes("autoML")){
-	$("#left-tabs-example-tab-MySQL").css("cursor", "not-allowed");
-	$("#left-tabs-example-tab-mssql").css("cursor", "not-allowed");
-	$("#left-tabs-example-tab-Hana").css("cursor", "not-allowed");
-	$("#left-tabs-example-tab-Hdfs").css("cursor", "not-allowed");
-	$("#left-tabs-example-tab-S3").css("cursor", "not-allowed");
-	}
 	switch (action.type) {
 	case "DATA_SOURCE_LIST":
 	{
@@ -19,6 +13,12 @@ export default function reducer(state = {
 		}
 	}
 	break;
+	case "DATA_SOURCE_FLAG":{
+		return{
+			...state,
+			dataSourceLoaderFlag : action.flag
+		}
+	}
 	case "DATA_SOURCE_SELECTED_TYPE":
 	{
 		return {

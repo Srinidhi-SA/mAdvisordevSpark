@@ -38,8 +38,6 @@ export function dataUpload() {
                 $("#"+elements[i].id).css("border-color","#e0e0e0");
                 dbDetails[elements[i].name] = elements[i].value
             }
-
-
         }
         if(!flag)
         dispatch(uploadFileOrDB(dbDetails));
@@ -73,7 +71,6 @@ function uploadFileOrDB(dbDetails){
 }
 function triggerDataUpload(token,dbDetails) {
   if (store.getState().dataSource.selectedDataSrcType == "fileUpload") {
-
     var data = new FormData();
     for (var x = 0; x < store.getState().dataSource.fileUpload.length; x++) {
       data.append("input_file", store.getState().dataSource.fileUpload[x]);
@@ -84,15 +81,12 @@ function triggerDataUpload(token,dbDetails) {
       body: data
     }).then(response => Promise.all([response, response.json()]));
   } else {
-
     return fetch(API + '/api/datasets/', {
       method: 'post',
       headers: getHeader(token),
       body: JSON.stringify({datasource_details: dbDetails, datasource_type: store.getState().dataSource.selectedDataSrcType})
     }).then(response => Promise.all([response, response.json()]));
-
   }
-
 }
 
 export function triggerDataUploadAnalysis(data,percentage, message){
@@ -117,7 +111,6 @@ function dataUploadSuccess(data, dispatch) {
   }
   else{
     dataPreviewInterval = setInterval(function() {
-
         let loading_message = store.getState().datasets.loading_message
         dispatch(getDataSetPreview(data.slug, dataPreviewInterval));
         if (store.getState().datasets.dULoaderValue < LOADERMAXPERVALUE) {
@@ -143,7 +136,7 @@ function dataUploadSuccess(data, dispatch) {
   }
 }
 
-export function dataUploadError(josn) {
+export function dataUploadError(json) {
   return {type: "DATA_UPLOAD_TO_SERVER_ERROR", json}
 }
 
@@ -171,10 +164,7 @@ export function dataUploadLoaderMsg(message) {
   return {type: "DATA_UPLOAD_LOADER_MSG", message}
 }
 
-//for subsetting
-
 export function dataSubsetting(subsetRq, slug) {
-
   return (dispatch) => {
    dispatch(dataUploadLoaderValue(DULOADERPERVALUE));
     dispatch(dataUploadLoaderMsg(DULOADERPERMSG));

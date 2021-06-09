@@ -170,6 +170,11 @@ def main2(input_path, template, slug=None):
         final_json, mask, metadata, template = base_obj.extract_info(template, base_obj.bwimage, flag,
                                                                      image_obj.image_shape)
         image_obj.set_final_json_mask_metadata(final_json, mask, metadata)
+
+        from ocr.ITE.scripts.ensemble import ensemble_main
+        text_resp = fetch_google_response2(input_path)
+        fj = ensemble_main(final_json, pep.fetch_analysis(), text_resp)
+
         white_background_mask = cv2.bitwise_not(mask)
         if not os.path.exists("ocr/ITE/database/{}_mask.png".format(slug)):
             cv2.imwrite("ocr/ITE/database/{}_mask.png".format(slug), white_background_mask)
@@ -179,7 +184,7 @@ def main2(input_path, template, slug=None):
         cv2.imwrite(original_image, image)
 
         response = {
-            'final_json': final_json,
+            'final_json': fj,
             'mask': "ocr/ITE/database/{}_mask.png".format(slug),
             'metadata': metadata,
             'analysis': analysis,

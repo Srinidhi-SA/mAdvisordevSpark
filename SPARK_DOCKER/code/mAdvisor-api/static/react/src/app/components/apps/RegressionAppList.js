@@ -28,8 +28,7 @@ export class RegressionAppList extends React.Component {
     if (this.props.match.url.indexOf("scores") != -1)
       app_page = "scores"
     if (this.props.currentAppDetails != null) {
-      let url = "/apps/" + this.props.currentAppDetails.slug + "/" + app_page
-      return (<Redirect to ={url}/>)
+      return ( <Redirect to ={`/apps/${this.props.currentAppDetails.slug}/${app_page}`} />)
     } else {
       return (
         <div className="side-body"></div>

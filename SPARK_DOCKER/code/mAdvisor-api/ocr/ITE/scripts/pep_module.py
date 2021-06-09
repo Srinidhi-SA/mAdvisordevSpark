@@ -20,7 +20,7 @@ import backoff
 
 class Pep:  # preprocess_extract_pipeline
 
-    def __init__(self, image_path, crop=False, c2=True, enhance=True):
+    def __init__(self, image_path, crop=False, c2=False, enhance=True):
 
         debug = False
         self.image_path = image_path
@@ -47,14 +47,14 @@ class Pep:  # preprocess_extract_pipeline
             filename, file_extension = os.path.splitext(self.image_path)
 
             if type(check) == type(None):  ## C2 FAILED
-                self.pep_analysis = self.text_from_Azure_API(self.image_path)
+                self.pep_analysis = self.text_from_Azure_API_3_1(self.image_path)
                 if debug == True: print('prep msg: C2 Failed , analysis returned')
             else:
                 list_of_analysis = []
                 paths_to_process = [filename + "_part1.jpg", filename + "_part2.jpg"]
 
                 with concurrent.futures.ThreadPoolExecutor() as executor:
-                    futures = [executor.submit(self.text_from_Azure_API, path) for path in paths_to_process]
+                    futures = [executor.submit(self.text_from_Azure_API_3_1, path) for path in paths_to_process]
                     loa = {path: futures[i].result() for i, path in enumerate(paths_to_process)}
                 for an in sorted(loa):
                     # print("*"*20,an,"*"*20)
@@ -64,7 +64,7 @@ class Pep:  # preprocess_extract_pipeline
                 self.pep_analysis = analysis_ite
                 if debug == True: print('prep msg: C2 Success, analysis joined')
         else:
-            self.pep_analysis = self.text_from_Azure_API(self.image_path)
+            self.pep_analysis = self.text_from_Azure_API_3_1(self.image_path)
 
         try:
             os.remove(filename + "_part1.jpg")
@@ -103,6 +103,38 @@ class Pep:  # preprocess_extract_pipeline
             analysis = response_final.json()
             if ("status" in analysis and analysis['status'] == 'succeeded'):
                 poll = False
+        return [i for i in analysis["analyzeResult"]["readResults"] if (i["page"] == 1)][0]
+
+    def text_from_Azure_API_3_1(self, path):
+
+        subscription_key = "8f6ad67b6c4344779e6148ddc48d96c0"
+
+        vision_base_url = 'https://madvisor.cognitiveservices.azure.com/vision/v3.1-preview.2/'
+        text_recognition_url = vision_base_url + "read/analyze"
+        #    text_recognition_url = vision_base_url
+        data = open(path, "rb").read()
+
+        headers = {'x-api-key': '04jAWz0LXuaLKwtul56lS3PAEpTLNtdn1Gsrgl3k',
+                   'Ocp-Apim-Subscription-Key': subscription_key,
+                   'Content-Type': 'application/octet-stream'}
+
+        response = requests.post(
+            text_recognition_url,
+            headers=headers,
+            data=data)
+        response.raise_for_status()
+
+        analysis = {}
+        poll = True
+        while (poll):
+            response_final = requests.get(
+                response.headers["Operation-Location"], headers=headers)
+            analysis = response_final.json()
+
+            if ("status" in analysis and analysis['status'] == 'succeeded'):
+                poll = False
+
+        print('Executed')
         return [i for i in analysis["analyzeResult"]["readResults"] if (i["page"] == 1)][0]
 
     def fetch_analysis(self):

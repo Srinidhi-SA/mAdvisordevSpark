@@ -50,7 +50,7 @@ def main(configJson):
             debugMode = True
             ignoreMsg = True
             # Test Configs are defined in bi/settings/configs/localConfigs
-            jobType = "story"
+            jobType = "training"
             if jobType == "testCase":
                 configJson = get_test_configs(jobType,testFor = "chisquare")
             else:
@@ -79,10 +79,9 @@ def main(configJson):
 
     # spark.conf.set("spark.sql.execution.arrow.enabled", "true")
 
-    print("||############################## Parsing Config file inside main ##############################||")
-    print("-------------------------------******************************", configJson)
+    print("||############################## Parsing Config file ##############################||")
+
     config = configJson["config"]
-    print("1111111111111111111111111111111", "TRAINER_MODE" in config and config["TRAINER_MODE"] == "autoML")
     if "TRAINER_MODE" in config and config["TRAINER_MODE"] == "autoML" :
         if "app_type" in config["FILE_SETTINGS"] and config["FILE_SETTINGS"]["app_type"] == "classification":
             if config['FILE_SETTINGS']['inputfile'][0].startswith("https:"):
@@ -97,20 +96,13 @@ def main(configJson):
     jobURL = jobConfig["job_url"]
     messageURL = jobConfig["message_url"]
     initialMessageURL = jobConfig["initial_messages"]
-    print("2222222222222222222222222222222222" )
+
+
     messages = scriptStages.messages_list(config, jobConfig, jobType, jobName)
-    print("3333333333333333333333333333333333333", messages)
     messages_for_API = messages.send_messages()
-    print("55555555555555555555555555555555555555",messages_for_API)
     messages_for_API = json.dumps(messages_for_API)
-    print("---------------------start ---------------------", messages_for_API)
-    print("---------------------Pipeline changes in SPARK containers------------------")
-    try:
-        res = requests.put(url=initialMessageURL,data=messages_for_API)
-    except Exception as e:
-        print("----------------------Exception----------------------------")
-        print(e)
-    print("-------------------------------end-------------------------------",res)
+    res = requests.put(url=initialMessageURL,data=messages_for_API)
+    print("---------------------Pipeline changes in SPARK container------------------")
     try:
         errorURL = jobConfig["error_reporting_url"]
     except:
@@ -413,8 +405,7 @@ def killer_setting(configJson):
         else:
             configJson = get_test_configs(jobType)
 
-    print("||############################## Parsing Config File killer_setting ##############################||")
-    print("-------------------------------", configJson)
+    print("||############################## Parsing Config File ##############################||")
 
     config = configJson["config"]
     jobConfig = configJson["job_config"]
@@ -443,40 +434,40 @@ def submit_job_through_yarn():
     jobURL = jobConfig["job_url"]
     messageURL = jobConfig["message_url"]
     killURL = jobConfig["kill_url"]
-    #try:
-    main(json_config["job_config"])
-    # except Exception as e:
-    #     # print jobURL, killURL
-    #     data = {"status": "killed", "jobURL": jobURL}
-    #     resp = send_kill_command(killURL, data)
-    #     while str(resp.text) != '{"result": "success"}':
-    #         data = {"status": "killed", "jobURL": jobURL}
-    #         resp = send_kill_command(killURL, data)
-    #     # print resp.text
-    #     print('Main Method Did Not End ....., ', str(e))
-    #     progressMessage = CommonUtils.create_progress_message_object("Main Method Did Not End .....",
-    #                                                                  "Main Method Did Not End .....",
-    #                                                                  "Error",
-    #                                                                  str(e),
-    #                                                                  "Failed", 100)
-    #     CommonUtils.save_progress_message(messageURL, progressMessage, emptyBin=True)
+    try:
+    	main(json_config["job_config"])
+    except Exception as e:
+        # print jobURL, killURL
+        data = {"status": "killed", "jobURL": jobURL}
+        resp = send_kill_command(killURL, data)
+        while str(resp.text) != '{"result": "success"}':
+            data = {"status": "killed", "jobURL": jobURL}
+            resp = send_kill_command(killURL, data)
+        # print resp.text
+        print('Main Method Did Not End ....., ', str(e))
+        progressMessage = CommonUtils.create_progress_message_object("Main Method Did Not End .....",
+                                                                     "Main Method Did Not End .....",
+                                                                     "Error",
+                                                                     str(e),
+                                                                     "Failed", 100)
+        CommonUtils.save_progress_message(messageURL, progressMessage, emptyBin=True)
 
 if __name__ == '__main__':
     jobURL, killURL, messageURL = killer_setting(sys.argv[1])
-    #try:
-    main(sys.argv[1])
-    print('Main Method End .....')
-    # except Exception as e:
-    #      print (jobURL, killURL)
-    #      data = {"status": "killed", "jobURL": jobURL}
-    #      resp = send_kill_command(killURL, data)
-    #      while str(resp.text) != '{"result": "success"}':
-    #          data = {"status": "killed", "jobURL": jobURL}
-    #          resp = send_kill_command(killURL, data)
-    #      progressMessage = CommonUtils.create_progress_message_object("Main Method Did Not End .....", "Main Method Did Not End .....",
-    #                                                                   "Error",
-    #                                                                   str(e),
-    #                                                                   "Failed", 100)
-    #      CommonUtils.save_progress_message(messageURL, progressMessage, emptyBin=True)
+    try:
+       main(sys.argv[1])
+       print('Main Method End .....')
+    except Exception as e:
+         print (jobURL, killURL)
+         data = {"status": "killed", "jobURL": jobURL}
+         resp = send_kill_command(killURL, data)
+         while str(resp.text) != '{"result": "success"}':
+             data = {"status": "killed", "jobURL": jobURL}
+             resp = send_kill_command(killURL, data)
+         progressMessage = CommonUtils.create_progress_message_object("Main Method Did Not End .....", "Main Method Did Not End .....",
+                                                                      "Error",
+                                                                      str(e),
+                                                                      "Failed", 100)
+         CommonUtils.save_progress_message(messageURL, progressMessage, emptyBin=True)
 
-    #      print('Main Method Did Not End ....., ', str(e))
+         print('Main Method Did Not End ....., ', str(e))

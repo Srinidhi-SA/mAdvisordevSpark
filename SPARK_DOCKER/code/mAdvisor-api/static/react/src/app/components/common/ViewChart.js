@@ -1,21 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router";
 import store from "../../store";
-import {Modal,Button} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import {showZoomChart} from "../../actions/signalActions";
-import renderHTML from 'react-render-html';
 import { Scrollbars } from 'react-custom-scrollbars';
-import {downloadSVGAsPNG} from '../../helpers/helper';
-import {API} from "../../helpers/env";
 import { C3ChartNew } from "../C3ChartNew";
 
 @connect((store) => {
-    return {login_response: store.login.login_response,
+    return {
         signal: store.signals.signalAnalysis,
-        modelSummaryFlag:store.apps.modelSummaryFlag,
         viewChartFlag:store.signals.viewChartFlag,
-        viewChartClassId:store.signals.chartClassId,
     };
 })
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, withRouter } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { getUserDetailsOrRestart } from "../../../helpers/helper";
 import { saveDocumentPageFlag,selectedReviewerDetails } from '../../../actions/ocrActions';
 import { API } from "../../../helpers/env";
@@ -48,52 +48,46 @@ export class OcrTopNavigation extends React.Component {
   render() {
     let reviewTab = getUserDetailsOrRestart.get().userRole == "Admin" || getUserDetailsOrRestart.get().userRole ==  "Superuser" ? "Reviewers" : "Projects";
     return (
-     
-        <div class="page-head">
-          <div class="row">
-            <div class="col-md-4">
-              <h3 class="nText xs-mt-0">Intelligent Text Extractor</h3>
+        <div className="page-head">
+          <div className="row">
+            <div className="col-md-4">
+              <h3 className="nText xs-mt-0">Intelligent Text Extractor</h3>
             </div>
-			<div class="col-md-8">
-				<ul className="nav nav-tabs cst_ocr_tabs pull-right">
-          <li>
-            <NavLink exact={true} className="" to="/apps/ocr-mq44ewz7bp/" activeClassName="active" title="Dashboard">
-              <i class="fa fa-tachometer fa-lg"></i> Dashboard
-            </NavLink>
-          </li>
+            <div className="col-md-8">
+              <ul className="nav nav-tabs cst_ocr_tabs pull-right">
+                <li>
+                  <NavLink exact={true} to="/apps/ocr-mq44ewz7bp/" activeClassName="active" title="Dashboard">
+                    <i className="fa fa-tachometer fa-lg"></i> Dashboard
+                  </NavLink>
+                </li>
 
-          {(getUserDetailsOrRestart.get().userRole == "Admin" || getUserDetailsOrRestart.get().userRole ==  "Superuser") &&
-            <li><NavLink className="" to="/apps/ocr-mq44ewz7bp/project/" onClick={this.handleRoute.bind(this)} activeClassName="active">
-              <i class="fa fa-book fa-lg"></i> Projects
-            </NavLink>
-            </li>
-          }
-          {(getUserDetailsOrRestart.get().userRole == "Admin" || getUserDetailsOrRestart.get().userRole ==  "Superuser") &&
-            <li><NavLink className="" to="/apps/ocr-mq44ewz7bp/configure/" activeClassName="active">
+                {(getUserDetailsOrRestart.get().userRole == "Admin" || getUserDetailsOrRestart.get().userRole ==  "Superuser") &&
+                  <li><NavLink to="/apps/ocr-mq44ewz7bp/project/" onClick={this.handleRoute.bind(this)} activeClassName="active">
+                    <i className="fa fa-book fa-lg"></i> Projects
+                  </NavLink>
+                  </li>
+                }
+                {(getUserDetailsOrRestart.get().userRole == "Admin" || getUserDetailsOrRestart.get().userRole ==  "Superuser") &&
+                  <li><NavLink to="/apps/ocr-mq44ewz7bp/configure/" activeClassName="active">
+                    <i className="fa fa-sliders fa-lg"></i> Configure
+                    </NavLink>
+                  </li>
+                }
 
-              <i class="fa fa-sliders fa-lg"></i> Configure
-              </NavLink>
-            </li>
-          }
-
-          <li><NavLink className="" to="/apps/ocr-mq44ewz7bp/reviewer/" onClick={this.handleRoute.bind(this)} activeClassName="active">
-            <i class="fa fa-users fa-lg"></i> {reviewTab}
-              </NavLink>
-          </li>
-          {(getUserDetailsOrRestart.get().userRole == "Admin" || getUserDetailsOrRestart.get().userRole == "Superuser") &&
-            <li><NavLink className="" to="/apps/ocr-mq44ewz7bp/manageUser/" activeClassName="active">
-
-              <i class="fa fa-user fa-lg"></i> Users
-              </NavLink>
-            </li>
-          }
-        </ul>
-			</div>
+                <li><NavLink to="/apps/ocr-mq44ewz7bp/reviewer/" onClick={this.handleRoute.bind(this)} activeClassName="active">
+                  <i className="fa fa-users fa-lg"></i> {reviewTab}
+                    </NavLink>
+                </li>
+                {(getUserDetailsOrRestart.get().userRole == "Admin" || getUserDetailsOrRestart.get().userRole == "Superuser") &&
+                  <li><NavLink to="/apps/ocr-mq44ewz7bp/manageUser/" activeClassName="active">
+                    <i className="fa fa-user fa-lg"></i> Users
+                    </NavLink>
+                  </li>
+                }
+              </ul>
+            </div>
           </div>
         </div>
-        
-
-      
     );
   }
 

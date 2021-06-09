@@ -151,7 +151,7 @@ export class OcrUserTable extends React.Component{
             const current_page = store.getState().ocr.allOcrUsers.current_page;
             if (pages >= 1) {
                 paginationTag = (
-                   <div class="col-md-12 text-center">
+                   <div className="col-md-12 text-center">
                       <div className="footer" id="Pagination">
                          <div className="pagination pageRow">
                          <span>Rows per page:</span>
@@ -210,7 +210,7 @@ export class OcrUserTable extends React.Component{
                     </div>
                     <div className="col-md-4 text-right">
 					    <a className="btn btn-primary" onClick={this.openAddUserPopup.bind(this)} title="Add User">
-                            <i className ="zmdi zmdi-account-add zmdi-hc-lg">
+                            <i className ="fa fa-user-plus">
                                 <OcrAddUser/>
                             </i>
                         </a>
@@ -236,11 +236,11 @@ export class OcrUserTable extends React.Component{
                   </Modal.Header>
                   <Modal.Body style={{ padding: '20px 15px 25px' }}>
                      <div className="row">
-                        <div class="col-sm-4">
+                        <div className="col-sm-4">
                            <img style={{ width: '100%' }} src={STATIC_URL + "assets/images/alert_warning.png"} />
                         </div>
                         <div className="col-sm-8">
-                           <h4 class="text-warning">Warning !</h4>
+                           <h4 className="text-warning">Warning !</h4>
                            <div>Are you sure you want to delete the user?</div>
                            <div className="xs-mt-10">
                               <Button bsStyle="primary" id="deleteUser" onClick={this.proceedToDelete}>Yes</Button>

@@ -45,17 +45,16 @@ export class OcrReviewer extends React.Component {
    )
     }
     return (
-      <div className="side-body">
-        <OcrTopNavigation/>
-		 <div className="main-content">
-          <section class="ocr_section box-shadow">
-            <div class="container-fluid">
-            {renderComponents}
-            </div>
-          </section>
-		  </div>
+    <div className="side-body">
+      <OcrTopNavigation/>
+      <div className="main-content">
+        <section className="ocr_section box-shadow">
+          <div className="container-fluid">
+          {renderComponents}
+          </div>
+        </section>
       </div>
+    </div>
     );
   }
-
 }

@@ -4,10 +4,13 @@ jQuery(document).ready(function( $ ) {
   $(window).scroll(function() {
     if ($(this).scrollTop() > 100) {
       $('.back-to-top').fadeIn('slow');
+      $('#header').addClass('header-scrolled');
     } else {
       $('.back-to-top').fadeOut('slow');
+      $('#header').removeClass('header-scrolled');
     }
   });
+  
   $('.back-to-top').click(function(){
     $('html, body').animate({scrollTop : 0},1500, 'easeInOutExpo');
     return false;
@@ -98,31 +101,24 @@ jQuery(document).ready(function( $ ) {
     }
   });
 
-  // Header scroll class
-  $(window).scroll(function() {
-    if ($(this).scrollTop() > 100) {
-      $('#header').addClass('header-scrolled');
-    } else {
-      $('#header').removeClass('header-scrolled');
-    }
-  });
+ 
 
   // Intro carousel
-  var introCarousel = $(".carousel");
-  var introCarouselIndicators = $(".carousel-indicators");
-  introCarousel.find(".carousel-inner").children(".carousel-item").each(function(index) {
-    (index === 0) ?
-    introCarouselIndicators.append("<li data-target='#introCarousel' data-slide-to='" + index + "' class='active'></li>") :
-    introCarouselIndicators.append("<li data-target='#introCarousel' data-slide-to='" + index + "'></li>");
-  });
+  // var introCarousel = $(".carousel");
+  // var introCarouselIndicators = $(".carousel-indicators");
+  // introCarousel.find(".carousel-inner").children(".carousel-item").each(function(index) {
+  //   (index === 0) ?
+  //   introCarouselIndicators.append("<li data-target='#introCarousel' data-slide-to='" + index + "' class='active'></li>") :
+  //   introCarouselIndicators.append("<li data-target='#introCarousel' data-slide-to='" + index + "'></li>");
+  // });
 
-  $(".carousel").swipe({
-    swipe: function(event, direction, distance, duration, fingerCount, fingerData) {
-      if (direction == 'left') $(this).carousel('next');
-      if (direction == 'right') $(this).carousel('prev');
-    },
-    allowPageScroll:"vertical"
-  });
+  // $(".carousel").swipe({
+  //   swipe: function(event, direction, distance, duration, fingerCount, fingerData) {
+  //     if (direction == 'left') $(this).carousel('next');
+  //     if (direction == 'right') $(this).carousel('prev');
+  //   },
+  //   allowPageScroll:"vertical"
+  // });
 
   // Components isotope and filter
   var componentsIsotope = $('.components-container').isotope({

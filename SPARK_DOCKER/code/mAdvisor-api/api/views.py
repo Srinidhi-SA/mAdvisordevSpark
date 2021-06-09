@@ -1912,9 +1912,7 @@ def chart_changes_in_metadata_chart(chart_data):
 
 def add_slugs(results, object_slug=""):
     from api import helper
-    if settings.DEBUG == True:
-        print(results)
-        print(list(results.keys()))
+
     listOfNodes = results.get('listOfNodes', [])
     listOfCards = results.get('listOfCards', [])
 
@@ -1929,7 +1927,14 @@ def add_slugs(results, object_slug=""):
 
     if len(listOfNodes) > 0:
         for loN in listOfNodes:
-            add_slugs(loN, object_slug=object_slug)
+            try:
+                if loN["name"]=="Prediction" and "Depth Of Tree 3" in loN:
+                    for loNN in [loN["Depth Of Tree 3"],loN["Depth Of Tree 4"],loN["Depth Of Tree 5"]]:
+                        add_slugs(loNN, object_slug=object_slug)
+                else:
+                    add_slugs(loN, object_slug=object_slug)
+            except:
+                add_slugs(loN, object_slug=object_slug)
 
     return results
 
@@ -1937,8 +1942,8 @@ def add_slugs(results, object_slug=""):
 def convert_chart_data_to_beautiful_things(data, object_slug=""):
     from api import helper
     for card in data:
-        if settings.DEBUG == True:
-            print(card)
+        #if settings.DEBUG == True:
+            #print(card)
         if card["dataType"] == "c3Chart":
             chart_raw_data = card["data"]
             # function

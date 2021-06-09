@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="images/favicon.ico">
+      <title>mAdvisor Data Upload </title>
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <!-- Custom styles for this template
+         <link href="css/nanoscroller.css" rel="stylesheet">-->
+      <link href="css/bootstrap-slider.css" rel="stylesheet">
+      <link href="css/style.css" rel="stylesheet">
+ 
+   </head>
+   <body>
+      <!-- Main Wrapper ** Mandatory -->
+      <div class="main_wrapper">
+         <!-- Header Menu -->
+         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+               <div class="brand-wrapper">
+                  <!-- Hamburger -->
+                  <button type="button" class="navbar-toggle"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                  <!-- Brand -->
+                  <div class="brand-name-wrapper"> <a class="navbar-brand" href="#"></a> </div>
+               </div>
+            </div>
+            <div class="dropdown ma-user-nav">
+               <a class="dropdown-toggle" href="#" data-toggle="dropdown"> <i class="avatar-img img-circle">M</i> <img src="images/avatar.jpg" alt="M" class="avatar-img img-circle hide"><span class="user-name">Marlabs BI</span> <span class="caret"></span></a>
+               <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a href="profile.html">Profile</a></li>
+                  <li><a href="login.html">Logout</a></li>
+               </ul>
+            </div>
+            <div class="clearfix"></div>
+         </nav>
+         <!--/.Header Menu -->
+         <!-- Side bar Main Menu -->
+         <div class="side-menu">
+            <div class="side-menu-container">
+               <ul class="nav navbar-nav">
+                  <li><a href="dashboard.html" class="sdb_signal"> <span></span> SIGNAL</a></li>
+                  <li><a href="story.html" class="sdb_story"> <span></span> STORY</a></li>
+                  <li><a href="apps.html" class="sdb_app"> <span></span> APPS</a></li>
+                  <li class="active"><a href="data.html" class="sdb_data"> <span></span> DATA</a></li>
+                  <li><a href="settings.html" class="sdb_settings"> <span></span> SETTINGS</a></li>
+               </ul>
+            </div>
+            <!-- /.Side bar Main Menu  -->
+         </div>
+         <!-- ./Side bar Main Menu -->
+         <!-- Main Content starts with side-body -->
+         <div class="side-body">
+            <!-- Page Title and Breadcrumbs -->
+            <div class="page-head">
+               <!-- <ol class="breadcrumb">
+                  <li><a href="#">Story</a></li>
+                  <li class="active">Sales Performance Report</li>
+                  </ol> -->
+               <div class="row">
+                  <div class="col-md-8">
+                     <h2>Data Pre Processing</h2>
+                  </div>
+               </div>
+               <div class="clearfix"></div>
+            </div>
+            <!-- /.Page Title and Breadcrumbs -->
+            <!-- Page Content Area -->
+            <div class="main-content">
+               <div class="row">
+                  <div class="col-md-9">
+                     <div class="panel panel-borders">
+                        <div class="col-md-2 col-xs-6">
+                           <h3>
+                              2500
+                              <small>Rows</small>
+                           </h3>
+                        </div>
+                        <div class="col-md-2 col-xs-6">
+                           <h3>
+                              30
+                              <small>Columns</small>
+                           </h3>
+                        </div>
+                        <div class="col-md-2 col-xs-6">
+                           <h3>
+                              15
+                              <small>Measures</small>
+                           </h3>
+                        </div>
+                        <div class="col-md-2 col-xs-6">
+                           <h3>
+                              9
+                              <small>Dimensions</small>
+                           </h3>
+                        </div>
+						<div class="col-md-2 col-xs-6">
+                           <h3>
+                              5
+                              <small>Date/Time</small>
+                           </h3>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="table-responsive noSwipe">
+                           <table class="table table-condensed table-hover table-bordered table-striped cst_table">
+<colgroup></colgroup>
+<colgroup></colgroup>
+<colgroup></colgroup>
+<colgroup></colgroup>
+<colgroup></colgroup>
+<colgroup></colgroup>
+                              <thead>
+                                 <tr>
+                                    <th>#</th>
+                                    <th class="dropdown">
+                                       <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="pe-7s-timer pe-lg pe-va"></i> Date <b class="caret"></b></a>
+                                       <ul class="dropdown-menu scrollable-menu">
+                                          <li><a href="#">Data Structure</a>
+											<ul>
+												<li><a href="#"><i class="fa fa-user"></i> Ascending</a></li>
+												<li><a href="#">Descending</a></li>
+												<li><a href="#">Measures</a></li>
+												<li><a href="#">Dimensions</a></li>
+											</ul>
+										  </li>
+										  <li>Web
+											<ul>
+												<li><a href="#">Ascending 2 1</a></li>
+												<li><a href="#">Descending 2 2</a></li>
+												<li><a href="#">Measures 2 3</a></li>
+												<li><a href="#">Dimensions 2 4</a></li>
+											</ul>
+										  </li>
+										  <li>Location 
+											<ul>
+												<li><a href="#">Ascending 3 1</a></li>
+												<li><a href="#">Descending 3 2</a></li>
+												<li><a href="#">Measures 3 3</a></li>
+												<li><a href="#">Dimensions 3 4</a></li>
+											</ul>
+										  </li>
+										  <li>Date / Time
+											<ul>
+												<li><a href="#"><i class="fa fa-clock-o"></i> Date / Time </a></li>
+												<li><a href="#">Descending 4 2</a></li>
+												<li><a href="#">Measures 4 3</a></li>
+												<li><a href="#">Dimensions 4 4</a></li>
+											</ul>
+										  </li>
+                                       </ul>
+                                    </th>
+                                    <th class="dropdown">
+                                       <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-sort-amount-asc"></i> Priority <b class="caret"></b></a>
+                                       <ul class="dropdown-menu">
+                                          <li><a href="#">Low</a></li>
+                                          <li><a href="#">High</a></li>
+                                       </ul>
+                                    </th>
+									<th class="dropdown">
+                                       <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="mAd_icons ic_mes_s"></i> Measure <b class="caret"></b></a>
+                                       <ul class="dropdown-menu">
+                                          <li><a href="#">Ascending</a></li>
+                                          <li><a href="#">Descending</a></li>
+                                       </ul>
+                                    </th>
+									<th class="dropdown">
+                                       <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="mAd_icons ic_dime_s"></i> Dimension <b class="caret"></b></a>
+                                       <ul class="dropdown-menu">
+                                          <li><a href="#">Ascending</a></li>
+                                          <li><a href="#">Descending</a></li>
+                                       </ul>
+                                    </th>
+                                    <th class="dropdown">
+                                       <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-sort-numeric-asc"></i> Order Value <b class="caret"></b></a>
+                                       <ul class="dropdown-menu">
+                                          <li><a href="#">Ascending</a></li>
+                                          <li><a href="#">Descending</a></li>
+                                       </ul>
+                                    </th>
+                                    <th class="dropdown">
+                                       <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-sort-numeric-asc"></i> Discount <b class="caret"></b></a>
+                                       <ul class="dropdown-menu">
+                                          <li><a href="#">Ascending</a></li>
+                                          <li><a href="#">Descending</a></li>
+                                       </ul>
+                                    </th>
+                                    <th class="dropdown">
+                                       <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-sort-amount-asc"></i> Ship Mode <b class="caret"></b></a>
+                                       <ul class="dropdown-menu">
+                                          <li><a href="#">Ascending</a></li>
+                                          <li><a href="#">Descending</a></li>
+                                       </ul>
+                                    </th>
+                                 </tr>
+                              </thead>
+                              <tbody class="no-border-x">
+                                 <tr>
+                                    <td>1</td>
+                                    <td>07-01-2016</td>
+                                    <td>High</td>
+                                    <td>5.2</td>
+                                    <td>0.04</td>
+                                    <td>Regular Air</td>
+                                 </tr>
+                                 <tr>
+                                    <td>2</td>
+                                    <td>07-01-2016</td>
+                                    <td>Low</td>
+                                    <td>5.2</td>
+                                    <td>0.04</td>
+                                    <td>Regular Air</td>
+                                 </tr>
+                                 <tr>
+                                    <td>3</td>
+                                    <td>07-01-2016</td>
+                                    <td>Low</td>
+                                    <td>5.2</td>
+                                    <td>0.04</td>
+                                    <td>Regular Air</td>
+                                 </tr>
+                                 <tr>
+                                    <td>4</td>
+                                    <td>07-01-2016</td>
+                                    <td>Low</td>
+                                    <td>5.2</td>
+                                    <td>0.04</td>
+                                    <td>Regular Air</td>
+                                 </tr>
+                                 <tr>
+                                    <td>5</td>
+                                    <td>07-01-2016</td>
+                                    <td>Low</td>
+                                    <td>5.2</td>
+                                    <td>0.04</td>
+                                    <td>Regular Air</td>
+                                 </tr>
+                                 <tr>
+                                    <td>6</td>
+                                    <td>07-01-2016</td>
+                                    <td>Low</td>
+                                    <td>5.2</td>
+                                    <td>0.04</td>
+                                    <td>Regular Air</td>
+                                 </tr>
+                                 <tr>
+                                    <td>7</td>
+                                    <td>07-01-2016</td>
+                                    <td>Low</td>
+                                    <td>5.2</td>
+                                    <td>0.04</td>
+                                    <td>Regular Air</td>
+                                 </tr>
+                                 <tr>
+                                    <td>8</td>
+                                    <td>07-01-2016</td>
+                                    <td>Low</td>
+                                    <td>5.2</td>
+                                    <td>0.04</td>
+                                    <td>Regular Air</td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-3 preview_stats">
+					<!-- Start Tab Statistics -->
+                     <div id="tab_statistics" class="panel-group accordion accordion-semi">
+                        <div class="panel panel-primary-p1">
+                           <div class="panel-heading">
+                              <h4 class="panel-title"><a data-toggle="collapse" data-parent="#tab_statistics" href="#pnl_stc" aria-expanded="true" class="">Statistics <i class="fa fa-angle-down pull-right"></i></a></h4>
+                           </div>
+                           <div id="pnl_stc" class="panel-collapse collapse in" aria-expanded="true">
+                              <div class="panel-body">
+                                 <table class="no-border no-strip skills">
+                                    <tbody class="no-border-x no-border-y">
+                                       <tr>
+                                          <td class="item">Mean: </td>
+                                          <td>0.2166</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="item">Median: </td>
+                                          <td>0</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="item">Min: </td>
+                                          <td>0</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="item">Max: </td>
+                                          <td>1</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="item">Standard Deviation: </td>
+                                          <td> 0.4119</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+					 <!-- ./ End Tab Statistics -->
+					 <!-- Start Tab Visualizations -->
+                     <div id="tab_visualizations" class="panel-group accordion accordion-semi">
+                        <div class="panel panel-primary-p2">
+                           <div class="panel-heading">
+                              <h4 class="panel-title"><a data-toggle="collapse" data-parent="#tab_visualizations" href="#pnl_visl" aria-expanded="true" class="">Visualizations <i class="fa fa-angle-down pull-right"></i></a></h4>
+                           </div>
+                           <div id="pnl_visl" class="panel-collapse collapse in" aria-expanded="true">
+                              <div class="panel-body">
+                                 <img src="../assets/images/data_preview_graph.png" class="img-responsive" />
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+					 <!-- ./ End Tab Visualizations -->
+					 <!-- Start Tab Subsettings - -->
+					 <div id="tab_subsettings" class="panel-group accordion accordion-semi">
+                        <div class="panel panel-default">
+                           <div class="panel-heading">
+                              <h4 class="panel-title"><a data-toggle="collapse" data-parent="#tab_subsettings" href="#pnl_tbset" aria-expanded="true" class="">Sub Setting <i class="fa fa-angle-down pull-right"></i></a></h4>
+                           </div>
+                           <div id="pnl_tbset" class="panel-collapse collapse in" aria-expanded="true">
+                              <div class="panel-body">
+                              <div class="row">
+                                 <div class="col-xs-4">
+                                    <input type="text" class="form-control" id="from_value" value="0" />
+                                 </div>
+                                 <div class="col-xs-3">
+                                    <label>To</label>
+                                 </div>
+                                 <div class="col-xs-4">
+                                    <input type="text" class="form-control" id="to_value" value="10" />
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <input type="text" data-slider-value="[250,450]" data-slider-step="5" data-slider-max="1000" data-slider-min="10" value="" class="bslider form-control">
+                              </div>
+                           </div>
+                           </div>
+                        </div>
+                     </div>
+					 <!-- ./ End Tab Subsettings -->
+                  </div>
+               </div>
+
+			   <div class="row">
+				<div class="col-md-12 text-right">
+					<button class="btn btn-default"> Close </button>
+					<button class="btn btn-primary"> Save changes</button>
+					<button class="btn btn-primary"> Apply and Continue</button>
+				</div>
+			   </div>
+            </div>
+            <!-- /.Page Content Area -->
+         </div>
+         <!-- /. Main Content ends with side-body -->
+      </div>
+      <!-- /. Main Wrapper ** Mandatory -->
+      <!-- Bootstrap core JavaScript
+         ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/bootstrap-slider.js"></script>
+	  <style>
+	  .hover { border:2px solid blue; }
+	  </style>
+
+      <script>
+	  $('.bslider').slider();
+$("table").delegate('td','mouseover mouseleave', function(e) {
+    if (e.type == 'mouseover') {
+     // $(this).parent().addClass("hover");
+      $("colgroup").eq($(this).index()).addClass("hover");
+    }
+    else {
+      $(this).parent().removeClass("hover");
+      $("colgroup").eq($(this).index()).removeClass("hover");
+    }
+});
+      </script>
+      <script src="js/uiScripts.js"></script>
+   </body>
+</html>

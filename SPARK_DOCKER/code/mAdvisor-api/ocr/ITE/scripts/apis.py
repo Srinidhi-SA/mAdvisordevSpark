@@ -6,13 +6,13 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-
 import backoff
 import requests
 import simplejson as json
 from django.conf import settings
 from google.cloud import vision
 from google.protobuf.json_format import MessageToJson
+from protobuf_to_dict import protobuf_to_dict
 from requests import HTTPError
 
 
@@ -55,6 +55,38 @@ class Api_Call:
     def page_wise_response(self, page_number):
         return [i for i in self.doc_analysis["analyzeResult"]["readResults"]
                 if (i["page"] == page_number)][0]
+
+    def text_from_Azure_API_3_1(self):
+
+        vision_base_url = 'https://madvisor.cognitiveservices.azure.com/vision/v3.1-preview.2/'
+        text_recognition_url = vision_base_url + "read/analyze"
+        data = open(self.doc_path, "rb").read()
+
+        headers = {'x-api-key': '04jAWz0LXuaLKwtul56lS3PAEpTLNtdn1Gsrgl3k',
+                   'Ocp-Apim-Subscription-Key': settings.SUBSCRIPTION_KEY,
+                   'Content-Type': 'application/octet-stream'}
+
+        response = requests.post(
+            text_recognition_url,
+            headers=headers,
+            data=data)
+        response.raise_for_status()
+
+        analysis = {}
+        poll = True
+        while poll:
+            response_final = requests.get(
+                response.headers["Operation-Location"], headers=headers)
+            analysis = response_final.json()
+
+            if "status" in analysis and analysis['status'] == 'succeeded':
+                poll = False
+
+        print('Executed')
+        self.doc_analysis = analysis
+
+    def page_wise_response_3_1(self, page_number):
+        return [i for i in self.doc_analysis["analyzeResult"]["readResults"] if (i["page"] == 1)][0]
 
 
 class Api_Call2:
@@ -139,6 +171,19 @@ class Api_Call2:
         return analysis_old
 
 
+# def fetch_google_response2(path):
+#     """Detects text in the file."""
+#
+#     client = vision.ImageAnnotatorClient()
+#     with io.open(path, 'rb') as image_file:
+#         content = image_file.read()
+#     image = vision.types.Image(content=content)
+#     response = client.document_text_detection(image=image)
+#     texts = response.text_annotations
+#     response = json.loads(MessageToJson(response))
+#
+#     return response
+
 def fetch_google_response2(path):
     """Detects text in the file."""
 
@@ -146,8 +191,9 @@ def fetch_google_response2(path):
     with io.open(path, 'rb') as image_file:
         content = image_file.read()
     image = vision.types.Image(content=content)
-    response = client.text_detection(image=image)
-    texts = response.text_annotations
-    response = json.loads(MessageToJson(response))
-
-    return response
+    response = client.document_text_detection(image=image)
+    # response = json.loads(MessageToJson(response))
+    # print(response.keys())
+    text_resp = protobuf_to_dict(response)
+    return text_resp
+    # return response

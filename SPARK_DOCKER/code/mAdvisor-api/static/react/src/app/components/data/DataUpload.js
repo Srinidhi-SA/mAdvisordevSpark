@@ -1,17 +1,18 @@
 import React from "react";
 import {connect} from "react-redux";
-import {
-  Modal,
-  Button
-} from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import store from "../../store";
 import { ACCESSDENIED} from "../../helpers/helper";
-import {open, close, dataUpload} from "../../actions/dataUploadActions";
-import {saveFileToStore, updateSelectedDataSrc} from "../../actions/dataSourceListActions";
-import {DataSourceList} from "./DataSourceList";
+import { open, close, dataUpload} from "../../actions/dataUploadActions";
+import { saveFileToStore, updateSelectedDataSrc} from "../../actions/dataSourceListActions";
+import { DataSourceList} from "./DataSourceList";
 
 @connect((store) => {
-  return {login_response: store.login.login_response, showModal: store.dataUpload.dataUploadShowModal, fileDataUpload: store.dataUpload.fileUpload, selectedDataset: store.datasets.selectedDataSet, dataList: store.datasets.dataList};
+  return {
+    showModal: store.dataUpload.dataUploadShowModal,
+    fileDataUpload: store.dataUpload.fileUpload,
+    selectedDataset: store.datasets.selectedDataSet,
+    dataList: store.datasets.dataList};
 })
 
 export class DataUpload extends React.Component {
@@ -49,9 +50,9 @@ export class DataUpload extends React.Component {
       <div className="col-md-3 xs-mb-15 list-boxes" title={title}>
         <div className={cls} onClick={this.openPopup}>
           <div className="card-header"></div>
-            <div className="card-center newStoryCard">			
-              <h2 class="text-center"><i class="fa fa-file-text-o fa-2x"></i> Upload Data </h2>
-            </div>
+          <div className="card-center newStoryCard">			
+            <h2 class="text-center"><i class="fa fa-file-text-o fa-2x"></i> Upload Data </h2>
+          </div>
         </div>
         <div id="uploadData" role="dialog" className="modal fade modal-colored-header">
           <Modal show={store.getState().dataUpload.dataUploadShowModal} onHide={this.closePopup} dialogClassName="modal-colored-header uploadData">

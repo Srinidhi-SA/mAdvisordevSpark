@@ -9,13 +9,9 @@ import {REPLACE,REMOVE,	CURRENTVALUE,NEWVALUE} from "../../helpers/helper.js"
 
 
 @connect((store) => {
-	return {login_response: store.login.login_response,
-		dataList: store.datasets.dataList,
-		dataPreview: store.datasets.dataPreview,
+	return {
 		variableTypeListModal:store.datasets.variableTypeListModal,
-		dataTransformSettings:store.datasets.dataTransformSettings,
 		selectedColSlug:store.datasets.selectedColSlug,
-		editSelectedSlug:store.datasets.editSelectedSlug,
 		dataSetColumnRemoveValues:store.datasets.dataSetColumnRemoveValues,
 		dataSetColumnReplaceValues:store.datasets.dataSetColumnReplaceValues,
 		dataTransformSettings:store.datasets.dataTransformSettings,
@@ -58,36 +54,32 @@ export class DataValidationEditValues extends React.Component {
 					}else if(remove[0].valueToReplace == ""){
 							if(replace[0].replacedValue == "" && replace[0].valueToReplace == ""){
 								this.props.dispatch(replaceValuesErrorAction("Please fill in the fields to save"));							
-							}else if(replace[0].replacedValue != "" && replace[0].valueToReplace == ""){
+							}else if((replace[0].replacedValue != "" && replace[0].valueToReplace == "") ||
+								(replace[0].replacedValue == "" && replace[0].valueToReplace != "") ){
 								this.props.dispatch(replaceValuesErrorAction("Please fill the values to replace and save"));							
-							}else if(replace[0].replacedValue == "" && replace[0].valueToReplace != ""){
-								this.props.dispatch(replaceValuesErrorAction("Please fill the values to replace and save"));
 							}else{
 							this.props.dispatch(handleSaveEditValues(this.props.selectedColSlug));
 							}
 					}else if(remove[0].valueToReplace != ""){
 						if(replace[0].replacedValue == "" && replace[0].valueToReplace == ""){
 							this.props.dispatch(handleSaveEditValues(this.props.selectedColSlug));
-						}else if(replace[0].replacedValue != "" && replace[0].valueToReplace == ""){
-							this.props.dispatch(replaceValuesErrorAction("Please fill the values to replace and save"));							
-						}else if(replace[0].replacedValue == "" && replace[0].valueToReplace != ""){
-							this.props.dispatch(replaceValuesErrorAction("Please fill the values to replace and save"));
+						}else if((replace[0].replacedValue != "" && replace[0].valueToReplace == "") ||
+							(replace[0].replacedValue == "" && replace[0].valueToReplace != "")){
+							this.props.dispatch(replaceValuesErrorAction("Please fill the values to replace and save"));				   
 						}else{
 						this.props.dispatch(handleSaveEditValues(this.props.selectedColSlug));
 						}
 					}else if(replace[0].replacedValue != "" && replace[0].valueToReplace != ""){
 						if(remove[0].valueToReplace == ""){
-						this.props.dispatch(replaceValuesErrorAction("Please fill the values to remove and save"));							
+						this.props.dispatch(replaceValuesErrorAction("Please fill the values to remove and save"));       
 						}
-					}
-					else{
+					}else{
 						this.props.dispatch(handleSaveEditValues(this.props.selectedColSlug));
 					}
-		}else if(replen == 1 && remlen != 1){
-					if(replace[0].replacedValue != "" && replace[0].valueToReplace == ""){
-						this.props.dispatch(replaceValuesErrorAction("Please fill the values to replace and save"));							
-					}else if(replace[0].replacedValue == "" && replace[0].valueToReplace != ""){
-						this.props.dispatch(replaceValuesErrorAction("Please fill the values to replace and save"));							
+				}else if(replen == 1 && remlen != 1){
+					if((replace[0].replacedValue != "" && replace[0].valueToReplace == "") ||
+						(replace[0].replacedValue == "" && replace[0].valueToReplace != "")){
+						this.props.dispatch(replaceValuesErrorAction("Please fill the values to replace and save"));
 					}else{
 						for(let i=0;i<remlen;i++){
 							if(remove[i].valueToReplace == ""){
@@ -97,7 +89,7 @@ export class DataValidationEditValues extends React.Component {
 							}
 						}
 					}
-		}else if(replen != 1 && remlen == 1){
+				}else if(replen != 1 && remlen == 1){
 					for(let i=0;i<replen;i++){
 						if(replace[i].replacedValue == "" && replace[i].valueToReplace == ""){
 							this.props.dispatch(replaceValuesErrorAction("Please fill the values to replace and save"));							
@@ -114,7 +106,7 @@ export class DataValidationEditValues extends React.Component {
 	
   renderReplaceList(colData,replaceType){
 	  let optionList = null;
-	  let list = colData.map((actionNames,index)=>{
+	  let list = colData.map((actionNames)=>{
 		  if(actionNames.actionName == REPLACE){
 			  optionList = actionNames.replaceTypeList.map((subItem,subIndex)=>{
 					if(replaceType == subItem.name)
@@ -132,16 +124,14 @@ export class DataValidationEditValues extends React.Component {
 	  let transformationSettings = store.getState().datasets.dataTransformSettings;
 	  let replaceTypeList = "";
 	  if(transformationSettings != undefined){
-		  transformationSettings.map((columnData,columnIndex) =>{
+		  transformationSettings.map((columnData) =>{
 		    if(that.props.selectedColSlug == columnData.slug){
 		    	this.columnData = columnData;
 		    }
 			});
 	  }
-	  let dataSetColumnRemoveValues = this.props.dataSetColumnRemoveValues;
-		let dataSetColumnReplaceValues = this.props.dataSetColumnReplaceValues;
 
-	const templateTextBoxes = dataSetColumnRemoveValues.map((data,id) =>{
+	const templateTextBoxes = this.props.dataSetColumnRemoveValues.map((data,id) =>{
 		if(that.columnData != null){
 			replaceTypeList  = (function(){
 				var optionValues = that.renderReplaceList(that.columnData.columnSetting,data.replaceType);
@@ -164,7 +154,7 @@ export class DataValidationEditValues extends React.Component {
 		);
 	});
 		
-	const replaceTextBoxes = dataSetColumnReplaceValues.map((data,id) =>{
+	const replaceTextBoxes = this.props.dataSetColumnReplaceValues.map((data,id) =>{
 		if(that.columnData != null){
 			replaceTypeList  = (function(){
 				var optionValues = that.renderReplaceList(that.columnData.columnSetting,data.replaceType);

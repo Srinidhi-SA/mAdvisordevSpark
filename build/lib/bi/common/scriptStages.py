@@ -97,9 +97,7 @@ class messages_list(object):
                 output_messages.append(i)
 
         if self._jobType == 'metaData':
-            print("--------------------------metadata-------------------")
             for i in self._metaData_messages:
-                print("44444444444444444444444444444444444444444444444------",i)
                 output_messages.append(i)
 
 #        if self._jobType == 'stockAdvisor':

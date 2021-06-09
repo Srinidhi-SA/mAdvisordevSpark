@@ -189,73 +189,70 @@ class LogisticRegressionScript(object):
                 print(params_grid)
                 if hyperParamAlgoName == "gridsearchcv":
                     clfGrid = GridSearchCV(clf, params_grid)
-                    gridParams = clfGrid.get_params()
-                    hyperParamInitParam = {k:v for k,v in list(hyperParamInitParam.items()) if k in gridParams}
-                    clfGrid.set_params(**hyperParamInitParam)
-                    modelmanagement_=clfGrid.get_params()
-                    #clfGrid.fit(x_train,y_train)
-                    grid_param={}
-                    grid_param['params']=ParameterGrid(params_grid)
-                    #bestEstimator = clfGrid.best_estimator_
-                    modelFilepath = "/".join(model_filepath.split("/")[:-1])
-                    #sklearnHyperParameterResultObj = SklearnGridSearchResult(clfGrid.cv_results_,clf,x_train,x_test,y_train,y_test,appType,modelFilepath,levels,posLabel,evaluationMetricDict)
-                    sklearnHyperParameterResultObj = SklearnGridSearchResult(grid_param,clf,x_train,x_test,y_train,y_test,appType,modelFilepath,levels,posLabel,evaluationMetricDict)
-                    resultArray = sklearnHyperParameterResultObj.train_and_save_models()
-                    #print resultArray
-
-                    resultArrayDict = {
-                                        "Model_Id" : [],
-                                        "Algorithm_Name": [],
-                                        "Metric_Selected": [],
-                                        "Accuracy": [],
-                                        "Precision": [],
-                                        "Recall": [],
-                                        "ROC_AUC": [],
-                                        "Run_Time": []
-                                        }
-                    for val in resultArray:
-                        resultArrayDict["Model_Id"].append(val["Model Id"])
-                        resultArrayDict["Algorithm_Name"].append(val["algorithmName"])
-                        resultArrayDict["Metric_Selected"].append(val["comparisonMetricUsed"])
-                        resultArrayDict["Accuracy"].append(val["Accuracy"])
-                        resultArrayDict["Precision"].append(val["Precision"])
-                        resultArrayDict["Recall"].append(val["Recall"])
-                        resultArrayDict["ROC_AUC"].append(val["ROC-AUC"])
-                        resultArrayDict["Run_Time"].append(val["Run Time(Secs)"])
-                        comparison_metric_used = val["comparisonMetricUsed"]
-
-                    resultArraydf = pd.DataFrame.from_dict(resultArrayDict)
-
-                    if comparison_metric_used == "Accuracy":
-                        resultArraydf = resultArraydf.sort_values(by = ['Accuracy'], ascending = False)
-                        best_model_by_metric_chosen = resultArraydf["Model_Id"].iloc[0]
-                    elif comparison_metric_used == "Recall":
-                        resultArraydf = resultArraydf.sort_values(by = ['Recall'], ascending = False)
-                        best_model_by_metric_chosen = resultArraydf["Model_Id"].iloc[0]
-                    elif comparison_metric_used == "Precision":
-                        resultArraydf = resultArraydf.sort_values(by = ['Precision'], ascending = False)
-                        best_model_by_metric_chosen = resultArraydf["Model_Id"].iloc[0]
-                    elif comparison_metric_used == "ROC-AUC":
-                        resultArraydf = resultArraydf.sort_values(by = ['ROC_AUC'], ascending = False)
-                        best_model_by_metric_chosen = resultArraydf["Model_Id"].iloc[0]
-
-                    print("BEST MODEL BY CHOSEN METRIC - ", best_model_by_metric_chosen)
-                    print(resultArraydf.head(20))
-                    hyper_st=time.time()
-                    bestEstimator = sklearnHyperParameterResultObj.getBestModel()
-                    bestParams = sklearnHyperParameterResultObj.getBestParam()
-                    bestEstimator = bestEstimator.set_params(**bestParams)
-                    bestEstimator.fit(x_train,y_train)
-                    bestEstimator.feature_names = list(x_train.columns.values)
-
-                    self._result_setter.set_hyper_parameter_results(self._slug,resultArray)
-                    self._result_setter.set_metadata_parallel_coordinates(self._slug,{"ignoreList":sklearnHyperParameterResultObj.get_ignore_list(),"hideColumns":sklearnHyperParameterResultObj.get_hide_columns(),"metricColName":sklearnHyperParameterResultObj.get_comparison_metric_colname(),"columnOrder":sklearnHyperParameterResultObj.get_keep_columns()})
                 elif hyperParamAlgoName == "randomsearchcv":
-                    hyper_st=time.time()
-                    clfRand = RandomizedSearchCV(clf,params_grid)
-                    clfRand.set_params(**hyperParamInitParam)
-                    modelmanagement_=clfRand.get_params()
-                    bestEstimator = None
+                    clfGrid = RandomizedSearchCV(clf,params_grid)
+                gridParams = clfGrid.get_params()
+                hyperParamInitParam = {k:v for k,v in list(hyperParamInitParam.items()) if k in gridParams}
+                clfGrid.set_params(**hyperParamInitParam)
+                modelmanagement_=clfGrid.get_params()
+                #clfGrid.fit(x_train,y_train)
+                grid_param={}
+                grid_param['params']=ParameterGrid(params_grid)
+                #bestEstimator = clfGrid.best_estimator_
+                modelFilepath = "/".join(model_filepath.split("/")[:-1])
+                #sklearnHyperParameterResultObj = SklearnGridSearchResult(clfGrid.cv_results_,clf,x_train,x_test,y_train,y_test,appType,modelFilepath,levels,posLabel,evaluationMetricDict)
+                sklearnHyperParameterResultObj = SklearnGridSearchResult(grid_param,clf,x_train,x_test,y_train,y_test,appType,modelFilepath,levels,posLabel,evaluationMetricDict)
+                resultArray = sklearnHyperParameterResultObj.train_and_save_models()
+                #print resultArray
+
+                resultArrayDict = {
+                                    "Model_Id" : [],
+                                    "Algorithm_Name": [],
+                                    "Metric_Selected": [],
+                                    "Accuracy": [],
+                                    "Precision": [],
+                                    "Recall": [],
+                                    "ROC_AUC": [],
+                                    "Run_Time": []
+                                    }
+                for val in resultArray:
+                    resultArrayDict["Model_Id"].append(val["Model Id"])
+                    resultArrayDict["Algorithm_Name"].append(val["algorithmName"])
+                    resultArrayDict["Metric_Selected"].append(val["comparisonMetricUsed"])
+                    resultArrayDict["Accuracy"].append(val["Accuracy"])
+                    resultArrayDict["Precision"].append(val["Precision"])
+                    resultArrayDict["Recall"].append(val["Recall"])
+                    resultArrayDict["ROC_AUC"].append(val["ROC-AUC"])
+                    resultArrayDict["Run_Time"].append(val["Run Time(Secs)"])
+                    comparison_metric_used = val["comparisonMetricUsed"]
+
+                resultArraydf = pd.DataFrame.from_dict(resultArrayDict)
+
+                if comparison_metric_used == "Accuracy":
+                    resultArraydf = resultArraydf.sort_values(by = ['Accuracy'], ascending = False)
+                    best_model_by_metric_chosen = resultArraydf["Model_Id"].iloc[0]
+                elif comparison_metric_used == "Recall":
+                    resultArraydf = resultArraydf.sort_values(by = ['Recall'], ascending = False)
+                    best_model_by_metric_chosen = resultArraydf["Model_Id"].iloc[0]
+                elif comparison_metric_used == "Precision":
+                    resultArraydf = resultArraydf.sort_values(by = ['Precision'], ascending = False)
+                    best_model_by_metric_chosen = resultArraydf["Model_Id"].iloc[0]
+                elif comparison_metric_used == "ROC-AUC":
+                    resultArraydf = resultArraydf.sort_values(by = ['ROC_AUC'], ascending = False)
+                    best_model_by_metric_chosen = resultArraydf["Model_Id"].iloc[0]
+
+                print("BEST MODEL BY CHOSEN METRIC - ", best_model_by_metric_chosen)
+                print(resultArraydf.head(20))
+                hyper_st=time.time()
+                bestEstimator = sklearnHyperParameterResultObj.getBestModel()
+                bestParams = sklearnHyperParameterResultObj.getBestParam()
+                bestEstimator = bestEstimator.set_params(**bestParams)
+                bestEstimator.fit(x_train,y_train)
+                bestEstimator.feature_names = list(x_train.columns.values)
+
+                self._result_setter.set_hyper_parameter_results(self._slug,resultArray)
+                self._result_setter.set_metadata_parallel_coordinates(self._slug,{"ignoreList":sklearnHyperParameterResultObj.get_ignore_list(),"hideColumns":sklearnHyperParameterResultObj.get_hide_columns(),"metricColName":sklearnHyperParameterResultObj.get_comparison_metric_colname(),"columnOrder":sklearnHyperParameterResultObj.get_keep_columns()})
+
             else:
                 evaluationMetricDict = algoSetting.get_evaluvation_metric(Type="CLASSIFICATION")
                 evaluationMetricDict["displayName"] = GLOBALSETTINGS.SKLEARN_EVAL_METRIC_NAME_DISPLAY_MAP[evaluationMetricDict["name"]]
@@ -263,6 +260,7 @@ class LogisticRegressionScript(object):
                 algoParams = algoSetting.get_params_dict()
 
                 if automl_enable:
+                    hyperParamAlgoName = 'randomsearchcv'
                     params_grid={'C': [0.001,0.01,0.55,1.0],
                                 'fit_intercept':[True],
                                 'max_iter':[50,100]
@@ -274,14 +272,14 @@ class LogisticRegressionScript(object):
                         params_grid['solver'] = ['saga']#['lbfgs', 'newton-cg']
                         params_grid['penalty'] = ['l2']
                     hyperParamInitParam={'evaluationMetric': 'roc_auc', 'kFold': 5}
-                    clfGrid = GridSearchCV(clf,params_grid)
-                    gridParams = clfGrid.get_params()
+                    clfRand = RandomizedSearchCV(clf,params_grid)
+                    gridParams = clfRand.get_params()
                     hyperParamInitParam = {k:v for k,v in list(hyperParamInitParam.items()) if k in gridParams }
-                    clfGrid.set_params(**hyperParamInitParam)
-                    modelmanagement_=clfGrid.get_params()
+                    clfRand.set_params(**hyperParamInitParam)
+                    modelmanagement_=clfRand.get_params()
                     numFold=4
                     validationDict["value"]=numFold
-                    kFoldClass = SkleanrKFoldResult(numFold,clfGrid,x_train,x_test,y_train,y_test,appType,levels,posLabel,evaluationMetricDict=evaluationMetricDict)
+                    kFoldClass = SkleanrKFoldResult(numFold,clfRand,x_train,x_test,y_train,y_test,appType,levels,posLabel,evaluationMetricDict=evaluationMetricDict)
                     kFoldClass.train_and_save_result()
                     kFoldOutput = kFoldClass.get_kfold_result()
                     bestEstimator =kFoldClass.get_best_estimator()
@@ -292,6 +290,7 @@ class LogisticRegressionScript(object):
                     bestEstimator.fit(x_train, y_train)
                     print("LogisticRegression AuTO ML gridSearch CV#######################3")
                 else:
+                    hyperParamAlgoName = 'None'
                     algoParams = {k:v for k,v in list(algoParams.items()) if k in list(clf.get_params().keys())}
                     if len(levels) > 2:
                         algoParams = {k:v for k,v in list(algoParams.items()) if k not in ["multi_class"]}
@@ -560,6 +559,7 @@ class LogisticRegressionScript(object):
                 self._model_management.set_target_variable(result_column)#target column name
                 self._model_management.set_creation_date(data=str(datetime.now().strftime('%b %d ,%Y  %H:%M ')))#creation date
                 self._model_management.set_datasetName(self._datasetName)
+                self._model_management.set_hyperParamAlgoName(hyperParamAlgoName)
             else:
                 def set_model_params(x):
                     self._model_management.set_fit_intercept(data=modelmanagement_[x]['fit_intercept'][0])
@@ -581,6 +581,7 @@ class LogisticRegressionScript(object):
                     self._model_management.set_target_variable(result_column)#target column name
                     self._model_management.set_creation_date(data=str(datetime.now().strftime('%b %d ,%Y  %H:%M ')))#creation date
                     self._model_management.set_datasetName(self._datasetName)
+                    self._model_management.set_hyperParamAlgoName(hyperParamAlgoName)
                 try:
                     set_model_params('param_grid')
                 except:
@@ -606,6 +607,7 @@ class LogisticRegressionScript(object):
                         ["Target Column Value",self._model_management.get_target_level()],
                         ["Number Of Independent Variables",self._model_management.get_no_of_independent_variables()],
                         ["Algorithm",self._model_management.get_algorithm_name()],
+                        ["HyperParamAlgoName",self._model_management.get_hyperParamAlgoName()],
                         ["Model Validation",self._model_management.get_validation_method()],
                         ["Fit Intercept",str(self._model_management.get_fit_intercept())],
                         ["SolverUsed",self._model_management.get_solver_used()],

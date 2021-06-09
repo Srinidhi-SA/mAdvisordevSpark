@@ -26,6 +26,7 @@ from pyspark.ml import Pipeline
 import pandas as pd
 from pyspark.sql import SQLContext
 from pyspark.sql.types import *
+import pyspark.sql.functions as F
 
 class ChiSquareNarratives(object):
     #@accepts(object, int, DFChiSquareResult ,ContextSetter)
@@ -178,6 +179,7 @@ class ChiSquareNarratives(object):
                 clean_df = FeatureEngineeringAutoML_obj.data_frame
         if self._pandas_flag:
             ind_var = clean_df.drop(target_dimension[0],1)
+            ind_var = ind_var[ind_var._get_numeric_data().columns]
             target = clean_df[target_dimension[0]]
             dtree = DecisionTreeClassifier(criterion='gini', max_depth=5, random_state=42)
             dtree.fit(ind_var, target)
@@ -188,6 +190,7 @@ class ChiSquareNarratives(object):
             num_var = [col[0] for col in clean_df.dtypes if ((col[1]=='int') | (col[1]=='double')) & (col[0]!=target_dimension[0])]
             num_var = [col for col in num_var if not col.endswith('indexed')]
             labels_count = [len(clean_df.select(col).distinct().collect()) for col in num_var]
+            # labels_count = [len(clean_df.agg((F.collect_set(col).alias(col))).first().asDict()[col]) for col in num_var]
             labels_count.sort()
             max_count =  labels_count[-1]
             label_indexes = StringIndexer(inputCol = target_dimension[0] , outputCol = 'label', handleInvalid = 'keep')
@@ -214,6 +217,7 @@ class ChiSquareNarratives(object):
             feat_imp_ori_dict.update({col:sum(fea_imp_ori_list)})
         sort_dict = dict(sorted(feat_imp_ori_dict.items(), key=lambda x: x[1],reverse = True))
         if self._pandas_flag:
+            self._data_frame = self._data_frame.apply(lambda col: pd.to_datetime(col, errors='ignore') if col.dtypes == object else col, axis=0)
             cat_var = [key for key in dict(self._data_frame.dtypes) if dict(self._data_frame.dtypes)[key] in ['object']]
         else:
             cat_var = [col[0] for col in self._data_frame.dtypes if col[1]=='string']

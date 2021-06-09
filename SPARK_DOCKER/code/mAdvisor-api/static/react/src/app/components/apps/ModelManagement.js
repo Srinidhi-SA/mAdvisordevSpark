@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Link, Redirect} from "react-router-dom";
+import {Link} from "react-router-dom";
 import store from "../../store"
 import {openDeployModalAction, closeDeployModalAction, storeAlgoSearchElement,saveDeployValueAction} from "../../actions/modelManagementActions"
 import {Button,Modal, Pagination} from "react-bootstrap";
@@ -11,19 +11,13 @@ import {emptyAlgoAnalysis} from "../../actions/signalActions";
 import { DeployPopup } from "./DeployPopup";
 import {getAppsAlgoList,refreshAppsAlgoList,handleAlgoDelete,handleAlgoClone,getAppDetails,getAllProjectList,getDeployPreview,createDeploy} from "../../actions/appActions";
 
-var dateFormat = require('dateformat');
 @connect((store) => {
   return {
     algoList: store.apps.algoList,
     currentAppId: store.apps.currentAppId,
-    roboDatasetSlug: store.apps.roboDatasetSlug,
-    algoAnalysis:store.signals.algoAnalysis,
     allProjects : store.apps.allProjects ,
-    modelSlug: store.apps.modelSlug,
     currentAppDetails: store.apps.currentAppDetails,
-    modelSlug: store.apps.modelSlug,
     deployShowModal: store.apps.deployShowModal,
-    selectedSummary :store.summarySelected,
     algo_search_element :store.apps.algo_search_element,
     deployData: store.apps.deployData,
     deployItem:store.apps.deployItem,
@@ -34,28 +28,22 @@ export class ModelManagement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.handleSelect = this.handleSelect.bind(this);
-    this.pickValue = this.pickValue.bind(this);
-
   }
 
  componentWillMount() {
    this.clearSearchElement();
-  if(this.props.match.params.AppId=="automated-prediction-30vq9q5scd"){
-    var appId=2;
-  }
-   else appId=13;
-  
-  this.props.dispatch(getAllProjectList(pageNo,appId));
-  var pageNo = 1;
+    if(this.props.match.params.AppId=="automated-prediction-30vq9q5scd"){
+      var appId=2;
+    }else appId=13;
+    this.props.dispatch(getAllProjectList(appId));
+    var pageNo = 1;
     if(this.props.history.location.search.indexOf("page") != -1){
-        pageNo = this.props.history.location.search.split("page=")[1];
+      pageNo = this.props.history.location.search.split("page=")[1];
     }
     if(store.getState().apps.currentAppId == ""){
-        this.props.dispatch(getAppDetails(this.props.match.params.AppId,pageNo));
-    }else
-    {
-        this.props.dispatch(getAppsAlgoList(pageNo));
+      this.props.dispatch(getAppDetails(this.props.match.params.AppId,pageNo));
+    }else{
+      this.props.dispatch(getAppsAlgoList(pageNo));
     }
   }
 
@@ -63,8 +51,7 @@ export class ModelManagement extends React.Component {
     this.props.dispatch(refreshAppsAlgoList(this.props));
   }
 
-  closeModelmanagement()
-  {
+  closeModelmanagement(){
     this.clearSearchElement();
     var proccedUrl = this.props.match.url.replace('modelManagement','models');
     this.props.history.push(proccedUrl);
@@ -78,7 +65,7 @@ export class ModelManagement extends React.Component {
     this.props.dispatch(handleAlgoClone(slug, this.refs.dialog));
   }
 
-  pickValue(actionType, event){
+  pickValue(event){
     if(this.state[this.props.deployItem] == undefined){
       this.state[this.props.deployItem] = {}
     }
@@ -106,11 +93,8 @@ export class ModelManagement extends React.Component {
     this.selectedData = $("#project_all").val();
     this.props.dispatch(getDeployPreview(pageNo,this.selectedData));
   }
-  getAllDeployPreview(){
-    this.props.dispatch(getAppsAlgoList(1));
-  }
 
-  validateDeployData(actionType,event){
+  validateDeployData(){
     var slugData = this.state[this.props.deployItem];
     if(slugData != undefined && this.state[this.props.deployItem] != undefined){
       var deployData = this.state[this.props.deployItem];
@@ -161,56 +145,56 @@ export class ModelManagement extends React.Component {
     }
   }
 
-  getAlgoAnalysis(item,e) {
+  getAlgoAnalysis() {
     this.props.dispatch(emptyAlgoAnalysis());
   }
 
   _handleKeyPress = (e) => {
-    var modeSelected= store.getState().apps.analystModeSelectedFlag?'/analyst' :'/autoML'
-      if (e.target.value != "" && e.target.value != null)
-        this.props.history.push('/apps/'+this.props.match.params.AppId+ modeSelected+'/modelManagement?search=' + e.target.value + '')
-        this.props.dispatch(storeAlgoSearchElement(e.target.value));
-        this.selectedData = $("#project_all").val();
-        var pageNo =1;
-        this.props.dispatch(getDeployPreview(pageNo,this.selectedData));
+    if (e.target.value != "" && e.target.value != null)
+      this.props.history.push(this.props.match.url+'?search=' + e.target.value + '')
+    this.props.dispatch(storeAlgoSearchElement(e.target.value));
+    this.selectedData = $("#project_all").val();
+    var pageNo =1;
+    this.props.dispatch(getDeployPreview(pageNo,this.selectedData));
   }
 
 
 
   handleSelect(eventKey) {
-    var modeSelected= store.getState().apps.analystModeSelectedFlag?'/analyst' :'/autoML'
-
     if (this.props.algo_search_element) {
-        this.props.history.push('/apps/'+this.props.match.params.AppId+modeSelected+'/modelManagement?search=' + this.props.model_search_element+'?page='+eventKey+'')
+      this.props.history.push(this.props.match.url+'?search=' + this.props.model_search_element+'?page='+eventKey+'')
     }else
-        this.props.history.push('/apps/'+this.props.match.params.AppId+modeSelected+'/modelManagement?page='+eventKey+'')
-         this.selectedData = $("#project_all").val();
-        this.props.dispatch(getDeployPreview(eventKey,this.selectedData));
-  }
-
-  clearSearchElement(eventKey){
-    var modeSelected= store.getState().apps.analystModeSelectedFlag?'/analyst' :'/autoML'
-    this.props.dispatch(storeAlgoSearchElement(""));
-    this.props.history.push('/apps/'+this.props.match.params.AppId + modeSelected+'/modelManagement');
+      this.props.history.push(this.props.match.url+'?page='+eventKey+'')
     this.selectedData = $("#project_all").val();
     this.props.dispatch(getDeployPreview(eventKey,this.selectedData));
   }
+
+  clearSearchElement(eventKey){
+    this.props.dispatch(storeAlgoSearchElement(""));
+    this.props.history.push(this.props.match.url);
+    this.selectedData = $("#project_all").val();
+    this.props.dispatch(getDeployPreview(eventKey,this.selectedData));
+  }
+
+ setDateFormat(created_at){
+    let date = new Date( Date.parse(created_at) );
+    let fomattedDate=date.toLocaleString('default', { month: 'short' })+" "+date.getDate()+","+date.getFullYear()
+   return fomattedDate
+   }
 
   render(){
     if(isEmpty(this.props.algoList)|| isEmpty(this.props.allProjects)){
       return (
         <div className="side-body">
-            <img id="loading" src={ STATIC_URL + "assets/images/Preloader_2.gif" } />
+          <img id="loading" src={ STATIC_URL + "assets/images/Preloader_2.gif" } />
         </div>
       );
     }else{
       var mmTable = "";
       var deployPopup = "";
       var deployData = "";
-      var Details="Details"
       var thead5 = " "
       const algoList = store.getState().apps.algoList.data;
-      var none = none;
       const dataSets = this.props.allProjects;
 
       //Filter by projectName
@@ -228,65 +212,63 @@ export class ModelManagement extends React.Component {
       }
 
     //Filter by algorithm 
-          var renderSelectBoxAlgorithms="";
-          this.props.match.params.AppId!="automated-prediction-30vq9q5scd"? renderSelectBoxAlgorithms=(
-          <select className="select_filter" id="Algorithm_all" title="Filter By Algorithm" onChange={this._handleKeyPress.bind(this)}>
+      var renderSelectBoxAlgorithms="";
+      this.props.match.params.AppId!="automated-prediction-30vq9q5scd"? renderSelectBoxAlgorithms=(
+        <select className="select_filter" id="Algorithm_all" title="Filter By Algorithm" onChange={this._handleKeyPress.bind(this)}>
           <option value="">All</option>
           <option value="DT_">Decision Tree</option>
           <option value="GB_">GBTree Regression</option>
           <option value="RFR_">Random Forest Regression</option>
           <option value="LR_">Linear Regression</option>
           <option value="TF_">Neural Network (TensorFlow)</option>
-          </select>)
-          :renderSelectBoxAlgorithms=(
-            <select className="select_filter" id="Algorithm_all" title="Filter By Algorithm" onChange={this._handleKeyPress.bind(this)}>
-            <option value="">All</option>
-            <option value="RF_">Random Forest</option>
-            <option value="XG_">XG Boost</option>
-            <option value="LG_">Linear Regression</option>
-            <option value="NB_">Naive Bayes</option>
-            <option value="NN_">Neural Network (Sklearn)</option>
-            <option value="TF_">Neural Network (TensorFlow)</option>
-            <option value="PT_">Neural Network (PyTorch)</option>
-            <option value="EN_">Ensemble</option>
-            <option value="ADAB_">Adaboost</option>
-          </select>);
-
+        </select>)
+      :renderSelectBoxAlgorithms=(
+        <select className="select_filter" id="Algorithm_all" title="Filter By Algorithm" onChange={this._handleKeyPress.bind(this)}>
+          <option value="">All</option>
+          <option value="RF_">Random Forest</option>
+          <option value="XG_">XG Boost</option>
+          <option value="LG_">Linear Regression</option>
+          <option value="NB_">Naive Bayes</option>
+          <option value="NN_">Neural Network (Sklearn)</option>
+          <option value="TF_">Neural Network (TensorFlow)</option>
+          <option value="PT_">Neural Network (PyTorch)</option>
+          <option value="EN_">Ensemble</option>
+          <option value="ADAB_">Adaboost</option>
+        </select>);
     // mapping of list items into table
-   mmTable = this.props.algoList.data.map((item,key )=> {
-    var modeSelected= store.getState().apps.analystModeSelectedFlag?'/analyst' :'/autoML'
-
-        var AlgoLink = '/apps/' + this.props.match.params.AppId + modeSelected+'/modelManagement/'+  item.slug
+      mmTable = this.props.algoList.data.map((item,key )=> {
+        var AlgoLink = this.props.match.url +"/"+ item.slug
         return (
           <tr key={key} className={('all ' + item.name)}>
-          <td><label for="txt_lName1">{`${((this.props.algoList.current_page-1)*12)+key + 1}`}&nbsp;&nbsp;&nbsp;</label></td>
-          <td className="text-left"> {item.model_id}</td>
-          <td class="text-left"><div class="ellipse-text" title={item.project_name}> {item.project_name}</div></td>
-          <td className="text-left"> {item.algorithm}</td>
-          <td > {item.accuracy}</td>
-          <td> {dateFormat( item.created_at, " mmm d,yyyy")}</td>
-          <td> {item.deployment}</td>
-          <td> {item.total_deployment}</td>
-          <td> {item.runtime}</td>
-          <td><Button>
-            <Link to={AlgoLink} id={item.slug} onClick={this.getAlgoAnalysis.bind(this,item)} className="title">
-            {Details}
-            </Link></Button>
+            <td><label for="txt_lName1">{`${((this.props.algoList.current_page-1)*12)+key + 1}`}&nbsp;&nbsp;&nbsp;</label></td>
+            <td className="text-left"> {item.model_id}</td>
+            <td class="text-left"><div class="ellipse-text" title={item.project_name}> {item.project_name}</div></td>
+            <td className="text-left"> {item.algorithm}</td>
+            <td > {item.accuracy}</td>
+            <td> {this.setDateFormat( item.created_at)}</td>
+            <td> {item.deployment}</td>
+            <td> {item.total_deployment}</td>
+            <td> {item.runtime}</td>
+            <td><Button>
+              <Link to={AlgoLink} id={item.slug} onClick={this.getAlgoAnalysis.bind(this)} className="title">
+              Details
+              </Link></Button>
             </td>
-          <td>
-          <div class="pos-relative">
-            <a class="btn btn-space btn-default btn-round btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More...">
-              <i class="ci zmdi zmdi-hc-lg zmdi-more-vert"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li><a onClick={this.handleAlgoClone.bind(this, item.slug)}>Clone</a></li>
-              <li><a onClick={this.openDeployModal.bind(this,item.slug)} >Deploy</a></li>
-              <li><a onClick={this.handleAlgoDelete.bind(this, item.slug)} >Delete</a></li>
-              <Dialog ref="dialog"/>
-            </ul>
-          </div>
-        </td>
-      </tr>);
+            <td>
+              <div class="pos-relative">
+                <a class="btn btn-space btn-default btn-round btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More...">
+                  <i class="ci glyphicon glyphicon-option-vertical"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a onClick={this.handleAlgoClone.bind(this, item.slug)}>Clone</a></li>
+                  <li><a onClick={this.openDeployModal.bind(this,item.slug)} >Deploy</a></li>
+                  <li><a onClick={this.handleAlgoDelete.bind(this, item.slug)} >Delete</a></li>
+                  <Dialog ref="dialog"/>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        );
       })
     
       //Jsx element for table body content
@@ -309,7 +291,6 @@ export class ModelManagement extends React.Component {
       this.props.currentAppId == 13?thead5 = "Root Mean Square Error":thead5 = "Accuracy";
 
       deployData = "deployData";
-
       deployPopup = (
         <div class="col-md-3 xs-mb-15 list-boxes" >
           <div id="deployPopup" role="dialog" className="modal fade modal-colored-header">
@@ -318,7 +299,7 @@ export class ModelManagement extends React.Component {
                 <h3 className="modal-title">Deploy Model</h3>
               </Modal.Header>
               <Modal.Body>
-                <DeployPopup parentPickValue={this.pickValue}/>
+                <DeployPopup parentPickValue={this.pickValue.bind(this)}/>
               </Modal.Body>
               <Modal.Footer>
                 <Button onClick={this.closeDeployModal.bind(this)}>Cancel</Button>
@@ -329,13 +310,12 @@ export class ModelManagement extends React.Component {
         </div>
       )
       
-      //Pagination element
       if (algoList) {
         const pages = store.getState().apps.algoList.total_number_of_pages;
         const current_page = store.getState().apps.algoList.current_page;
         let paginationTag = null
         if(pages > 1){
-          paginationTag = <Pagination  ellipsis bsSize="medium" maxButtons={10} onSelect={this.handleSelect} first last next prev boundaryLinks items={pages} activePage={current_page}/>
+          paginationTag = <Pagination  ellipsis bsSize="medium" maxButtons={10} onSelect={this.handleSelect.bind(this)} first last next prev boundaryLinks items={pages} activePage={current_page}/>
         }
         
         let appName = this.props.currentAppDetails.displayName;

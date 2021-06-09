@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="images/favicon.ico">
+<title>mAdvisor Typography Page</title>
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<!-- Custom styles for this template 
+	<link href="css/nanoscroller.css" rel="stylesheet">-->
+<link href="css/style.css" rel="stylesheet">
+<link href="css/scrolltabs.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- Main Wrapper ** Mandatory -->
+<div class="main_wrapper"> 
+  
+  <!-- Header Menu -->
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation"> 
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <div class="brand-wrapper"> 
+        <!-- Hamburger -->
+        <button type="button" class="navbar-toggle"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        
+        <!-- Brand -->
+        <div class="brand-name-wrapper"> <a class="navbar-brand" href="#"></a> </div>
+      </div>
+    </div>
+    <div class="dropdown ma-user-nav"> <a class="dropdown-toggle" href="#" data-toggle="dropdown"> <i class="avatar-img img-circle">M</i> <img src="images/avatar.jpg" alt="M" class="avatar-img img-circle hide"><span class="user-name">Marlabs BI</span> <span class="caret"></span></a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="login.html">Logout</a></li>
+      </ul>
+    </div>
+    <div class="clearfix"></div>
+  </nav>
+  <!--/.Header Menu --> 
+  
+  <!-- Side bar Main Menu -->
+  <div class="side-menu">
+    <div class="side-menu-container">
+      <ul class="nav navbar-nav">
+        <li><a href="#" class="sdb_signal"> <span></span> SIGNAL</a></li>
+        <li class="active"><a href="story.html" class="sdb_story"> <span></span> STORY</a></li>
+        <li><a href="#" class="sdb_app"> <span></span> APPS</a></li>
+        <li><a href="data.html" class="sdb_data"> <span></span> DATA</a></li>
+        <li><a href="settings.html" class="sdb_settings"> <span></span> SETTINGS</a></li>
+      </ul>
+    </div>
+    <!-- /.Side bar Main Menu  --> 
+  </div>
+  <!-- ./Side bar Main Menu --> 
+  
+  <!-- Main Content starts with side-body -->
+  <div class="side-body"> 
+    
+    <!-- Page Title and Breadcrumbs -->
+    <div class="page-head">
+      <div class="row">
+        <div class="col-md-8">
+          <ol class="breadcrumb">
+            <li><a href="dashboard.html">Story</a></li>
+            <li><a href="story.html">Sales Performance Report</a></li>
+            <li class="active">Overview</li>
+          </ol>
+        </div>
+        <div class="col-md-4">
+          <div class="input-group pull-right">
+            <input type="text" name="search_global" title="Search Global" id="search_global" class="form-control" placeholder="Search...">
+            <span class="input-group-addon"><i class="fa fa-search fa-lg"></i></span></div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <!-- /.Page Title and Breadcrumbs --> 
+    
+    <!-- Page Content Area -->
+    <div class="main-content"> 
+      
+      <!-- Copy from here -->
+      
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-mAd">
+            <div class="panel-heading">
+              <h2 class="pull-left">Sales Performance Report</h2>
+              <div class="btn-toolbar pull-right">
+                <div class="btn-group btn-space">
+                  <button type="button" class="btn btn-default"><i class="fa fa-file-pdf-o"></i></button>
+                  <button type="button" class="btn btn-default"><i class="fa fa-print"></i></button>
+                  <button type="button" class="btn btn-default"><i class="fa fa-times"></i></button>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+              <div class="card full-width-tabs">
+                <ul class="nav nav-tabs" id="guide-tabs" role="tablist">
+                  <li class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab"><i class="mAd_icons tab_overview"></i><span>Overview</span></a></li>
+                  <li><a href="#trend" aria-controls="trend" role="tab" data-toggle="tab"><i class="mAd_icons tab_trend"></i><span>Trend</span></a></li>
+                  <li><a href="#performance" aria-controls="performance" role="tab" data-toggle="tab"><i class="mAd_icons tab_performance"></i><span>Performance</span></a></li>
+                  <li><a href="#influences" aria-controls="influences" role="tab" data-toggle="tab"><i class="mAd_icons tab_influences"></i><span>Influencers</span></a></li>
+                  <li><a href="#predictions" aria-controls="predictions" role="tab" data-toggle="tab"><i class="mAd_icons tab_predictions"></i><span>Predictions</span></a></li>
+                </ul>
+                
+                <!-- Tab panes -->
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="overview">
+					<div class="content_scroll">
+                    <h4 class="text-primary">Executive Summary</h4>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="panel">
+                          <div class="panel-heading summary_heading">
+                            <div class="btn-toolbar pull-right">
+                              <div class="btn-group btn-space">
+                                <button type="button" class="btn btn-default" data-target="#detail_view" data-toggle="modal"><i class="fa fa-search-plus"></i></button>
+                              </div>
+                            </div>
+                            <span class="title">Phenomenal growth during Jan-Dec - 2014</span> </div>
+                          <div class="panel-body">
+                            <div class="grp_height"> <img src="images/grp1.jpg" alt="grp 1" class="img-responsive"> </div>
+                            <div class="grp_legends grp_legends_green">
+                              <div class="grp_legend_label">
+                                <h3> 32% <small>Strong Growth</small> </h3>
+                              </div>
+                              <div class="grp_legend_label">
+                                <h3> $128K <small>Total Sales</small> </h3>
+                              </div>
+                              <div class="grp_more"> <a href="#"><span class="fa fa-ellipsis-h fa-2x"></span></a> </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="panel">
+                          <div class="panel-heading summary_heading">
+                            <div class="btn-toolbar pull-right">
+                              <div class="btn-group btn-space">
+                                <button type="button" class="btn btn-default"><i class="fa fa-search-plus"></i></button>
+                              </div>
+                            </div>
+                            <span class="title">Moderate Decline - Mar to June 2014</span> </div>
+                          <div class="panel-body">
+                            <div class="grp_height"> <img src="images/grp2.jpg" alt="grp 2" class="img-responsive"> </div>
+                            <div class="grp_legends grp_legends_red">
+                              <div class="grp_legend_label">
+                                <h3> 9% <small>Decline</small> </h3>
+                              </div>
+                              <div class="grp_legend_label">
+                                <h3> $170k <small>March to June </small> </h3>
+                              </div>
+                              <div class="grp_more"> <a href="#"><span class="fa fa-ellipsis-h fa-2x"></span></a> </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="panel">
+                          <div class="panel-heading summary_heading">
+                            <div class="btn-toolbar pull-right">
+                              <div class="btn-group btn-space">
+                                <button type="button" class="btn btn-default"><i class="fa fa-search-plus"></i></button>
+                              </div>
+                            </div>
+                            <span class="title">Variance in sales</span> </div>
+                          <div class="panel-body">
+                            <div class="grp_height"> <img src="images/grp3.jpg" alt="grp 3" class="img-responsive"> </div>
+                            <div class="grp_legends grp_legends_primary">
+                              <div class="grp_legend_label">
+                                <h3> 6% <small>Average Sale</small> </h3>
+                              </div>
+                              <div class="grp_more"> <a href="#"><span class="fa fa-ellipsis-h fa-2x"></span></a> </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel">
+                      <div class="panel-heading summary_heading">
+                        <div class="btn-toolbar pull-right">
+                          <div class="btn-group btn-space">
+                            <button type="button" class="btn btn-default"><i class="fa fa-search-plus"></i></button>
+                          </div>
+                        </div>
+                        <span class="title">Opportunities</span> </div>
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-md-2">
+                            <div class="mAd_icons oppr_icon"> </div>
+                          </div>
+                          <div class="col-md-10">
+                            <p class="lead">mAdvisor has observed opportunities for improving the sales figures by engaging with other key factor and metrics.</p>
+                            <ul>
+                              <li> Focusing more on cities, Miami, Seattle, and Boston would enhance overall sales, as they show high potential for growth and hold significant portion of current sales.</li>
+                              <li>A one percentage increase in marketing cost for the segment, where Deal Type is Gourmet, Discount Range is 21 to 30 percent, and Marketing Channel is Google Ads, will correspond to 0.7% increase in sales.</li>
+                              <li>The marginal effect of shipping cost on sales is very significant on Price Range, 101 to 500, as sales move by almost 46 units for every unit decrease in marketing cost.</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+					<p class="text-center">
+						<a href="javascript:;" class="btn btn-success btn-shade4 btn-sm">View More... </a>
+					</p>
+                  </div>
+				  </div>
+                  <div role="tabpanel" class="tab-pane" id="trend">
+                    <div class="content_scroll">
+					<h3>Trend</h3>
+					<div class="panel">
+                          <div class="panel-heading summary_heading">
+                            <div class="btn-toolbar pull-right">
+                              <div class="btn-group btn-space">
+                                <button type="button" class="btn btn-default"><i class="fa fa-search-plus"></i></button>
+                              </div>
+                            </div>
+                            <span class="title">Variance in sales</span> </div>
+                          <div class="panel-body">
+                            <div class="grp_height"> <img src="images/graph_1.png" alt="grp 3" class="img-responsive"> </div>
+                            <div class="grp_legends grp_legends_primary">
+                              <div class="grp_legend_label">
+                                <h3> 6% <small>Average Sale</small> </h3>
+                              </div>
+                              <div class="grp_more"> <a href="#"><span class="fa fa-ellipsis-h fa-2x"></span></a> </div>
+                            </div>
+                          </div>
+                        </div>
+					</div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="performance">
+					<div >
+						<ul id="tabs2" class="scroll_tabs_container">
+						<li><a href="#" class="active" title="Average Number of cart 1 Custom lengthy box"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 1 Custom lengthy box</span></a></li>
+						<li><a href="#" title="Average Number of cart 2"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 2</span></a></li>
+						<li><a href="#" title="Average Number of cart 3"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 3</span></a></li>
+						<li><a href="#" title="Average Number of cart 4"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 4</span></a></li>
+						<li><a href="#" title="Average Number of cart 5"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 5</span></a></li>
+						<li><a href="#" title="Average Number of cart 6"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 6</span></a></li>
+						<li><a href="#" title="Average Number of cart 7"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 7</span></a></li>
+						<li><a href="#" title="Average Number of cart 8"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 8</span></a></li>
+						<li><a href="#" title="Average Number of cart 9"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 9</span></a></li>
+						<li><a href="#" title="Average Number of cart 10"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 10</span></a></li>
+						<li><a href="#" title="Average Number of cart 11"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 11</span></a></li>
+						<li><a href="#" title="Average Number of cart 12"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 12</span></a></li>
+						<li><a href="#" title="Average Number of cart 13"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 13</span></a></li>
+						</ul>
+					</div>
+                    <div class="sb_navigation">
+                      <div class="row">
+                        <div class="col-xs-11">
+                          <div class="scroller scroller-left"><i class="glyphicon glyphicon-chevron-left"></i></div>
+                          <div class="scroller scroller-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
+                          <div class="wrapper">
+                            <ul class="nav nav-tabs list" id="myTab">
+                              <li><a href="#" class="active" title="Average Number of cart 1"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 1</span></a></li>
+                              <li><a href="#" title="Average Number of cart 2"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 2</span></a></li>
+                              <li><a href="#" title="Average Number of cart 3"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 3</span></a></li>
+                              <li><a href="#" title="Average Number of cart 4"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 4</span></a></li>
+                              <li><a href="#" title="Average Number of cart 5"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 5</span></a></li>
+                              <li><a href="#" title="Average Number of cart 6"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 6</span></a></li>
+                              <li><a href="#" title="Average Number of cart 7"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 7</span></a></li>
+                              <li><a href="#" title="Average Number of cart 8"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 8</span></a></li>
+                              <li><a href="#" title="Average Number of cart 9"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 9</span></a></li>
+                              <li><a href="#" title="Average Number of cart 10"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 10</span></a></li>
+                              <li><a href="#" title="Average Number of cart 11"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 11</span></a></li>
+                              <li><a href="#" title="Average Number of cart 12"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 12</span></a></li>
+                              <li><a href="#" title="Average Number of cart 13"><i class="mAd_icons ic_perf"></i><span>Average Number of cart 13</span></a></li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-xs-1">
+                          <div class="input-group">
+                            <button id='search-button' class='btn btn-default '><span class='glyphicon glyphicon-search'></span></button>
+                          </div>
+                          <!-- Search form <a href="javascript:;" class="input-group-addon"><i class="fa fa-search fa-2x"></i></a>-->
+                          <div id='search-form' class="form-group">
+                            <div class="input-group"> <span id='search-icon' class="input-group-addon"><span class='glyphicon glyphicon-search'></span></span>
+                              <input type="text" class="form-control" placeholder="Search">
+                            </div>
+                          </div>
+                          <!-- /.Search form --> 
+                          
+                        </div>
+                      </div>
+                    </div>
+					
+					
+                    <div class="content_scroll container-fluid">
+                      <div class="row row-offcanvas row-offcanvas-left"> 
+                        
+                        <!--/span-->
+                        <div class="col-xs-12 col-sm-9 content"> <img src='images/graph_1.png' class="img-responsive text-center">
+                          <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passage.. </p>
+                        </div>
+                        <!--/span-->
+                        
+                        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+                          <div class="side_panel"> <a href="javscript:;" data-toggle="offcanvas" class="sdbar_switch"><i class="mAd_icons sw_on"></i></a>
+                            <div class="panel panel-primary">
+                              <div class="panel-heading"> <span class="title"><i class="mAd_icons ic_perf active"></i> Performance Analysis </span> </div>
+                              <div class="panel-body">
+                                <div class="list-group"> <a href="#" class="list-group-item active">Overview of Key Factors
+</a> <a href="#" class="list-group-item">City : Impact on sales</a> <a href="#" class="list-group-item">City : Decision Matrix</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                      <!--/row--> 
+                      
+                    </div>
+                    <!-- /.container --> 
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="influences">
+				  
+				  <div class="sb_navigation">
+                      <div class="row">
+                        <div class="col-xs-11">
+                          <div class="scroller scroller-left"><i class="glyphicon glyphicon-chevron-left"></i></div>
+                          <div class="scroller scroller-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
+                          <div class="wrapper">
+                            <ul class="nav nav-tabs list" id="myTab">
+                              <li><a href="#" class="active" title="Average Number of cart 1"><i class="mAd_icons ic_inflnce"></i><span>Average Number of cart 1</span></a></li>
+                              <li><a href="#" title="Average Number of cart 2"><i class="mAd_icons ic_inflnce"></i><span>Average Number of cart 2</span></a></li>
+                              <li><a href="#" title="Average Number of cart 3"><i class="mAd_icons ic_inflnce"></i><span>Average Number of cart 3</span></a></li>
+                               
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-xs-1">
+                          <div class="input-group">
+                            <button id='search-button' class='btn btn-default '><span class='glyphicon glyphicon-search'></span></button>
+                          </div>
+                          <!-- Search form <a href="javascript:;" class="input-group-addon"><i class="fa fa-search fa-2x"></i></a>-->
+                          <div id='search-form' class="form-group">
+                            <div class="input-group"> <span id='search-icon' class="input-group-addon"><span class='glyphicon glyphicon-search'></span></span>
+                              <input type="text" class="form-control" placeholder="Search">
+                            </div>
+                          </div>
+                          <!-- /.Search form --> 
+                          
+                        </div>
+                      </div>
+                    </div>
+                    <div class="content_scroll container-fluid">
+                      <div class="row row-offcanvas row-offcanvas-left"> 
+                        
+                        <!--/span-->
+                        <div class="col-xs-12 col-sm-9 content"> <h1>INFLUENCERs GRAPH</h1>
+                          <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passage.. </p>
+                        </div>
+                        <!--/span-->
+                        
+                        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+                          <div class="side_panel"> <a href="javscript:;" data-toggle="offcanvas" class="sdbar_switch"><i class="mAd_icons sw_on"></i></a>
+                            <div class="panel panel-primary">
+                              <div class="panel-heading"> <span class="title"><i class="mAd_icons ic_inflnce active"></i> Performance Analysis </span> </div>
+                              <div class="panel-body">
+                                <div class="list-group"> <a href="#" class="list-group-item active">Overview of Key Factors
+</a> <a href="#" class="list-group-item">City : Impact on sales</a> <a href="#" class="list-group-item">City : Decision Matrix</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> <a href="#" class="list-group-item">Link</a> </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                      <!--/row--> 
+                      
+                    </div>
+                    <!-- /.container --> 
+				  
+				  </div>
+                  <div role="tabpanel" class="tab-pane" id="predictions">
+				  <h1>Predictions</h1>
+				  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passage..</p></div>
+                  <a class="tabs-control left grp_legends_green back" href="#" > <span class="fa fa-chevron-left"></span> </a> <a class="tabs-control right grp_legends_green continue" href="#" > <span class="fa fa-chevron-right"></span> </a> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Till this end copy the above code --> 
+      
+    </div>
+    <!-- /.Page Content Area --> 
+    
+  </div>
+  <!-- /. Main Content ends with side-body --> 
+  
+</div>
+<!-- /. Main Wrapper ** Mandatory --> 
+
+<!-- Rename Popup Modal -->
+<div id="detail_view" tabindex="-1" role="dialog" class="modal fade modal-colored-header">
+  <div class="modal-dialog custom-width">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="close md-close"><i class="fa fa-close"></i></button>
+        <h3 class="modal-title">Phenomenal growth during Jan-Dec - 2014</h3>
+      </div>
+      <div class="modal-body form">
+        <div class="panel-body">
+          <div class="grp_height"> <img src="images/grp1.jpg" alt="grp 1" class="img-responsive"> </div>
+          <div class="grp_legends grp_legends_green col-md-offset-3">
+            <div class="grp_legend_label">
+              <h3> 32% <small>Strong Growth</small> </h3>
+            </div>
+            <div class="grp_legend_label">
+              <h3> $128K <small>Total Sales</small> </h3>
+            </div>
+          </div>
+          <p> <strong>Sales had a phenomenal growth during Jan-Dec, primarily driven huge number of high-value observations.</strong> </p>
+          <p>Sales witnessed strong growth(232%) over the last 12 months adn the total sales amounts to $125k with an average of $270 per observation. The distributiion seems to be positively skewed as the top 26% observation accounts for about 54% of the total sales.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-primary md-close">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /. Rename popup modal --> 
+
+<!-- Bootstrap core JavaScript
+    ================================================== --> 
+<!-- Placed at the end of the document so the pages load faster --> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+<script src="js/bootstrap.min.js"></script> 
+
+<script src="js/jquery.scrolltabs.js"></script>
+<script src="js/jquery.mousewheel.js"></script>
+
+<script src="js/uiScripts.js"></script>
+<script>
+$('#tabs2').scrollTabs();
+</script>
+</body>
+</html>

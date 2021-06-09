@@ -1,24 +1,11 @@
 import React from "react";
-import {MainHeader} from "../common/MainHeader";
-import {Tabs,Tab,Pagination,Tooltip,OverlayTrigger,Popover} from "react-bootstrap";
-import {Link, Redirect} from "react-router-dom";
 import store from "../../store";
 import {connect} from "react-redux";
-import {APPID4,APPNAME4} from "../../helpers/helper.js";
 import {AudioFileUpload} from "./AudioFileUpload";
-import {AppsLoader} from "../common/AppsLoader";
-import {getAudioFile,getAudioFileList} from "../../actions/appActions";
-import {STATIC_URL} from "../../helpers/env.js"
-import {isEmpty,SEARCHCHARLIMIT,getUserDetailsOrRestart} from "../../helpers/helper";
-import {DetailOverlay} from "../common/DetailOverlay";
-import Dialog from 'react-bootstrap-dialog'
-import Breadcrumb from 'react-breadcrumb';
 import {AudioFileCard} from "./AudioFileCard";
-var dateFormat = require('dateformat');
 
 @connect((store) => {
-    return {login_response: store.login.login_response,
-        currentAppId:store.apps.currentAppId,
+    return {
         latestAudioList:store.apps.latestAudioList,
         };
 })

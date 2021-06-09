@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+	<meta charset='UTF-8'>
+	<title>Simple Loader</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+	<style>
+	.loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('images/ma_lgBanner.png') 50% 50% no-repeat rgb(249,249,249);
+    opacity: .8;
+}
+	</style>
+	<script>
+	$(window).load(function() {
+	$(".loader").fadeOut("slow");
+	});
+	</script>
+</head>
+
+<body>
+	<img src="images/welcome_message.gif">
+</body>
+</html>

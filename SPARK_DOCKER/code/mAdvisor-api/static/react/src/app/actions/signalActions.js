@@ -2,7 +2,6 @@ import React from "react";
 import {API,STATIC_URL} from "../helpers/env";
 import {CSLOADERPERVALUE,LOADERMAXPERVALUE,DEFAULTINTERVAL,PERPAGE,SUCCESS,FAILED,getUserDetailsOrRestart,DIMENSION,
     MEASURE,SET_VARIABLE,SET_POLARITY,DYNAMICLOADERINTERVAL,UNIQUE_IDENTIFIER,handleJobProcessing,statusMessages} from "../helpers/helper";
-import {connect} from "react-redux";
 import store from "../store";
 import {closeCsLoaderModal, updateCsLoaderValue, updateCsLoaderMsg} from "./createSignalActions";
 import renderHTML from 'react-render-html';
@@ -46,7 +45,6 @@ export function checkIfDateTimeIsSelected(){
     return flag;
 }
 
-//x-www-form-urlencoded'
 export function createSignal(metaData) {
   return (dispatch) => {
     dispatch(hideDataPreview())
@@ -107,9 +105,6 @@ export function fetchCreateSignalSuccess(signalData, dispatch) {
 
   } else {
     createSignalInterval = setInterval(function() {
-
-
-
       let loading_message = store.getState().signals.loading_message
       dispatch(getSignalAnalysis(getUserDetailsOrRestart.get().userToken, signalData.slug));
       if (store.getState().signals.createSignalLoaderValue < LOADERMAXPERVALUE) {
@@ -127,7 +122,6 @@ export function fetchCreateSignalSuccess(signalData, dispatch) {
       }
 
     }, DEFAULTINTERVAL);
-
   }
 
   return {type: "CREATE_SUCCESS", signalData}
@@ -159,7 +153,6 @@ function fetchCreateSignalError(json) {
 }
 
 export function getList(token, pageNo) {
-
   return (dispatch) => {
     return fetchPosts(token, pageNo,dispatch).then(([response, json]) => {
       if (response.status === 200) {
@@ -188,7 +181,7 @@ function fetchPosts(token, pageNo) {
       }).then(response => Promise.all([response, response.json()]));
 }
 
-export function refreshSignals(props) {
+export function refreshSignals() {
   return (dispatch) => {
     if(refreshSignalInterval != null)
     clearInterval(refreshSignalInterval);
@@ -214,7 +207,6 @@ function fetchPostsError(json) {
 }
 
 export function getSignalAnalysis(token, errandId) {
-
   return (dispatch) => {
     return fetchPosts_analysis(token, errandId).then(([response, json]) => {
       if (response.status === 200){
@@ -230,7 +222,6 @@ export function getSignalAnalysis(token, errandId) {
     })
   }
 }
-
 
 export function getAlgoAnalysis(token, errandId) {
   return (dispatch) => {
@@ -266,16 +257,16 @@ function fetchPosts_analysis(token, errandId) {
       'Authorization': token,
       'Content-Type': 'application/x-www-form-urlencoded'
     }
-  }).then(response => Promise.all([response, response.json()])).catch(function(error) {
+  }).then(response => Promise.all([response, response.json()])).catch(function() {
       bootbox.alert(statusMessages("error","Something went wrong. Please try again later.","small_mascot"))
   });
 
 }
 
 function fetchPostsSuccess_analysis(signalAnalysis, errandId, dispatch) {
-  if(signalAnalysis.status == SUCCESS && (signalAnalysis.data.listOfCards.length === 0 && signalAnalysis.data.listOfNodes.length === 0)){
+  if(signalAnalysis.status == SUCCESS && (signalAnalysis.data.listOfCards === undefined && signalAnalysis.data.listOfNodes === undefined)){
     bootbox.dialog({
-            message:"Unable to fetch score summary, try creating again.",
+            message:"Unable to fetch signal summary, try creating again.",
             buttons: {
                 'confirm': {
                     label: 'Ok',
@@ -300,7 +291,6 @@ function fetchPostsSuccess_analysis(signalAnalysis, errandId, dispatch) {
       dispatch(updateCsLoaderValue(CSLOADERPERVALUE))
       dispatch(clearSignalLoaderValues())
       dispatch(clearLoadingMsg());
-      dispatch(updateTargetTypForSelSignal(signalAnalysis.type))
       dispatch(updateSignalAnalysis(signalAnalysis, errandId))
     },2000) 
   } 
@@ -325,12 +315,9 @@ function updateSignalAnalysis(signalAnalysis,errandId){
   return {type: "SIGNAL_ANALYSIS", signalAnalysis, errandId}
 }
 
-
-
 function fetchAlgosSuccess_analysis(algoAnalysis, errandId) {
   return {type: "ALGO_ANALYSIS", algoAnalysis, errandId}
 }
-
 
 function fetchAlgosError_analysis(json) {
   return {type: "ALGO_ANALYSIS_ERROR", json}
@@ -340,7 +327,6 @@ function fetchPostsError_analysis(json) {
   return {type: "SIGNAL_ANALYSIS_ERROR", json}
 }
 export function setPossibleAnalysisList(varType,varText,varSlug) {
-
     if (varType == MEASURE) {
         $(".treatAsCategorical").removeClass("hidden")
         var isVarTypeChanged = checkIfDataTypeChanges(varSlug);
@@ -576,6 +562,9 @@ export function createcustomAnalysisDetails() {
 export function showPredictions(predictionSelected) {
   return {type: "SEL_PREDICTION", predictionSelected}
 }
+export function showDepthPredictions(predictionSelected,dropDownName) {
+  return {type: "SEL_DEPTH_PREDICTION", predictionSelected,dropDownName}
+}
 export function emptySignalAnalysis() {
   return {type: "SIGNAL_ANALYSIS_EMPTY"}
 }
@@ -584,7 +573,6 @@ export function emptyAlgoAnalysis() {
   return {type: "ALGO_ANALYSIS_EMPTY"}
 }
 
-//delete signal -------------------
 export function showDialogBox(slug,dialog,dispatch,evt){
     var labelTxt = evt.target.text;
 	Dialog.setOptions({
@@ -634,9 +622,6 @@ function deleteSignalAPI(slug) {
   }).then(response => Promise.all([response, response.json()]));
 
 }
-
-// end of delete signal
-//store search element
 export function storeSearchElement(search_element) {
   return {type: "SEARCH_SIGNAL", search_element}
 }
@@ -645,7 +630,6 @@ export function storeSortElements(sorton, sorttype) {
   return {type: "SORT_SIGNAL", sorton, sorttype}
 }
 
-//for allSignalList
 export function getAllSignalList() {
   return (dispatch) => {
     return fetchAllSignalList(getUserDetailsOrRestart.get().userToken).then(([response, json]) =>{
@@ -680,7 +664,6 @@ function fetchAllSignalError(json) {
       json
   }
 }
-//end of allSignalList
 
 export function handleRename(slug, dialog, name) {
   return (dispatch) => {
@@ -689,8 +672,7 @@ export function handleRename(slug, dialog, name) {
 }
 function showRenameDialogBox(slug, dialog, dispatch, name) {
   const customBody = (
-
-	<div className="row">
+  	<div className="row">
 			<div className="col-md-4">
 				<img src={STATIC_URL + "assets/images/alert_thinking.gif"} class="img-responsive" />
 			</div>
@@ -699,7 +681,6 @@ function showRenameDialogBox(slug, dialog, dispatch, name) {
 			<label for="fl1" className="control-label">Enter a new name</label>
 			<input className="form-control" id="idRenameSignal" type="text" defaultValue={name}/>
       <div className="text-danger" id="ErrorMsg"></div>
-
 			</div>
 			</div>
 		</div>
@@ -779,6 +760,7 @@ export function handleDecisionTreeTable(evt) {
   var probability = "";
   var probabilityCond = true;
   var noDataFlag = true;
+  var selPred = ""
   //triggered when probability block is clicked to select and unselect
   if (evt) {
     selectProbabilityBlock(evt);
@@ -790,7 +772,10 @@ export function handleDecisionTreeTable(evt) {
     if (this.rowIndex != 0) {
       if (probability)
         probabilityCond = probability.indexOf(this.cells[4].innerText.toLowerCase()) != -1;
-      if (this.cells[2].innerText.toLowerCase().trim() == store.getState().signals.selectedPrediction.toLowerCase().trim() && probabilityCond) {
+        selPred = (this.parentElement.parentElement.className.includes("DepthOfTree"))?
+          store.getState().signals.selectedDepthPrediction[this.parentElement.parentElement.classList[3]]
+          :store.getState().signals.selectedPrediction;
+      if((this.cells[2].innerText.toLowerCase().trim() === selPred.toLowerCase().trim()) && probabilityCond) {
         $(this).removeClass("hidden");
         noDataFlag = false;
       } else {
@@ -806,9 +791,13 @@ export function handleDecisionTreeTable(evt) {
 }
 export function handleTopPredictions() {
   var noDataFlag = true;
+  var selPred = ""
   $(".topPredictions").find("tr").each(function() {
+    selPred = (this.parentElement.parentElement.className.includes("DepthOfTree"))?
+      store.getState().signals.selectedDepthPrediction[this.parentElement.parentElement.classList[3]]
+      : store.getState().signals.selectedPrediction
     if (this.rowIndex != 0) {
-      if (this.cells[2].innerText.toLowerCase().trim() == store.getState().signals.selectedPrediction.toLowerCase().trim()) {
+      if (this.cells[2].innerText.toLowerCase().trim() == selPred.toLowerCase().trim()) {
         $(this).removeClass("hidden");
         noDataFlag = false;
       } else {
@@ -858,13 +847,6 @@ export function resetSelectedTargetVariable(){
     var varSlug = null;
     return {type: "SET_POSSIBLE_LIST", varType, varText, varSlug}
 }
-
-export function updateTargetTypForSelSignal(signal_type){
-  return{
-    type:"SELECTED_SIGNAL_TYPE",
-    signal_type
-  }
-}
 export function clearSignalAnalysisBeforeLogout(){
   return {
     type:"CLEAR_SIGNAL_ANALYSIS_BEFORE_LOGOUT"
@@ -875,13 +857,13 @@ export function fromVariableSelectionPage(flag){
       type: "FROM_VARIABLE_SELECTION_PAGE",flag
   }
 }
-export function saveDocmodeConfig(value){
-  return {
-      type: "SAVE_DOCUMENTMODE_CONFIG",value
-  }
-}
 export function clearSignalList(){
   return {
       type: "CLEAR_SIGNAL_LIST"
+  }
+}
+export function setmmLoaderFlag(flag){
+  return {
+    type: "SET_MM_LOADER",flag
   }
 }

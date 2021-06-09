@@ -1,14 +1,13 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Redirect} from "react-router";
 import store from "../../store";
-import {Modal, Button} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import {showChartData} from "../../actions/signalActions";
 import renderHTML from 'react-render-html';
 import {Scrollbars} from 'react-custom-scrollbars';
 
 @connect((store) => {
-  return {login_response: store.login.login_response, signal: store.signals.signalAnalysis, 
+  return {
       viewChartDataFlag: store.signals.viewChartDataFlag, chartDataClassId: store.signals.chartDataClassId};
 })
 
@@ -32,9 +31,7 @@ export class ViewChartData extends React.Component {
        tabledata = this.props.tabledata;
       var collength = tabledata.length;
       var rowlength = tabledata[0].length;
-      var tablehtml = "<thead><tr>",
-        tablehead = "",
-        tablebody = "";
+      var tablehtml = "<thead><tr>";
       for (var i = 0; i < collength; i++) {
         tablehtml += "<th> <b>" + tabledata[i][0] + "</b></th>";
       }

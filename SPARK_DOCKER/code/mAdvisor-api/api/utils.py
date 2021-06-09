@@ -1520,4 +1520,4 @@ class OutlookTokenSerializer(serializers.ModelSerializer):
 
     class Meta(object):
         model = OutlookToken
-        fields = ("id", "token")
+        exclude = ['id']

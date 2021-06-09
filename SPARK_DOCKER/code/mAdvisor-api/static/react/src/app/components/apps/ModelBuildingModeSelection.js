@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import store from "../../store"
-import {getAppDetails, updateAnalystModeSelectedFlag} from "../../actions/appActions";
+import {getAppDetails} from "../../actions/appActions";
 import {STATIC_URL} from "../../helpers/env.js";
 import {clearDataPreview} from "../../actions/dataUploadActions"
 import Link from "react-router-dom/Link";
@@ -17,12 +17,6 @@ export class ModelBuildingModeSelection extends React.Component {
     this.props.dispatch(clearDataPreview());
     if(store.getState().apps.currentAppDetails===null){
       this.props.dispatch(getAppDetails(this.props.match.params.AppId))
-    }
-  }
-
-  handleModeSelected(selectedMode){
-    if(selectedMode != "automl"){
-      this.props.dispatch(updateAnalystModeSelectedFlag(true));
     }
   }
 
@@ -48,7 +42,7 @@ export class ModelBuildingModeSelection extends React.Component {
               <p className="mProcess">
                 Automatic ML modeling process that executes recommended set of data cleansing and transformation operations.
               </p>
-              <Link className="btn btn-primary pull-right" to={autoLink} id="auto" onClick={this.handleModeSelected.bind(this,"automl")}>
+              <Link className="btn btn-primary pull-right" to={autoLink} id="auto">
                 AUTO ML MODE
               </Link>
             </div>
@@ -60,7 +54,7 @@ export class ModelBuildingModeSelection extends React.Component {
                 <img src={ STATIC_URL + "assets/images/mProcess_automode.png" } className="img-responsive" />
               </div>
               <p className="mProcess">Robust set of data cleansing and feature transformation and generation options are provided.<br/></p>
-              <Link className="btn btn-primary pull-right" to={analystLink} id="analyst" onClick={this.handleModeSelected.bind(this,"analystmode")}>
+              <Link className="btn btn-primary pull-right" to={analystLink} id="analyst">
                 ANALYST MODE
               </Link>
             </div>

@@ -1,16 +1,7 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Redirect } from "react-router";
-import store from "../../store";
-import renderHTML from 'react-render-html';
 import D3WordCloud from 'react-d3-cloud';
 
-
-
 export class WordCloud extends React.Component {
-  constructor(){
-    super();
-  }
 
   render() {
 	let data =  this.props.jsonData;

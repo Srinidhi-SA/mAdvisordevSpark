@@ -1,0 +1,7 @@
+numpy
+scipy
+pyhocon
+pandas
+statsmodels
+jinja2
+pattern

@@ -2,11 +2,10 @@ import React from "react";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {openShareModalAction} from "../../actions/dataActions";
-import {SUCCESS,FAILED,INPROGRESS,getUserDetailsOrRestart, statusMessages} from "../../helpers/helper";
+import {SUCCESS,FAILED,INPROGRESS,getUserDetailsOrRestart, statusMessages, setDateFormatHelper} from "../../helpers/helper";
 import { emptySignalAnalysis,handleDelete,handleRename,triggerSignalAnalysis,clearSignalList} from "../../actions/signalActions";
 import {STATIC_URL} from "../../helpers/env";
 import {DetailOverlay} from "../common/DetailOverlay";
-var dateFormat = require('dateformat');
 import Dialog from 'react-bootstrap-dialog';
 import {openCsLoaderModal} from "../../actions/createSignalActions";
 import store from "../../store";
@@ -95,13 +94,13 @@ export class SignalCard extends React.Component {
                 <Link to={story.status == INPROGRESS?"#":signalLink} id={story.slug} onClick={story.status== INPROGRESS?this.openLoaderScreen.bind(this,story.slug,completed_percent,story.completed_message):this.getSignalAnalysis.bind(this,story.status)}>
                   <div className="left_div">
                     <span className="footerTitle"></span>{getUserDetailsOrRestart.get().userName}
-                    <span className="footerTitle">{dateFormat(story.created_at, "mmm d,yyyy HH:MM")}</span>
+                    <span className="footerTitle">{setDateFormatHelper(story.created_at)}</span>
                   </div>
                 </Link>
 
 					{isDropDown == true ? <div class="btn-toolbar pull-right">
                       <a className="dropdown-toggle more_button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More..">
-                        <i className="ci zmdi zmdi-hc-lg zmdi-more-vert"></i>
+                        <i className="ci glyphicon glyphicon-option-vertical"></i>
                       </a>
                       <ul className="dropdown-menu dropdown-menu-right drp_cst_width" aria-labelledby="dropdownMenuButton">
 						<li className="xs-pl-20 xs-pr-20 xs-pt-10 xs-pb-10"><DetailOverlay details={story}/> </li>

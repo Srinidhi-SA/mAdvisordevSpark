@@ -1,6 +1,5 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Redirect} from "react-router";
 import store from "../../store";
 import {PyLayer} from "./PyLayer";
 import { updateAlgorithmData, setPyTorchSubParams, setPyTorchLayer, pytorchValidateFlag, setIdLayer } from "../../actions/appActions";
@@ -721,7 +720,7 @@ l
     }
     render() {
         let pyTochData = this.props.parameterData;
-        let renderPyTorchContent = pyTochData.parameters.map((pydata,index) =>{
+        let renderPyTorchContent = pyTochData.parameters.map((pydata) =>{
             if(pydata.display){
                 const pyTorchparams = this.renderPyTorchData(pydata);
                 return pyTorchparams;

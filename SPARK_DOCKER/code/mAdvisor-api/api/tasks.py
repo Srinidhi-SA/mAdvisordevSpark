@@ -1150,6 +1150,7 @@ def outlook_autoML_failure_mail(trainer_object_id=None, error=None, mail_id=None
     r = get_outlook_auth(settings.OUTLOOK_AUTH_CODE, settings.OUTLOOK_REFRESH_TOKEN,
                          settings.OUTLOOK_DETAILS)
     result = r.json()
+    print(result)
     access_token = result['access_token']
     print("got access token")
     if trainer_object_id is None:

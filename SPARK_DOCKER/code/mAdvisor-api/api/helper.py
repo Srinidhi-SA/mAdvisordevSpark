@@ -1565,6 +1565,19 @@ def get_mails_from_outlook():
     # ###############################################################################################################
     from api.models import OutlookToken
     token = OutlookToken.objects.first()
+
+    if token is None:
+        r = get_outlook_auth(settings.OUTLOOK_AUTH_CODE, settings.OUTLOOK_REFRESH_TOKEN,
+                             settings.OUTLOOK_DETAILS)
+        result = r.json()
+        access_token = result['access_token']
+        refresh_token = settings.OUTLOOK_REFRESH_TOKEN
+
+        add_outlooktoken = OutlookToken(refresh_token=refresh_token, access_token=access_token)
+        add_outlooktoken.save()
+    else:
+        print("Token value is not None")
+
     try:
         # result = r.json()
         # refresh_token = result['refresh_token']
@@ -1584,12 +1597,9 @@ def get_mails_from_outlook():
 
 def get_outlook_auth(auth_code, refresh_token, outlook_data):
     token_url = 'https://login.microsoftonline.com/' + outlook_data['tenant_id'] + '/oauth2/v2.0/token'
-
-    print(token_url)
-
     post_data_auth_code = {
         'grant_type': 'authorization_code',
-        # 'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded',
         'code': auth_code,
         'redirect_uri': outlook_data['redirect_uri'],
         'scope': settings.OUTLOOK_SCOPES,
@@ -1608,7 +1618,6 @@ def get_outlook_auth(auth_code, refresh_token, outlook_data):
         r = requests.post(token_url, data=post_data_refresh_token)
     else:
         r = requests.post(token_url, data=post_data_auth_code)
-
     return r
 
 

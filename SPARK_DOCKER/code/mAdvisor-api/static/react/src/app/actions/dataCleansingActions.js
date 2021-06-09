@@ -1,8 +1,4 @@
-import React from "react";
-import {API,STATIC_URL} from "../helpers/env";
-
-
-export function missingValueTreatmentSelectedAction(colName,colType,colSlug, treatment, dispatch){
+export function missingValueTreatmentSelectedAction(colName,colType,colSlug, treatment){
   return {
 		type: "MISSING_VALUE_TREATMENT",
 		colName,
@@ -11,7 +7,7 @@ export function missingValueTreatmentSelectedAction(colName,colType,colSlug, tre
     treatment
 	}
 }
-export function outlierRemovalSelectedAction(colName,colType,colSlug, treatment, dispatch){
+export function outlierRemovalSelectedAction(colName,colType,colSlug, treatment){
   return {
 		type: "OUTLIER_REMOVAL",
 		colName,
@@ -20,7 +16,7 @@ export function outlierRemovalSelectedAction(colName,colType,colSlug, treatment,
     treatment
 	}
 }
-export function variableSelectedAction(colName,colSlug, selecteOrNot, dispatch){
+export function variableSelectedAction(colName,colSlug, selecteOrNot){
   return {
 		type: "VARIABLE_SELECTED",
     colName,
@@ -28,7 +24,7 @@ export function variableSelectedAction(colName,colSlug, selecteOrNot, dispatch){
     selecteOrNot
 	}
 }
-export function checkedAllAction( selecteOrNot, dispatch){
+export function checkedAllAction( selecteOrNot){
   return {
 		type: "CHECKED_ALL_SELECTED",
     selecteOrNot
@@ -42,7 +38,7 @@ export function dataCleansingCheckUpdate( index,checkedOrNot){
 	}
 }
 
-export function removeDuplicateObservationsAction(duplicate_observation_removal, yesOrNo, dispatch){
+export function removeDuplicateObservationsAction(duplicate_observation_removal, yesOrNo){
      return {
 		type: "REMOVE_DUPLICATE_OBSERVATIONS",
     yesOrNo, 
@@ -50,7 +46,7 @@ export function removeDuplicateObservationsAction(duplicate_observation_removal,
 	}
 }
 
-export function dataCleansingDataTypeChange(colSlug, newDataType, dispatch){
+export function dataCleansingDataTypeChange(colSlug, newDataType){
     return {
         type: "DATACLEANSING_DATA_TYPE_CHANGE",
         colSlug,

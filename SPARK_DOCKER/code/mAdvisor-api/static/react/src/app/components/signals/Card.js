@@ -1,39 +1,30 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Redirect} from "react-router";
-import store from "../../store";
-import {getSignalAnalysis, pickToggleValue} from "../../actions/signalActions";
+import {pickToggleValue} from "../../actions/signalActions";
 import {HighChart} from "../HighChart"
-import {DecisionTree} from "../decisionTree";
 import {CardHtml} from "./CardHtml";
 import {CardTable} from "../common/CardTable";
 import {PredictionDropDown} from "../common/predictionDropdown";
-//import Tree from 'react-d3-tree';
-//import {ReactD3} from "../reactD3";
 import { Scrollbars } from 'react-custom-scrollbars';
-//import Tree from 'react-tree-graph';
 import {GaugeMeter} from "../common/GaugeMeter";
 import {DataBox} from "../common/DataBox";
 import {WordCloud} from "../common/WordCloud";
 import $ from "jquery";
-import {handleSignalToggleButton,predictionLabelClick} from "../../helpers/helper";
 import {ModelSummeryButton} from "../common/ModelSummeryButton";
 import {D3ParallelChartt} from "../D3ParallelChartt";
 import { C3ChartNew } from "../C3ChartNew";
 import { STATIC_URL } from "../../helpers/env";
 import { setLoaderFlagAction } from "../../actions/appActions";
 
-var data = null,
-yformat = null,
-cardData = {};
+var cardData = {};
 
 @connect((store) => {
-    return {login_response: store.login.login_response,
+    return {
         signal: store.signals.signalAnalysis,
-        chartObject: store.chartObject.chartObj,
         currentAppDetails: store.apps.currentAppDetails,
         toggleValues: store.signals.toggleValues,
-        chartLoaderFlag:store.apps.chartLoaderFlag
+        chartLoaderFlag:store.apps.chartLoaderFlag,
+        mmLoaderFlag:store.signals.mmLoaderFlag,
     };
 })
 
@@ -73,7 +64,6 @@ export class Card extends React.Component {
             $(".toggleOn").removeClass("hidden");
             $(".toggleOff").addClass("hidden")
           }
-        // handleSignalToggleButton();
     }
     calculateWidth(width){
         let colWidth  = parseInt((width/100)*12)
@@ -81,6 +71,7 @@ export class Card extends React.Component {
         return divClass;
     }
     renderCardData(cardData,toggleTable,cardWidth){
+        let that = this;
         var htmlData = cardData.map((story, i) => {
             let randomNum = Math.random().toString(36).substr(2,8);
             switch (story.dataType) {
@@ -111,10 +102,26 @@ export class Card extends React.Component {
                         else
                         divClass = "col-md-12";
                         let sideChart=false;
+
                         if(window.location.pathname.includes("apps-stock-advisor"))
                             divClass = "col-md-7 col-md-offset-2"
-                        if(story.data.chart_c3.title.text === "Stock Performance Analysis")
+                        if(story.data.chart_c3.title.text === "Stock Performance Analysis"|| story.data.chart_c3.title.text === "Stock Price Trend")
                             return (<div key={randomNum} className={parentDivClass}><div class={divClass} ><HighChart chartInfo={chartInfo} sideChart={sideChart} classId={randomNum}  widthPercent = {story.widthPercent} data={story.data.chart_c3}  yformat={story.data.yformat} y2format={story.data.y2format} guage={story.data.gauge_format} tooltip={story.data.tooltip_c3} tabledata={story.data.table_c3} tabledownload={story.data.download_url} xdata={story.data.xdata}/><div className="clearfix"/></div></div>);
+                        else if(window.location.pathname.includes("\modelManagement")){
+                            return(
+                                <div key={randomNum} className={parentDivClass} style={{height:"350px"}}>
+                                    {that.props.mmLoaderFlag && 
+                                        <div style={{position:"absolute",display:"flex",alignItems:"center"}}>
+                                            <img src={STATIC_URL+"assets/images/loaderChart.gif"} style={{padding:"175px 200px"}}></img>
+                                        </div>
+                                    }
+                                    <div class={divClass} style={{display:(that.props.mmLoaderFlag?"none":"inline-block")}}>
+                                        <C3ChartNew chartInfo={chartInfo} sideChart={sideChart} classId={randomNum}  widthPercent = {story.widthPercent} data={story.data.chart_c3}  yformat={story.data.yformat} y2format={story.data.y2format} guage={story.data.gauge_format} tooltip={story.data.tooltip_c3} tabledata={story.data.table_c3} tabledownload={story.data.download_url} xdata={story.data.xdata}/>
+                                        <div className="clearfix"/>
+                                    </div>
+                                </div>
+                            );
+                        }
                         else
                             return (<div key={randomNum} className={parentDivClass}><div class={divClass} ><C3ChartNew chartInfo={chartInfo} sideChart={sideChart} classId={randomNum}  widthPercent = {story.widthPercent} data={story.data.chart_c3}  yformat={story.data.yformat} y2format={story.data.y2format} guage={story.data.gauge_format} tooltip={story.data.tooltip_c3} tabledata={story.data.table_c3} tabledownload={story.data.download_url} xdata={story.data.xdata}/><div className="clearfix"/></div></div>);
                     }else{
@@ -124,9 +131,6 @@ export class Card extends React.Component {
                 }else{
                     return ""
                 }
-                break;
-            case "tree":
-                return ( <DecisionTree key={randomNum} treeData={story.data}/>);
                 break;
             case "table":
                 if(!story.tableWidth)story.tableWidth = 100;
@@ -139,7 +143,7 @@ export class Card extends React.Component {
                 break;
             case "dropdown":
                 if(story.data.length!=0 && story.data!=undefined)
-                    return (<PredictionDropDown key={randomNum} label={story.label} jsonData={story.data} type={story.dataType}/>);
+                    return (<PredictionDropDown key={randomNum} label={story.label} dropdownName={story.dropdownName!=undefined?story.dropdownName:""} jsonData={story.data} type={story.dataType}/>);
                 else
                     return ""
                 break;
@@ -223,13 +227,15 @@ export class Card extends React.Component {
     render() {
         cardData = this.props.cardData;
 		let stockClassName = "";
+        if(window.location.pathname.includes("\modelManagement"))
+            stockClassName = "col-md-12"
         if(cardData[0].data!=undefined && cardData[0].data === "<h4><center>Algorithm Parameters </center></h4>")
             stockClassName = "algoParams"
 		if (window.location.pathname.indexOf("apps-stock-advisor")>-1)
 		    stockClassName = "stockClassName";
         let cardWidth = this.props.cardWidth;
         const cardElements = this.renderCardData(cardData,'',cardWidth);
-        var isHideData = $.grep(cardData,function(val,key){
+        var isHideData = $.grep(cardData,function(val){
             return(val.dataType == "html" && val.classTag == "hidden");
         });
         return (

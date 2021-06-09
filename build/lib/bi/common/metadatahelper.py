@@ -910,10 +910,10 @@ class MetaDataHelper(object):
                 if (colStat["Duplicate"] != None):
                     ignore = True
                     reason = "Column is a duplicate of "+str(colStat["Duplicate"])
-            if (colStat["numberOfNulls"] == 0):
-                if (colStat["numberOfUniqueValues"] == total_rows):
-                    ignore = True
-                    reason = "Index Column (all values are distinct)"
+            #if (colStat["numberOfNulls"] == 0):
+            #    if (colStat["numberOfUniqueValues"] == total_rows):
+            #        ignore = True
+            #        reason = "Index Column (all values are distinct)"
             else:
                 if (colStat["numberOfNulls"] > colStat["numberOfNotNulls"]):
                     ignore = True

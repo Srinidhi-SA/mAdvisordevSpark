@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="images/favicon.ico">
+<title>mAdvisor Regression aPP</title>
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<!-- Custom styles for this template 
+	<link href="css/nanoscroller.css" rel="stylesheet">-->
+<link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- Main Wrapper ** Mandatory -->
+<div class="main_wrapper"> 
+  
+  <!-- Header Menu -->
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation"> 
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <div class="brand-wrapper"> 
+        <!-- Hamburger -->
+        <button type="button" class="navbar-toggle"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        
+        <!-- Brand -->
+        <div class="brand-name-wrapper"> <a class="navbar-brand" href="#"></a> </div>
+      </div>
+    </div>
+    <div class="dropdown ma-user-nav"> <a class="dropdown-toggle" href="#" data-toggle="dropdown"> <i class="avatar-img img-circle">M</i> <img src="images/avatar.jpg" alt="M" class="avatar-img img-circle hide"><span class="user-name">Marlabs BI</span> <span class="caret"></span></a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Logout</a></li>       
+      </ul>
+    </div>
+    <div class="clearfix"></div>     
+  </nav>
+   <!--/.Header Menu -->
+   
+  <!-- Side bar Main Menu -->
+  <div class="side-menu">      
+      <div class="side-menu-container">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="typography.html"> <span><i class="fa fa-dashboard fa-2x"></i> </span> TYPOGR</a></li>
+          <li><a href="tabs_accordion.html"> <span><i class="fa fa-database fa-2x"></i></span> Tabs & ACC</a></li>
+          <li><a href="#" class="sdb_signal"> <span></span> SIGNAL</a></li>
+          <li><a href="#" class="sdb_story"> <span></span> STORY</a></li>
+          <li><a href="#" class="sdb_app"> <span></span> APPS</a></li>
+          <li><a href="#" class="sdb_data"> <span></span> DATA</a></li>
+          <li><a href="#" class="sdb_settings"> <span></span> SETTINGS</a></li>         
+        </ul>
+      </div>
+      <!-- /.Side bar Main Menu  -->       
+    </div>
+  <!-- ./Side bar Main Menu -->
+  
+  <!-- Main Content starts with side-body -->  
+  <div class="side-body">
+    
+  	<!-- Page Title and Breadcrumbs -->
+    <div class="page-head">      
+      <h2>Algorithm Selection</h2>
+    </div>
+    <!-- /.Page Title and Breadcrumbs -->
+    
+    <!-- Page Content Area -->
+    <div class="main-content">
+       
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel box-shadow">
+					<div class="panel-body no-border xs-p-20">
+					<!-- Radio BUttons -->
+					<div class="ma-radio inline">
+						<input type="radio" name="alg_selection" id="rad0" checked><label for="rad0">Automatic</label>
+					</div>
+					<div class="ma-radio inline">
+						<input type="radio" name="alg_selection" id="rad1"><label for="rad1">Manual</label>
+					</div>
+					<!-- End Radio Buttons -->
+					
+					<div class="clearfix"></div>
+					
+					<div class="automaticBlock" id="automaticBlock">
+					
+					
+					<div id="accordion2" class="panel-group accordion accordion-color">
+					<div class="panel panel-default">
+					<div class="panel-heading">					
+					<div class="checkbox">
+					<label data-toggle="collapse" data-parent="#accordion2" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
+					<div class="ma-checkbox inline">
+					<input id="chk_dim1" type="checkbox" checked disabled><label for="chk_dim1">Algorithm 1</label>
+					</div>
+					</label>
+					</div>
+					</div>
+					<div id="collapse-1" class="panel-collapse collapse in">
+					<div class="panel-body">
+					
+					<h4>Algorithm 1</h4>
+					<hr />
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text" disabled>
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text" disabled>
+					</div>
+					</div>					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					<div class="panel panel-default">
+					<div class="panel-heading">					
+					<div class="checkbox">
+					<label data-toggle="collapse" data-parent="#accordion2" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+					<div class="ma-checkbox inline">
+					<input id="chk_dim2" type="checkbox" checked disabled><label for="chk_dim2" data-toggle="collapse" data-parent="#accordion2" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">Algorithm 2</label>
+					</div>
+					</label>
+					</div>					
+					</div>
+					<div id="collapse-2" class="panel-collapse collapse">
+					<div class="panel-body">
+					
+					<h4>Algorithm 2</h4>
+					<hr />
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text" disabled>
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text" disabled>
+					</div>
+					</div>					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					
+					<div class="panel panel-default">
+					<div class="panel-heading">
+					
+					
+					<div class="checkbox">
+					<label data-toggle="collapse" data-parent="#accordion2" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+					<div class="ma-checkbox inline">
+					<input id="chk_dim3" type="checkbox" checked disabled><label for="chk_dim2">Algorithm 3</label>
+					</div>
+					</label>
+					</div>
+					
+					</div>
+					<div id="collapse-3" class="panel-collapse collapse">
+					<div class="panel-body">
+					
+					<h4>Algorithm 3</h4>
+					<hr />
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text" disabled>
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text" disabled>
+					</div>
+					</div>					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					</div>
+					
+					
+					</div>
+					 
+					<div class="manualBlock" id="manualBlock" style="display:none">
+					
+					<div id="accordion3" class="panel-group accordion accordion-color">
+					<div class="panel panel-default">
+					<div class="panel-heading">					
+					<div class="checkbox">
+					<label data-toggle="collapse" data-parent="#accordion3" data-target="#collapse-11" aria-expanded="false" aria-controls="collapse-1">
+					<div class="ma-checkbox inline">
+					<input id="chk_dim_1" type="checkbox" checked><label for="chk_dim_1">Algorithm 1</label>
+					</div>
+					</label>
+					</div>
+					</div>
+					<div id="collapse-11" class="panel-collapse collapse in">
+					<div class="panel-body">
+					
+					<h4>Algorithm 1</h4>
+					<hr />
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text">
+					</div>
+					</div>	
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6"></label>  
+					<div class="col-md-4">
+					<input type="button" class="btn btn-primary" value="SAVE">
+					</div>
+					</div>						
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					<div class="panel panel-default">
+					<div class="panel-heading">					
+					<div class="checkbox">
+					<label data-toggle="collapse" data-parent="#accordion3" data-target="#collapse-22" aria-expanded="false" aria-controls="collapse-22">
+					<div class="ma-checkbox inline">
+					<input id="chk_dim_2" type="checkbox"><label for="chk_dim_2">Algorithm 2</label>
+					</div>
+					</label>
+					</div>					
+					</div>
+					<div id="collapse-22" class="panel-collapse collapse">
+					<div class="panel-body">
+					
+					<h4>Algorithm 2</h4>
+					<hr />
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6"></label>  
+					<div class="col-md-4">
+					<input type="button" class="btn btn-primary" value="SAVE">
+					</div>
+					</div>
+					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					
+					<div class="panel panel-default">
+					<div class="panel-heading">
+					
+					
+					<div class="checkbox">
+					<label data-toggle="collapse" data-parent="#accordion3" data-target="#collapse-33" aria-expanded="false" aria-controls="collapse-33">
+					<div class="ma-checkbox inline">
+					<input id="chk_dim_3" type="checkbox"><label for="chk_dim_3">Algorithm 3</label>
+					</div>
+					</label>
+					</div>
+					
+					</div>
+					<div id="collapse-33" class="panel-collapse collapse">
+					<div class="panel-body">
+					
+					<h4>Algorithm 3</h4>
+					<hr />
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6"></label>  
+					<div class="col-md-4">
+					<input type="button" class="btn btn-primary" value="SAVE">
+					</div>
+					</div>
+					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					</div>
+											
+					</div>
+					
+					
+				</div>
+				</div>
+				
+				<div class="xs-p-30"></div>
+				
+				
+				<div class="panel box-shadow">
+					<div class="panel-body no-border xs-p-20">
+					<!-- Radio BUttons -->
+					<div class="ma-radio inline">
+						<input type="radio" name="alg_selectionauto" id="radAuto" checked><label for="radAuto">Automatic</label>
+					</div>
+					<div class="ma-radio inline">
+						<input type="radio" name="alg_selectionauto" id="radManu"><label for="radManu">Manual</label>
+					</div>
+					<!-- End Radio Buttons -->
+					
+					<div class="clearfix"></div>
+					
+					<div class="automaticBlock" id="automaticBlock_111">
+					
+					
+					<div id="accordion8" class="panel-group accordion accordion-color">
+					<div class="panel panel-default">
+					<div class="panel-heading">					
+					<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion8" href="#collapse-a1"><i class="fa fa-angle-down"></i> Algorithm 1</a></h4>					
+					</div>
+					<div id="collapse-a1" class="panel-collapse collapse in">
+					<div class="panel-body">
+					 
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group lp">
+					<label class="col-md-2 control-label read" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">: 
+					<label class="control-label">Parameter 1</label>
+					</div>
+					</div>
+					<div class="form-group lp">
+					<label class="col-md-2 control-label read">Parameter 6</label>  
+					<div class="col-md-4">
+					: <label class="control-label">Parameter 6 Value</label>
+					</div>
+					</div>					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					<div class="panel panel-default">
+					<div class="panel-heading">					
+					
+					<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion8" href="#collapse-a2"><i class="fa fa-angle-down"></i> Algorithm 2</a></h4>
+					
+					</div>
+					<div id="collapse-a2" class="panel-collapse collapse">
+					<div class="panel-body">
+					 
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group lp">
+					<label class="col-md-2 control-label read" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					: <label class="control-label">Parameter 1 Value</label>
+					</div>
+					</div>
+					<div class="form-group lp">
+					<label class="col-md-2 control-label read" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					: <label class="control-label">Parameter 6 Value lorem</label>
+					</div>
+					</div>					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					
+					<div class="panel panel-default">
+					<div class="panel-heading">
+					 
+					<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion8" href="#collapse-a3"><i class="fa fa-angle-down"></i> Algorithm 3</a></h4>
+					
+					</div>
+					<div id="collapse-a3" class="panel-collapse collapse">
+					<div class="panel-body">
+					
+					 
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group lp">
+					<label class="col-md-2 control-label read" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					: <label class="control-label">Parameter 6 Value Ipsum</label>
+					</div>
+					</div>
+					<div class="form-group lp">
+					<label class="col-md-2 control-label read" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					: <label class="control-label">Parameter 6 Value value lorem</label>
+					</div>
+					</div>					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					</div>
+					
+					
+					</div>
+					 
+					<div class="manualBlock" id="manualBlock_111" style="display:none">
+					
+					<div id="accordion9" class="panel-group accordion accordion-color">
+					<div class="panel panel-default">
+					<div class="panel-heading">					
+					<div class="checkbox">
+					<label data-toggle="collapse" data-parent="#accordion9" data-target="#collapse-a11" aria-expanded="false" aria-controls="collapse-a11">
+					<div class="ma-checkbox inline">
+					<input id="chk_dim_aa1" type="checkbox" checked><label for="chk_dim_aa1">Algorithm 1</label>
+					</div>
+					</label>
+					</div>
+					</div>
+					<div id="collapse-a11" class="panel-collapse collapse in">
+					<div class="panel-body">
+					
+					<h4>Algorithm 1</h4>
+					<hr />
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text">
+					</div>
+					</div>	
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6"></label>  
+					<div class="col-md-4">
+					<input type="button" class="btn btn-primary" value="SAVE">
+					</div>
+					</div>						
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					<div class="panel panel-default">
+					<div class="panel-heading">					
+					<div class="checkbox">
+					<label data-toggle="collapse" data-parent="#accordion9" data-target="#collapse-a22" aria-expanded="false" aria-controls="collapse-a22">
+					<div class="ma-checkbox inline">
+					<input id="chk_dim_a2" type="checkbox"><label for="chk_dim_a2">Algorithm 2</label>
+					</div>
+					</label>
+					</div>					
+					</div>
+					<div id="collapse-a22" class="panel-collapse collapse">
+					<div class="panel-body">
+					
+					<h4>Algorithm 2</h4>
+					<hr />
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6"></label>  
+					<div class="col-md-4">
+					<input type="button" class="btn btn-primary" value="SAVE">
+					</div>
+					</div>
+					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					
+					<div class="panel panel-default">
+					<div class="panel-heading">
+					
+					
+					<div class="checkbox">
+					<label data-toggle="collapse" data-parent="#accordion9" data-target="#collapse-a33" aria-expanded="false" aria-controls="collapse-a33">
+					<div class="ma-checkbox inline">
+					<input id="chk_dim_a3" type="checkbox"><label for="chk_dim_a3">Algorithm 3</label>
+					</div>
+					</label>
+					</div>
+					
+					</div>
+					<div id="collapse-a33" class="panel-collapse collapse">
+					<div class="panel-body">
+					
+					<h4>Algorithm 3</h4>
+					<hr />
+					
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6"></label>  
+					<div class="col-md-4">
+					<input type="button" class="btn btn-primary" value="SAVE">
+					</div>
+					</div>
+					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+					
+					</div>
+											
+					</div>
+					
+					
+					
+					<div class="panel-footer text-right">
+						<button type="button" id="btnSave" class="btn btn-primary">Create Story</button>
+					</div>
+					</div>
+				</div>
+				
+				<div class="xs-p-30"></div>
+				
+				
+				<div class="panel box-shadow">
+					<div class="panel-body no-border xs-p-20">
+					<!-- Radio BUttons -->
+					<h4>
+					<div class="ma-radio inline ">
+					<input type="radio" name="alg_selection1" id="rad6" checked><label for="rad6">Automatic</label>
+					</div>
+					<div class="ma-radio inline">
+					<input type="radio" name="alg_selection1" id="rad7"><label for="rad7">Manual</label>
+					</div>
+					<!-- End Radio Buttons -->
+					 
+					<div class="clearfix"></div>
+					</h4>
+
+					<!-- Auto Block -->
+					<div class="automaticBlock" id="automaticBlock1">
+					
+					<h3><img src="images/icon_automatic.png" /> Automatic</h3>
+					<div class="tab-container tab-left alter1 box-shadow">
+					<ul class="nav nav-tabs">
+					<li class="active">
+					<div class="ma-checkbox">
+					<input id="chk_dim8" type="checkbox" class="needsclick" checked disabled><label for="chk_dim8">&nbsp;</label>
+					</div>
+					<a href="#tab3-1" data-toggle="tab">Algorithm lorem ipsum dollar</a>
+					</li>
+					<li>
+					<div class="ma-checkbox">
+					<input id="chk_dim9" type="checkbox" class="needsclick" checked disabled><label for="chk_dim9">&nbsp;</label>
+					</div>
+					<a href="#tab3-2" data-toggle="tab">Algorithm 2</a></li>
+					<li>
+					<div class="ma-checkbox">
+					<input id="chk_dim10" type="checkbox" class="needsclick" checked disabled><label for="chk_dim10">&nbsp;</label>
+					</div>
+					<a href="#tab3-3" data-toggle="tab">Algorithm 3</a></li>
+					</ul>
+					<div class="tab-content">
+					<div id="tab3-1" class="tab-pane active cont fade in">
+					<h4>Algorithm lorem ipsum dollar</h4>
+					<hr />
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					
+					<!-- Text input-->
+					
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter2">Parameter 2</label>  
+					<div class="col-md-4">
+					<input id="parameter2" name="parameter2" placeholder="Parameter 2" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter3">Parameter 3</label>  
+					<div class="col-md-4">
+					<input id="parameter3" name="parameter3" placeholder="Parameter 3" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+
+					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					<div id="tab3-2" class="tab-pane cont fade">
+					<h4>Algorithm 2</h4>
+					<hr />
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					
+					<!-- Text input-->
+					
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter2">Parameter 2</label>  
+					<div class="col-md-4">
+					<input id="parameter2" name="parameter2" placeholder="Parameter 2" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter3">Parameter 3</label>  
+					<div class="col-md-4">
+					<input id="parameter3" name="parameter3" placeholder="Parameter 3" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+
+					
+					</div>
+					</form>
+					</div>
+					</div>
+					<div id="tab3-3" class="tab-pane fade">
+					<h4>Algorithm 3</h4>
+					<hr />
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Algorithm 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter2">Parameter 2</label>  
+					<div class="col-md-4">
+					<input id="parameter2" name="parameter2" placeholder="Parameter 2" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter3">Parameter 3</label>  
+					<div class="col-md-4">
+					<input id="parameter3" name="parameter3" placeholder="Parameter 3" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter4">Parameter 4</label>  
+					<div class="col-md-4">
+					<input id="parameter3" name="parameter4" placeholder="Parameter 4" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter4">Parameter 5</label>  
+					<div class="col-md-4">
+					<input id="parameter5" name="parameter5" placeholder="Parameter 5" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+
+					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					</div>
+					</div>
+
+					</div>
+
+					<!-- Manual Block -->
+					<div class="manualBlock" id="manualBlock1" style="display:none">
+					
+					<h3><img src="images/icon_manual.png" /> Manual</h3>
+					<div class="tab-container tab-left alter1 box-shadow">
+					<ul class="nav nav-tabs">
+					<li class="active">
+					<div class="ma-checkbox">
+					<input id="chk_dim11" type="checkbox" class="needsclick" checked><label for="chk_dim11">&nbsp;</label>
+					</div>
+					<a href="#tab4-1" data-toggle="tab">Algorithm Lorem Ipsum dollar 1</a>
+					</li>
+					<li>
+					<div class="ma-checkbox">
+					<input id="chk_dim22" type="checkbox" class="needsclick"><label for="chk_dim22">&nbsp;</label>
+					</div>
+					<a href="#tab4-2" data-toggle="tab">Algorithm 2</a></li>
+					<li>
+					<div class="ma-checkbox">
+					<input id="chk_dim33" type="checkbox" class="needsclick"><label for="chk_dim33">&nbsp;</label>
+					</div>
+					<a href="#tab4-3" data-toggle="tab">Algorithm 3</a></li>
+					</ul>
+					<div class="tab-content">
+					<div id="tab4-1" class="tab-pane active cont fade in">
+					<h4>Algorithm Lorem Ipsum dollar 1</h4>
+					<hr />
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">					 
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter3">Parameter 3</label>  
+					<div class="col-md-4">
+					<input id="parameter3" name="parameter3" placeholder="Parameter 3" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter4">Parameter 4</label>  
+					<div class="col-md-4">
+					<input id="parameter3" name="parameter4" placeholder="Parameter 4" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter4">Parameter 5</label>  
+					<div class="col-md-4">
+					<input id="parameter5" name="parameter5" placeholder="Parameter 5" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6"></label>  
+					<div class="col-md-4">
+					<input type="button" class="btn btn-primary" value="SAVE" />
+					</div>
+					</div>
+
+					
+					</div>
+					</form>
+					</div>
+					
+					</div>
+					<div id="tab4-2" class="tab-pane cont fade">
+					<h4>Algorithm 2</h4>
+					<hr />
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6"></label>  
+					<div class="col-md-4">
+					<input type="button" class="btn btn-primary" value="SAVE" />
+					</div>
+					</div>
+
+					
+					</div>
+					</form>
+					</div>
+					
+					
+					</div>
+					<div id="tab4-3" class="tab-pane fade">
+					<h4>Algorithm 3</h4>
+					<hr />
+					<div class="container-fluid">
+					<form class="form-horizontal">
+					<div class="row">
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter1">Parameter 1</label>  
+					<div class="col-md-4">
+					<input id="parameter1" name="parameter1" placeholder="Parameter 1" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter2">Parameter 2</label>  
+					<div class="col-md-4">
+					<input id="parameter2" name="parameter2" placeholder="Parameter 2" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter3">Parameter 3</label>  
+					<div class="col-md-4">
+					<input id="parameter3" name="parameter3" placeholder="Parameter 3" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter4">Parameter 4</label>  
+					<div class="col-md-4">
+					<input id="parameter3" name="parameter4" placeholder="Parameter 4" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter4">Parameter 5</label>  
+					<div class="col-md-4">
+					<input id="parameter5" name="parameter5" placeholder="Parameter 5" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6">Parameter 6</label>  
+					<div class="col-md-4">
+					<input id="parameter6" name="parameter6" placeholder="Parameter 6" class="form-control input-md" required="" type="text">
+					</div>
+					</div>
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="parameter6"></label>  
+					<div class="col-md-4">
+					<input type="button" class="btn btn-primary" value="SAVE" />
+					</div>
+					</div>
+
+					
+					</div>
+					</form>
+					</div>
+
+					</div>
+					</div>
+					</div>
+
+					</div>
+
+
+					</div>
+				</div>
+				
+				<div class="xs-p-30"></div>
+				
+				<div class="panel box-shadow">
+					<div class="panel-body no-border xs-p-20">
+					<!-- Radio BUttons -->
+					<h4>
+					<div class="ma-radio inline ">
+						<input type="radio" name="alg_selection2" id="rad8" checked><label for="rad8">Automatic</label>
+					</div>
+					<div class="ma-radio inline">
+						<input type="radio" name="alg_selection2" id="rad9"><label for="rad9">Manual</label>
+					</div>
+					<!-- End Radio Buttons -->
+					
+					<div class="clearfix"></div>
+					</h4>
+					
+					<!-- Auto Block -->
+					<div class="automaticBlock" id="automaticBlock2">
+					
+						<ul class="list-unstyled">
+						<li>
+						<div class="ma-checkbox inline">
+						<input id="chk_dim1" type="checkbox" class="needsclick" checked disabled><label for="chk_dim1">Algorithm 1</label>
+						<label data-toggle="popover" data-trigger="hover" title="Selected Alogorithm">...</label>
+						<div id="pop-content" class="pop" style="display:none">This is div content</div>
+						</div>
+						</li>
+						<li>
+						<div class="ma-checkbox inline">
+						<input id="chk_dim2" type="checkbox" class="needsclick" checked disabled><label for="chk_dim2">Algorithm 2</label>
+
+						<label data-toggle="popover" data-trigger="hover" title="Selected Alogorithm">...</label>
+						<div id="pop-content1" class="pop" style="display:none">This is 2nd div content</div>
+
+						</div>
+						</li>
+						<li>
+						<div class="ma-checkbox inline">
+						<input id="chk_dim3" type="checkbox" class="needsclick" checked disabled><label for="chk_dim3">Algorithm 3</label>
+						<label data-toggle="popover" data-trigger="hover" title="Selected Alogorithm">...</label>
+						<div id="pop-content3" class="pop" style="display:none">This is 3rd div content</div>
+						</div>
+						</li>
+						</ul>
+								
+					
+					
+					</div>
+					
+					<!-- Manual Block -->
+					<div class="manualBlock" id="manualBlock2" style="display:none">
+					
+					<div class="row">
+							<div class="col-md-2">
+								<ul class="list-unstyled">
+								<li>
+								<div class="ma-checkbox inline">
+								<input id="chk_dim4" type="checkbox" class="needsclick"><label for="chk_dim4">Algorithm 1</label>
+								<label data-toggle="popover" data-trigger="hover" title="Selected Alogorithm">...</label>
+								<div id="pop-content" class="pop" style="display:none">This is div content</div>
+								</div>
+								</li>
+								<li>
+								<div class="ma-checkbox inline">
+								<input id="chk_dim5" type="checkbox" class="needsclick"><label for="chk_dim5">Algorithm 2</label>
+
+								<label data-toggle="popover" data-trigger="hover" title="Selected Alogorithm">...</label>
+								<div id="pop-content1" class="pop" style="display:none">This is 2nd div content</div>
+
+								</div>
+								</li>
+								<li>
+								<div class="ma-checkbox inline">
+								<input id="chk_dim6" type="checkbox" class="needsclick"><label for="chk_dim6">Algorithm 3</label>
+								<label data-toggle="popover" data-trigger="hover" title="Selected Alogorithm">...</label>
+								<div id="pop-content3" class="pop" style="display:none">This is 3rd div content</div>
+								</div>
+								</li>
+								</ul>
+							</div>
+						</div>
+					
+					
+					</div>
+					
+					
+				</div>
+				</div>
+				
+				
+				
+				
+			</div>
+		</div>
+		
+		
+	</div>
+     
+      
+      
+    </div>
+    <!-- /.Page Content Area -->
+    
+  </div>
+  <!-- /. Main Content ends with side-body -->  
+  
+</div>
+<!-- /. Main Wrapper ** Mandatory -->
+
+<!-- Bootstrap core JavaScript
+    ================================================== --> 
+<!-- Placed at the end of the document so the pages load faster --> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+<script src="js/bootstrap.min.js"></script>
+<script>
+	$(function () {
+		/** In small device sidebar will dis-appear, with the help of below jq will appear the side menu **/
+		$('.navbar-toggle').click(function () {
+			$('.navbar-nav').toggleClass('slide-in');
+			$('.side-body').toggleClass('body-slide-in');        
+		});
+		
+		 
+			$('[data-toggle="popover"]').popover({
+				html: true,
+				content: function(){
+					//return $('.pop').html();
+					 return $(this).parent("li div.ma-checkbox").find(".pop").html();
+					 return $(this).data(".pop").tip().css({width: "300px"});
+				}
+			});
+		
+			 
+			$('input[type="radio"]').click(function() {
+				if($(this).attr('id') == 'rad0') {
+				$('#automaticBlock').show();
+			}
+			else {
+				$('#automaticBlock').hide();   
+			}
+			});
+			
+			$('input[type="radio"]').click(function() {
+				if($(this).attr('id') == 'rad1') {
+					 
+				$('#manualBlock').show();
+			}
+			else {
+				$('#manualBlock').hide();   
+			}
+			});
+			
+			/****************** */			
+			$('input[type="radio"]').click(function() {
+				if($(this).attr('id') == 'rad6') {
+				$('#automaticBlock1').show();
+			}
+			else {
+				$('#automaticBlock1').hide();   
+			}
+			});
+			
+			$('input[type="radio"]').click(function() {
+				if($(this).attr('id') == 'rad7') {
+					 
+				$('#manualBlock1').show();
+			}
+			else {
+				$('#manualBlock1').hide();   
+			}
+			});
+			
+			/****************** */			
+			$('input[type="radio"]').click(function() {
+				if($(this).attr('id') == 'radAuto') {
+				$('#automaticBlock_111').show();
+			}
+			else {
+				$('#automaticBlock_111').hide();   
+			}
+			});
+			
+			$('input[type="radio"]').click(function() {
+				if($(this).attr('id') == 'radManu') {
+					 
+				$('#manualBlock_111').show();
+			}
+			else {
+				$('#manualBlock_111').hide();   
+			}
+			});
+			
+			/****************** */			
+			$('input[type="radio"]').click(function() {
+				if($(this).attr('id') == 'rad8') {
+				$('#automaticBlock2').show();
+			}
+			else {
+				$('#automaticBlock2').hide();   
+			}
+			});
+			
+			$('input[type="radio"]').click(function() {
+				if($(this).attr('id') == 'rad9') {
+					 
+				$('#manualBlock2').show();
+			}
+			else {
+				$('#manualBlock2').hide();   
+			}
+			});
+			
+			
+		
+	});
+</script>
+</body>
+</html>

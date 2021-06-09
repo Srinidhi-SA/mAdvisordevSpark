@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="images/favicon.ico">
+      <title>mAdvisor Data Upload </title>
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <!-- Custom styles for this template
+         <link href="css/nanoscroller.css" rel="stylesheet">-->
+      <link href="css/style.css" rel="stylesheet">
+	  <link rel="stylesheet" href="css/fancy_fileupload.css" type="text/css" media="all" />
+   </head>
+   <body>
+      <!-- Main Wrapper ** Mandatory -->
+      <div class="main_wrapper">
+         <!-- Header Menu -->
+         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+               <div class="brand-wrapper">
+                  <!-- Hamburger -->
+                  <button type="button" class="navbar-toggle"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                  <!-- Brand -->
+                  <div class="brand-name-wrapper"> <a class="navbar-brand" href="#"></a> </div>
+               </div>
+            </div>
+            <div class="dropdown ma-user-nav">
+               <a class="dropdown-toggle" href="#" data-toggle="dropdown"> <i class="avatar-img img-circle">M</i> <img src="images/avatar.jpg" alt="M" class="avatar-img img-circle hide"><span class="user-name">Marlabs BI</span> <span class="caret"></span></a>
+               <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a href="profile.html">Profile</a></li>
+                  <li><a href="login.html">Logout</a></li>
+               </ul>
+            </div>
+            <div class="clearfix"></div>
+         </nav>
+         <!--/.Header Menu -->
+         <!-- Side bar Main Menu -->
+         <div class="side-menu">
+            <div class="side-menu-container">
+               <ul class="nav navbar-nav">
+                  <li><a href="dashboard.html" class="sdb_signal"> <span></span> SIGNAL</a></li>
+                  <li><a href="story.html" class="sdb_story"> <span></span> STORY</a></li>
+                  <li><a href="apps.html" class="sdb_app"> <span></span> APPS</a></li>
+                  <li class="active"><a href="data.html" class="sdb_data"> <span></span> DATA</a></li>
+                  <li><a href="settings.html" class="sdb_settings"> <span></span> SETTINGS</a></li>
+               </ul>
+            </div>
+            <!-- /.Side bar Main Menu  -->
+         </div>
+         <!-- ./Side bar Main Menu -->
+         <!-- Main Content starts with side-body -->
+         <div class="side-body">
+            <!-- Page Title and Breadcrumbs -->
+            <div class="page-head">
+               <!-- <ol class="breadcrumb">
+                  <li><a href="#">Story</a></li>
+                  <li class="active">Sales Performance Report</li>
+                  </ol> -->
+               <div class="row">
+                  <div class="col-md-8">
+                     <h2>Signal</h2>
+                  </div>
+                  <div class="col-md-4">
+                     <div class="input-group pull-right">
+                        <input type="text" name="search_signals" title="Search Signals" id="search_signals" class="form-control" placeholder="Search signals...">
+                         
+                        <span class="input-group-btn">
+                           <button type="button" class="btn btn-default" title="Select All Card"><i class="fa fa-address-card-o fa-lg"></i></button>
+                           <button type="button" data-toggle="dropdown" title="Sorting" class="btn btn-default dropdown-toggle" aria-expanded="false"><i class="fa fa-sort-alpha-asc fa-lg"></i> <span class="caret"></span></button>
+                           <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                              <li><a href="#">Name Ascending</a></li>
+                              <li><a href="#">Name Descending</a></li>
+                              <li><a href="#">Date Ascending</a></li>
+                              <li><a href="#">Date Descending</a></li>
+                           </ul>
+                        </span>
+                     </div>
+                  </div>
+               </div>
+               <div class="clearfix"></div>
+            </div>
+            <!-- /.Page Title and Breadcrumbs -->
+            <!-- Page Content Area -->
+            <div class="main-content">
+               <div class="row list-block">
+                  <fieldset>
+                     <div class="row_block">
+                        <div class="col-md-3 top20 list-boxes" data-toggle="modal" data-target="#uploadData">
+                           <div class="newCardStyle firstCard">
+                              <div class="card-header"></div>
+                              <div class="card-center newStoryCard">
+                                 <div class="col-xs-2 col-xs-offset-1"><i class="fa fa-3x">+</i></div>
+                                 <div class="col-xs-8 col-xs-offset-0">UPLOAD NEW</div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-3 top20 list-boxes" >
+                           <div class="rep_block newCardStyle">
+                              <div class="card-header"></div>
+                              <div class="card-center-tile">
+                                 <div class="row">
+                                    <div class="col-md-9 col-sm-10 col-xs-10">
+                                       <h4 class="title newCardTitle"><a href="data_preview.html"> Credit Churn</a> </h4>
+                                    </div>
+                                    <div class="col-md-3 col-sm-2 col-xs-2">
+                                       <img src="images/d_cardIcon.png" class="img-responsive" alt="LOADING">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="card-footer">
+                                 <div class="left_div" > <span class="footerTitle">By Harman</span> <span class="footerTitle">Jul 20, 2017   18:22</span> </div>
+                                 <div class="card-deatils">
+                                    <a href="#" rel="popover" class="pover" data-popover-content="#myPopover"><span class="pe-7s-info pe-2x pe-va"></span> </a>
+                                    <a class="dropdown-toggle more_button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More.."><span class="pe-7s-more pe-2x pe-va"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                       <li><a class="dropdown-item" href="#renameCard" data-toggle="modal"><i class="fa fa-edit"></i> Rename</a></li>
+                                       <li><a class="dropdown-item" href="#deleteCard" data-toggle="modal"><i class="fa fa-trash-o"></i> Delete</a></li>
+                                    </ul>
+                                 </div>
+                                 <div id="myPopover" class="pop_box hide">
+                                    <h4>Created By : <span class="text-primary">Harman</span></h4>
+                                    <h5>Updated on : <mark>10.10.2017</mark></h5>
+                                    <hr class="hr-popover">
+                                    <p> Data Set : kk<br>
+                                       Variable selected : kk1<br>
+                                       Variable type : sale
+                                    </p>
+                                    <hr class="hr-popover">
+                                    <h4 class="text-primary">Analysis List</h4>
+                                    <ul class="list-unstyled">
+                                       <li><i class="fa fa-check"></i> 12</li>
+                                    </ul>
+                                    <a href="javascript:void(0)" class="btn btn-primary pull-right">View Story</a>
+                                    <div class="clearfix"></div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-3 top20 list-boxes" >
+                           <div class="rep_block newCardStyle">
+                              <div class="card-header"></div>
+                              <div class="card-center-tile">
+                                 <div class="row">
+                                    <div class="col-md-9 col-sm-10 col-xs-10">
+                                       <h4 class="title newCardTitle"><a href="data_preview.html"> Online Spend Analysis</a> </h4>
+                                    </div>
+                                   <div class="col-md-3 col-sm-2 col-xs-2">
+                                       <img src="images/data_cardIcon.png" class="img-responsive" alt="LOADING">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="card-footer">
+                                 <div class="left_div" > <span class="footerTitle">By Harman</span> <span class="footerTitle">Jul 20, 2017   18:22</span> </div>
+                                 <div class="card-deatils">
+                                    <a href="#" rel="popover" data-placement="right" class="pover" data-popover-content="#myPopover1"><span class="pe-7s-info pe-2x pe-va"></span> </a>
+                                    <a class="dropdown-toggle more_button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More.."><span class="pe-7s-more pe-2x pe-va"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                       <li><a class="dropdown-item" href="#renameCard" data-toggle="modal"><i class="fa fa-edit"></i> Rename</a></li>
+                                       <li><a class="dropdown-item" href="#deleteCard" data-toggle="modal"><i class="fa fa-trash-o"></i> Delete</a></li>
+                                    </ul>
+                                 </div>
+                                 <div id="myPopover1" class="pop_box hide">
+                                    <h4>Created By : <span class="text-primary">Harman</span></h4>
+                                    <h5>Updated on : <mark>10.10.2017</mark></h5>
+                                    <hr class="hr-popover">
+                                    <p> Data Set : kk<br>
+                                       Variable selected : kk1<br>
+                                       Variable type : sale
+                                    </p>
+                                    <hr class="hr-popover">
+                                    <h4 class="text-primary">Analysis List</h4>
+                                    <ul class="list-unstyled">
+                                       <li><i class="fa fa-check"></i> 12</li>
+                                    </ul>
+                                    <a href="javascript:void(0)" class="btn btn-primary pull-right">View Story</a>
+                                    <div class="clearfix"></div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-3 top20 list-boxes" >
+                           <div class="rep_block newCardStyle">
+                              <div class="card-header"></div>
+                              <div class="card-center-tile">
+                                 <div class="row">
+                                    <div class="col-xs-9">
+                                       <h4 class="title newCardTitle"><a href="data_preview.html"> Card Abandon Analysis</a> </h4>
+                                    </div>
+                                    <div class="col-xs-3">
+                                       <img src="images/m_carIcon.png" class="img-responsive" alt="LOADING">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="card-footer">
+                                 <div class="left_div" > <span class="footerTitle">By Harman</span> <span class="footerTitle">Jul 20, 2017   18:22</span> </div>
+                                 <div class="card-deatils">
+                                    <a href="#" rel="popover" class="pover" data-popover-content="#myPopover2"><i class="fa fa-info-circle fa-lg"></i> </a>
+                                    <a class="dropdown-toggle more_button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More.."><i class="fa fa-ellipsis-v fa-lg"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                       <li><a class="dropdown-item" href="#renameCard" data-toggle="modal"><i class="fa fa-edit"></i> Rename</a></li>
+                                       <li><a class="dropdown-item" href="#deleteCard" data-toggle="modal"><i class="fa fa-trash-o"></i> Delete</a></li>
+                                    </ul>
+                                 </div>
+                                 <div id="myPopover2" class="pop_box hide">
+                                    <h4>Created By : <span class="text-primary">Harman</span></h4>
+                                    <h5>Updated on : <mark>10.10.2017</mark></h5>
+                                    <hr class="hr-popover">
+                                    <p> Data Set : kk<br>
+                                       Variable selected : kk1<br>
+                                       Variable type : sale
+                                    </p>
+                                    <hr class="hr-popover">
+                                    <h4 class="text-primary">Analysis List</h4>
+                                    <ul class="list-unstyled">
+                                       <li><i class="fa fa-check"></i> 12</li>
+                                    </ul>
+                                    <a href="javascript:void(0)" class="btn btn-primary pull-right">View Story</a>
+                                    <div class="clearfix"></div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-3 top20 list-boxes" >
+                           <div class="rep_block newCardStyle">
+                              <div class="card-header"></div>
+                              <div class="card-center-tile">
+                                 <div class="row">
+                                    <div class="col-xs-9">
+                                       <h4 class="title newCardTitle"><a href="javascript:void(0)"> Credit Churn</a> </h4>
+                                    </div>
+                                    <div class="col-xs-3">
+                                       <img src="images/d_cardIcon.png" class="img-responsive" alt="LOADING">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="card-footer">
+                                 <div class="left_div" > <span class="footerTitle">By Harman</span> <span class="footerTitle">Jul 20, 2017   18:22</span> </div>
+                                 <div class="card-deatils">
+                                    <a href="#" rel="popover" class="pover" data-popover-content="#myPopover"><i class="fa fa-info-circle fa-lg"></i> </a>
+                                    <a class="dropdown-toggle more_button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More.."><i class="fa fa-ellipsis-v fa-lg"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                       <li><a class="dropdown-item" href="#renameCard" data-toggle="modal"><i class="fa fa-edit"></i> Rename</a></li>
+                                       <li><a class="dropdown-item" href="#deleteCard" data-toggle="modal"><i class="fa fa-trash-o"></i> Delete</a></li>
+                                    </ul>
+                                 </div>
+                                 <div id="myPopover" class="pop_box hide">
+                                    <h4>Created By : <span class="text-primary">Harman</span></h4>
+                                    <h5>Updated on : <mark>10.10.2017</mark></h5>
+                                    <hr class="hr-popover">
+                                    <p> Data Set : kk<br>
+                                       Variable selected : kk1<br>
+                                       Variable type : sale
+                                    </p>
+                                    <hr class="hr-popover">
+                                    <h4 class="text-primary">Analysis List</h4>
+                                    <ul class="list-unstyled">
+                                       <li><i class="fa fa-check"></i> 12</li>
+                                    </ul>
+                                    <a href="javascript:void(0)" class="btn btn-primary pull-right">View Story</a>
+                                    <div class="clearfix"></div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-3 top20 list-boxes" >
+                           <div class="rep_block newCardStyle">
+                              <div class="card-header"></div>
+                              <div class="card-center-tile">
+                                 <div class="row">
+                                    <div class="col-xs-9">
+                                       <h4 class="title newCardTitle"><a href="javascript:void(0)"> Credit Churn</a> </h4>
+                                    </div>
+                                    <div class="col-xs-3">
+                                       <img src="images/d_cardIcon.png" class="img-responsive" alt="LOADING">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="card-footer">
+                                 <div class="left_div" > <span class="footerTitle">By Harman</span> <span class="footerTitle">Jul 20, 2017   18:22</span> </div>
+                                 <div class="card-deatils">
+                                    <a href="#" rel="popover" class="pover" data-popover-content="#myPopover"><i class="fa fa-info-circle fa-lg"></i> </a>
+                                    <a class="dropdown-toggle more_button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More.."><i class="fa fa-ellipsis-v fa-lg"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                       <li><a class="dropdown-item" href="#renameCard" data-toggle="modal"><i class="fa fa-edit"></i> Rename</a></li>
+                                       <li><a class="dropdown-item" href="#deleteCard" data-toggle="modal"><i class="fa fa-trash-o"></i> Delete</a></li>
+                                    </ul>
+                                 </div>
+                                 <div id="myPopover" class="pop_box hide">
+                                    <h4>Created By : <span class="text-primary">Harman</span></h4>
+                                    <h5>Updated on : <mark>10.10.2017</mark></h5>
+                                    <hr class="hr-popover">
+                                    <p> Data Set : kk<br>
+                                       Variable selected : kk1<br>
+                                       Variable type : sale
+                                    </p>
+                                    <hr class="hr-popover">
+                                    <h4 class="text-primary">Analysis List</h4>
+                                    <ul class="list-unstyled">
+                                       <li><i class="fa fa-check"></i> 12</li>
+                                    </ul>
+                                    <a href="javascript:void(0)" class="btn btn-primary pull-right">View Story</a>
+                                    <div class="clearfix"></div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-3 top20 list-boxes" >
+                           <div class="rep_block newCardStyle">
+                              <div class="card-header"></div>
+                              <div class="card-center-tile">
+                                 <div class="row">
+                                    <div class="col-xs-9">
+                                       <h4 class="title newCardTitle"><a href="javascript:void(0)"> Credit Churn</a> </h4>
+                                    </div>
+                                    <div class="col-xs-3">
+                                       <img src="images/d_cardIcon.png" class="img-responsive" alt="LOADING">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="card-footer">
+                                 <div class="left_div" > <span class="footerTitle">By Harman</span> <span class="footerTitle">Jul 20, 2017   18:22</span> </div>
+                                 <div class="card-deatils">
+                                    <a href="#" rel="popover" class="pover" data-popover-content="#myPopover"><i class="fa fa-info-circle fa-lg"></i> </a>
+                                    <a class="dropdown-toggle more_button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More.."><i class="fa fa-ellipsis-v fa-lg"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                       <li><a class="dropdown-item" href="#renameCard" data-toggle="modal"><i class="fa fa-edit"></i> Rename</a></li>
+                                       <li><a class="dropdown-item" href="#deleteCard" data-toggle="modal"><i class="fa fa-trash-o"></i> Delete</a></li>
+                                    </ul>
+                                 </div>
+                                 <div id="myPopover" class="pop_box hide">
+                                    <h4>Created By : <span class="text-primary">Harman</span></h4>
+                                    <h5>Updated on : <mark>10.10.2017</mark></h5>
+                                    <hr class="hr-popover">
+                                    <p> Data Set : kk<br>
+                                       Variable selected : kk1<br>
+                                       Variable type : sale
+                                    </p>
+                                    <hr class="hr-popover">
+                                    <h4 class="text-primary">Analysis List</h4>
+                                    <ul class="list-unstyled">
+                                       <li><i class="fa fa-check"></i> 12</li>
+                                    </ul>
+                                    <a href="javascript:void(0)" class="btn btn-primary pull-right">View Story</a>
+                                    <div class="clearfix"></div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </fieldset>
+               </div>
+               <!-- Pagination -->
+               <div class="row ma-datatable-footer">
+                  <div class="col-sm-5">
+                     <div class="dataTables_info" id="table2_info" role="status" aria-live="polite">Showing 1 to 6 of 57 entries</div>
+                  </div>
+                  <div class="col-sm-7">
+                     <div class="dataTables_paginate">
+                        <ul class="pagination">
+                           <li class="paginate_button disabled">
+                              <a href="#">First</a>
+                           </li>
+                           <li class="paginate_button previous disabled">
+                              <a href="#">Previous</a>
+                           </li>
+                           <li class="paginate_button active"><a href="#">1</a></li>
+                           <li class="paginate_button "><a href="#">2</a></li>
+                           <li class="paginate_button "><a href="#">3</a></li>
+                           <li class="paginate_button "><a href="#">4</a></li>
+                           <li class="paginate_button "><a href="#">5</a></li>
+                           <li class="paginate_button disabled"><a href="#">…</a></li>
+                           <li class="paginate_button"><a href="#">10</a></li>
+                           <li class="paginate_button next"><a href="#">Next</a></li>
+                           <li class="paginate_button">
+                              <a href="#">Last</a>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <!-- /.Pagination -->
+            </div>
+            <!-- /.Page Content Area -->
+         </div>
+         <!-- /. Main Content ends with side-body -->
+      </div>
+      <!-- /. Main Wrapper ** Mandatory -->
+      <!-- Create Story Popup Modal -->
+      <div id="uploadData" tabindex="-1" role="dialog" class="modal fade modal-colored-header">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" data-dismiss="modal" aria-hidden="true" class="close md-close"><i class="fa fa-close"></i></button>
+                  <h3 class="modal-title">Upload Data</h3>
+               </div>
+               <div class="modal-body form">
+                  <div class="tab-container tab-left">
+                     <ul class="nav nav-tabs">
+                        <li class="active"><a href="#dat_upload1" data-toggle="tab"> File Upload</a></li>
+                        <li><a href="#dat_upload2" data-toggle="tab"> Sql Server</a></li>
+                        <li><a href="#dat_upload3" data-toggle="tab"> MySQL</a></li>
+                        <li><a href="#dat_upload4" data-toggle="tab"> Oracle</a></li>
+                        <li><a href="#dat_upload5" data-toggle="tab"> SalesForce</a></li>
+                        <li><a href="#dat_upload6" data-toggle="tab"> MongoDB</a></li>
+                        <li><a href="#dat_upload7" data-toggle="tab"> Hive</a></li>
+                        <li><a href="#dat_upload8" data-toggle="tab"> Dynamic CRM</a></li>
+                        <li><a href="#dat_upload9" data-toggle="tab"> HDFS</a></li>
+                     </ul>
+                     <div class="tab-content">
+                        <div id="dat_upload1" class="tab-pane active cont fade in">
+                           <h3>
+						   File Upload
+						   <div class="pull-right">
+								<div class="db_images db_file_upload"></div>
+							</div>
+						   </h3>
+
+						  <input id="thefiles" type="file" name="files" accept=".jpg, .png, image/jpeg, image/png" multiple>
+
+                           <!--
+                           <div class="form-group">
+                              <label>Select worksheet to upload</label>
+                              <select id="sel_existdataste" name="selectbasic" class="form-control">
+                                 <option value="1">worksheet1</option>
+                                 <option value="2">worksheet2 </option>
+                              </select>
+                           </div> -->
+                           <div class="form-group text-right">
+                              <button type="button" data-dismiss="modal" onclick="window.location.href='data_preview.html'" class="btn btn-primary md-close">Upload</button>
+                           </div>
+                        </div>
+                        <div id="dat_upload2" class="tab-pane cont fade">
+                           <h3>Sql Server
+
+							<div class="pull-right">
+								<div class="db_images db_sql_server"></div>
+							</div>
+						   </h3>
+
+
+
+                  <form role="form" class="form-horizontal">
+                              <div class="form-group">
+                                 <label class="col-sm-12">Select the data source</label>
+                                 <div class="col-sm-12">
+								 <select id="sel_existdataste" name="selectSqlServer" class="form-control">
+                                    <option value="1">MySql DB</option>
+                                    <option value="2">MySql2 DB</option>
+                                    <option value="3">MySql3 DB</option>
+                                    <option value="4">MySql4 DB</option>
+                                    <option value="5">MySq5 DB</option>
+                                 </select>
+								 </div>
+                              </div>
+                              <div class="form-group text-right">
+							   <div class="col-sm-12">
+                                 <button type="button" class="btn btn-default">Update</button>
+								 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fl1" class="col-sm-2 control-label">Field 1</label>
+                                 <div class="col-sm-10">
+                                    <input id="fl1" type="text" placeholder="Text" class="form-control"/>
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fld2" class="col-sm-2 control-label">Field 2</label>
+                                 <div class="col-sm-10">
+                                     <select id="fld2" name="selectSqlServer" class="form-control">
+                                    <option value="1">Dropdown List</option>
+                                    <option value="2">Dropdown List 1</option>
+                                    <option value="3">Dropdown List 2</option>
+
+                                 </select>
+                                 </div>
+                              </div>
+							     <div class="form-group">
+                                 <label class="col-sm-2 control-label">Field 3</label>
+                                 <div class="col-sm-10">
+								<div class="btn-group radioBtn" data-toggle="buttons">
+								<label class="btn btn-default active"><input type="radio" id="op1" name="rd_signifi" value="Option 1"> Option 1</label>
+								<label class="btn btn-default"><input type="radio" id="op2" name="rd_signifi" value="Option 2"> Option 2</label>
+								<label class="btn btn-default"><input type="radio" id="op3" name="rd_signifi" value="Option 3"> Option 3</label>
+
+								</div>
+                                 </div>
+                              </div>
+								<div class="form-group">
+                                 <label for="field4" class="col-sm-2 control-label">Field 4</label>
+                                 <div class="col-sm-10">
+                                     <input type="file" id="field4" />
+                                 </div>
+                              </div>
+							  <div class="form-group">
+                                 <label for="pwd_sql" class="col-sm-2 control-label">Field 5</label>
+                                 <div class="col-sm-10">
+								 <input id="pwd_sql" type="text" placeholder="password" class="form-control"/>
+                                 </div>
+                              </div>
+							  <div class="form-group text-right">
+							   <div class="col-sm-12">
+								<button type="button" data-dismiss="modal" class="btn btn-default md-close">Cancel</button>
+                                 <button type="button" class="btn btn-primary">Upload</button>
+								 </div>
+                              </div>
+                           </form>
+
+
+
+                        </div>
+                        <div id="dat_upload3" class="tab-pane fade">
+                           <h3>MySQL
+						   <div class="pull-right">
+								<div class="db_images db_my_sql"></div>
+							</div>
+						   </h3>
+                           <form role="form" class="form-horizontal">
+                              <div class="form-group">
+                                 <label class="col-sm-12">Select the data source</label>
+                                 <div class="col-sm-12">
+								 <select id="sel_existdataste" name="selectSqlServer" class="form-control">
+                                    <option value="1">MySql DB</option>
+                                    <option value="2">MySql2 DB</option>
+                                    <option value="3">MySql3 DB</option>
+                                    <option value="4">MySql4 DB</option>
+                                    <option value="5">MySq5 DB</option>
+                                 </select>
+								 </div>
+                              </div>
+                              <div class="form-group text-right">
+							   <div class="col-sm-12">
+                                 <button type="button" class="btn btn-default">Update</button>
+								 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fl1" class="col-sm-2 control-label">Field 1</label>
+                                 <div class="col-sm-10">
+                                    <input id="fl1" type="text" placeholder="Text" class="form-control"/>
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fld2" class="col-sm-2 control-label">Field 2</label>
+                                 <div class="col-sm-10">
+                                     <select id="fld2" name="selectSqlServer" class="form-control">
+                                    <option value="1">Dropdown List</option>
+                                    <option value="2">Dropdown List 1</option>
+                                    <option value="3">Dropdown List 2</option>
+
+                                 </select>
+                                 </div>
+                              </div>
+							     <div class="form-group">
+                                 <label class="col-sm-2 control-label">Field 3</label>
+                                 <div class="col-sm-10">
+								<div class="btn-group radioBtn" data-toggle="buttons">
+								<label class="btn btn-default active"><input type="radio" id="op1" name="rd_signifi" value="Option 1"> Option 1</label>
+								<label class="btn btn-default"><input type="radio" id="op2" name="rd_signifi" value="Option 2"> Option 2</label>
+								<label class="btn btn-default"><input type="radio" id="op3" name="rd_signifi" value="Option 3"> Option 3</label>
+
+								</div>
+                                 </div>
+                              </div>
+								<div class="form-group">
+                                 <label for="field4" class="col-sm-2 control-label">Field 4</label>
+                                 <div class="col-sm-10">
+                                     <input type="file" id="field4" />
+                                 </div>
+                              </div>
+							  <div class="form-group">
+                                 <label for="pwd_sql" class="col-sm-2 control-label">Field 5</label>
+                                 <div class="col-sm-10">
+								 <input id="pwd_sql" type="text" placeholder="password" class="form-control"/>
+                                 </div>
+                              </div>
+							  <div class="form-group text-right">
+							   <div class="col-sm-12">
+								<button type="button" data-dismiss="modal" class="btn btn-default md-close">Cancel</button>
+                                 <button type="button" class="btn btn-primary">Upload</button>
+								 </div>
+                              </div>
+                           </form>
+                        </div>
+                        <div id="dat_upload4" class="tab-pane fade">
+                           <h3>Oracle
+						   <div class="pull-right">
+								<div class="db_images db_oracle"></div>
+							</div>
+						   </h3>
+                           <form role="form" class="form-horizontal">
+                              <div class="form-group">
+                                 <label class="col-sm-12">Select the data source</label>
+                                 <div class="col-sm-12">
+								 <select id="sel_existdataste" name="selectSqlServer" class="form-control">
+                                    <option value="1">MySql DB</option>
+                                    <option value="2">MySql2 DB</option>
+                                    <option value="3">MySql3 DB</option>
+                                    <option value="4">MySql4 DB</option>
+                                    <option value="5">MySq5 DB</option>
+                                 </select>
+								 </div>
+                              </div>
+                              <div class="form-group text-right">
+							   <div class="col-sm-12">
+                                 <button type="button" class="btn btn-default">Update</button>
+								 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fl1" class="col-sm-2 control-label">Field 1</label>
+                                 <div class="col-sm-10">
+                                    <input id="fl1" type="text" placeholder="Text" class="form-control"/>
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fld2" class="col-sm-2 control-label">Field 2</label>
+                                 <div class="col-sm-10">
+                                     <select id="fld2" name="selectSqlServer" class="form-control">
+                                    <option value="1">Dropdown List</option>
+                                    <option value="2">Dropdown List 1</option>
+                                    <option value="3">Dropdown List 2</option>
+
+                                 </select>
+                                 </div>
+                              </div>
+							     <div class="form-group">
+                                 <label class="col-sm-2 control-label">Field 3</label>
+                                 <div class="col-sm-10">
+								<div class="btn-group radioBtn" data-toggle="buttons">
+								<label class="btn btn-default active"><input type="radio" id="op1" name="rd_signifi" value="Option 1"> Option 1</label>
+								<label class="btn btn-default"><input type="radio" id="op2" name="rd_signifi" value="Option 2"> Option 2</label>
+								<label class="btn btn-default"><input type="radio" id="op3" name="rd_signifi" value="Option 3"> Option 3</label>
+
+								</div>
+                                 </div>
+                              </div>
+								<div class="form-group">
+                                 <label for="field4" class="col-sm-2 control-label">Field 4</label>
+                                 <div class="col-sm-10">
+                                     <input type="file" id="field4" />
+                                 </div>
+                              </div>
+							  <div class="form-group">
+                                 <label for="pwd_sql" class="col-sm-2 control-label">Field 5</label>
+                                 <div class="col-sm-10">
+								 <input id="pwd_sql" type="text" placeholder="password" class="form-control"/>
+                                 </div>
+                              </div>
+							  <div class="form-group text-right">
+							   <div class="col-sm-12">
+								<button type="button" data-dismiss="modal" class="btn btn-default md-close">Cancel</button>
+                                 <button type="button" class="btn btn-primary">Upload</button>
+								 </div>
+                              </div>
+                           </form>
+                        </div>
+                        <div id="dat_upload5" class="tab-pane fade">
+                           <h3>SalesForce
+						   <div class="pull-right">
+								<div class="db_images db_salesforce"></div>
+							</div>
+						   </h3>
+                           <form role="form" class="form-horizontal">
+                              <div class="form-group">
+                                 <label class="col-sm-12">Select the data source</label>
+                                 <div class="col-sm-12">
+								 <select id="sel_existdataste" name="selectSqlServer" class="form-control">
+                                    <option value="1">MySql DB</option>
+                                    <option value="2">MySql2 DB</option>
+                                    <option value="3">MySql3 DB</option>
+                                    <option value="4">MySql4 DB</option>
+                                    <option value="5">MySq5 DB</option>
+                                 </select>
+								 </div>
+                              </div>
+                              <div class="form-group text-right">
+							   <div class="col-sm-12">
+                                 <button type="button" class="btn btn-default">Update</button>
+								 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fl1" class="col-sm-2 control-label">Field 1</label>
+                                 <div class="col-sm-10">
+                                    <input id="fl1" type="text" placeholder="Text" class="form-control"/>
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fld2" class="col-sm-2 control-label">Field 2</label>
+                                 <div class="col-sm-10">
+                                     <select id="fld2" name="selectSqlServer" class="form-control">
+                                    <option value="1">Dropdown List</option>
+                                    <option value="2">Dropdown List 1</option>
+                                    <option value="3">Dropdown List 2</option>
+
+                                 </select>
+                                 </div>
+                              </div>
+							     <div class="form-group">
+                                 <label class="col-sm-2 control-label">Field 3</label>
+                                 <div class="col-sm-10">
+								<div class="btn-group radioBtn" data-toggle="buttons">
+								<label class="btn btn-default active"><input type="radio" id="op1" name="rd_signifi" value="Option 1"> Option 1</label>
+								<label class="btn btn-default"><input type="radio" id="op2" name="rd_signifi" value="Option 2"> Option 2</label>
+								<label class="btn btn-default"><input type="radio" id="op3" name="rd_signifi" value="Option 3"> Option 3</label>
+
+								</div>
+                                 </div>
+                              </div>
+								<div class="form-group">
+                                 <label for="field4" class="col-sm-2 control-label">Field 4</label>
+                                 <div class="col-sm-10">
+                                     <input type="file" id="field4" />
+                                 </div>
+                              </div>
+							  <div class="form-group">
+                                 <label for="pwd_sql" class="col-sm-2 control-label">Field 5</label>
+                                 <div class="col-sm-10">
+								 <input id="pwd_sql" type="text" placeholder="password" class="form-control"/>
+                                 </div>
+                              </div>
+							  <div class="form-group text-right">
+							   <div class="col-sm-12">
+								<button type="button" data-dismiss="modal" class="btn btn-default md-close">Cancel</button>
+                                 <button type="button" class="btn btn-primary">Upload</button>
+								 </div>
+                              </div>
+                           </form>
+                        </div>
+                        <div id="dat_upload6" class="tab-pane fade">
+                           <h3>MongoDB
+						   <div class="pull-right">
+								<div class="db_images db_mongodb"></div>
+							</div>
+						   </h3>
+                           <form role="form" class="form-horizontal">
+                              <div class="form-group">
+                                 <label class="col-sm-12">Select the data source</label>
+                                 <div class="col-sm-12">
+								 <select id="sel_existdataste" name="selectSqlServer" class="form-control">
+                                    <option value="1">MySql DB</option>
+                                    <option value="2">MySql2 DB</option>
+                                    <option value="3">MySql3 DB</option>
+                                    <option value="4">MySql4 DB</option>
+                                    <option value="5">MySq5 DB</option>
+                                 </select>
+								 </div>
+                              </div>
+                              <div class="form-group text-right">
+							   <div class="col-sm-12">
+                                 <button type="button" class="btn btn-default">Update</button>
+								 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fl1" class="col-sm-2 control-label">Field 1</label>
+                                 <div class="col-sm-10">
+                                    <input id="fl1" type="text" placeholder="Text" class="form-control"/>
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fld2" class="col-sm-2 control-label">Field 2</label>
+                                 <div class="col-sm-10">
+                                     <select id="fld2" name="selectSqlServer" class="form-control">
+                                    <option value="1">Dropdown List</option>
+                                    <option value="2">Dropdown List 1</option>
+                                    <option value="3">Dropdown List 2</option>
+
+                                 </select>
+                                 </div>
+                              </div>
+							     <div class="form-group">
+                                 <label class="col-sm-2 control-label">Field 3</label>
+                                 <div class="col-sm-10">
+								<div class="btn-group radioBtn" data-toggle="buttons">
+								<label class="btn btn-default active"><input type="radio" id="op1" name="rd_signifi" value="Option 1"> Option 1</label>
+								<label class="btn btn-default"><input type="radio" id="op2" name="rd_signifi" value="Option 2"> Option 2</label>
+								<label class="btn btn-default"><input type="radio" id="op3" name="rd_signifi" value="Option 3"> Option 3</label>
+
+								</div>
+                                 </div>
+                              </div>
+								<div class="form-group">
+                                 <label for="field4" class="col-sm-2 control-label">Field 4</label>
+                                 <div class="col-sm-10">
+                                     <input type="file" id="field4" />
+                                 </div>
+                              </div>
+							  <div class="form-group">
+                                 <label for="pwd_sql" class="col-sm-2 control-label">Field 5</label>
+                                 <div class="col-sm-10">
+								 <input id="pwd_sql" type="text" placeholder="password" class="form-control"/>
+                                 </div>
+                              </div>
+							  <div class="form-group text-right">
+							   <div class="col-sm-12">
+								<button type="button" data-dismiss="modal" class="btn btn-default md-close">Cancel</button>
+                                 <button type="button" class="btn btn-primary">Upload</button>
+								 </div>
+                              </div>
+                           </form>
+                        </div>
+                        <div id="dat_upload7" class="tab-pane fade">
+                           <h3>HIVE
+						   <div class="pull-right">
+								<div class="db_images db_hive"></div>
+							</div>
+						   </h3>
+                           <form role="form" class="form-horizontal">
+                              <div class="form-group">
+                                 <label class="col-sm-12">Select the data source</label>
+                                 <div class="col-sm-12">
+								 <select id="sel_existdataste" name="selectSqlServer" class="form-control">
+                                    <option value="1">MySql DB</option>
+                                    <option value="2">MySql2 DB</option>
+                                    <option value="3">MySql3 DB</option>
+                                    <option value="4">MySql4 DB</option>
+                                    <option value="5">MySq5 DB</option>
+                                 </select>
+								 </div>
+                              </div>
+                              <div class="form-group text-right">
+							   <div class="col-sm-12">
+                                 <button type="button" class="btn btn-default">Update</button>
+								 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fl1" class="col-sm-2 control-label">Field 1</label>
+                                 <div class="col-sm-10">
+                                    <input id="fl1" type="text" placeholder="Text" class="form-control"/>
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fld2" class="col-sm-2 control-label">Field 2</label>
+                                 <div class="col-sm-10">
+                                     <select id="fld2" name="selectSqlServer" class="form-control">
+                                    <option value="1">Dropdown List</option>
+                                    <option value="2">Dropdown List 1</option>
+                                    <option value="3">Dropdown List 2</option>
+
+                                 </select>
+                                 </div>
+                              </div>
+							     <div class="form-group">
+                                 <label class="col-sm-2 control-label">Field 3</label>
+                                 <div class="col-sm-10">
+								<div class="btn-group radioBtn" data-toggle="buttons">
+								<label class="btn btn-default active"><input type="radio" id="op1" name="rd_signifi" value="Option 1"> Option 1</label>
+								<label class="btn btn-default"><input type="radio" id="op2" name="rd_signifi" value="Option 2"> Option 2</label>
+								<label class="btn btn-default"><input type="radio" id="op3" name="rd_signifi" value="Option 3"> Option 3</label>
+
+								</div>
+                                 </div>
+                              </div>
+								<div class="form-group">
+                                 <label for="field4" class="col-sm-2 control-label">Field 4</label>
+                                 <div class="col-sm-10">
+                                     <input type="file" id="field4" />
+                                 </div>
+                              </div>
+							  <div class="form-group">
+                                 <label for="pwd_sql" class="col-sm-2 control-label">Field 5</label>
+                                 <div class="col-sm-10">
+								 <input id="pwd_sql" type="text" placeholder="password" class="form-control"/>
+                                 </div>
+                              </div>
+							  <div class="form-group text-right">
+							   <div class="col-sm-12">
+								<button type="button" data-dismiss="modal" class="btn btn-default md-close">Cancel</button>
+                                 <button type="button" class="btn btn-primary">Upload</button>
+								 </div>
+                              </div>
+                           </form>
+                        </div>
+                        <div id="dat_upload8" class="tab-pane fade">
+                           <h3>Dynamic CRM
+						    <div class="pull-right">
+								<div class="db_images db_dynamic_crm"></div>
+							</div>
+						   </h3>
+                           <form role="form" class="form-horizontal">
+                              <div class="form-group">
+                                 <label class="col-sm-12">Select the data source</label>
+                                 <div class="col-sm-12">
+								 <select id="sel_existdataste" name="selectSqlServer" class="form-control">
+                                    <option value="1">MySql DB</option>
+                                    <option value="2">MySql2 DB</option>
+                                    <option value="3">MySql3 DB</option>
+                                    <option value="4">MySql4 DB</option>
+                                    <option value="5">MySq5 DB</option>
+                                 </select>
+								 </div>
+                              </div>
+                              <div class="form-group text-right">
+							   <div class="col-sm-12">
+                                 <button type="button" class="btn btn-default">Update</button>
+								 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fl1" class="col-sm-2 control-label">Field 1</label>
+                                 <div class="col-sm-10">
+                                    <input id="fl1" type="text" placeholder="Text" class="form-control"/>
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fld2" class="col-sm-2 control-label">Field 2</label>
+                                 <div class="col-sm-10">
+                                     <select id="fld2" name="selectSqlServer" class="form-control">
+                                    <option value="1">Dropdown List</option>
+                                    <option value="2">Dropdown List 1</option>
+                                    <option value="3">Dropdown List 2</option>
+
+                                 </select>
+                                 </div>
+                              </div>
+							     <div class="form-group">
+                                 <label class="col-sm-2 control-label">Field 3</label>
+                                 <div class="col-sm-10">
+								<div class="btn-group radioBtn" data-toggle="buttons">
+								<label class="btn btn-default active"><input type="radio" id="op1" name="rd_signifi" value="Option 1"> Option 1</label>
+								<label class="btn btn-default"><input type="radio" id="op2" name="rd_signifi" value="Option 2"> Option 2</label>
+								<label class="btn btn-default"><input type="radio" id="op3" name="rd_signifi" value="Option 3"> Option 3</label>
+
+								</div>
+                                 </div>
+                              </div>
+								<div class="form-group">
+                                 <label for="field4" class="col-sm-2 control-label">Field 4</label>
+                                 <div class="col-sm-10">
+                                     <input type="file" id="field4" />
+                                 </div>
+                              </div>
+							  <div class="form-group">
+                                 <label for="pwd_sql" class="col-sm-2 control-label">Field 5</label>
+                                 <div class="col-sm-10">
+								 <input id="pwd_sql" type="text" placeholder="password" class="form-control"/>
+                                 </div>
+                              </div>
+							  <div class="form-group text-right">
+							   <div class="col-sm-12">
+								<button type="button" data-dismiss="modal" class="btn btn-default md-close">Cancel</button>
+                                 <button type="button" class="btn btn-primary">Upload</button>
+								 </div>
+                              </div>
+                           </form>
+                        </div>
+                        <div id="dat_upload9" class="tab-pane fade">
+                           <h3>DHFS
+						   <div class="pull-right">
+								<div class="db_images db_dhfs"></div>
+							</div>
+						   </h3>
+                           <form role="form" class="form-horizontal">
+                              <div class="form-group">
+                                 <label class="col-sm-12">Select the data source</label>
+                                 <div class="col-sm-12">
+								 <select id="sel_existdataste" name="selectSqlServer" class="form-control">
+                                    <option value="1">MySql DB</option>
+                                    <option value="2">MySql2 DB</option>
+                                    <option value="3">MySql3 DB</option>
+                                    <option value="4">MySql4 DB</option>
+                                    <option value="5">MySq5 DB</option>
+                                 </select>
+								 </div>
+                              </div>
+                              <div class="form-group text-right">
+							   <div class="col-sm-12">
+                                 <button type="button" class="btn btn-default">Update</button>
+								 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fl1" class="col-sm-2 control-label">Field 1</label>
+                                 <div class="col-sm-10">
+                                    <input id="fl1" type="text" placeholder="Text" class="form-control"/>
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <label for="fld2" class="col-sm-2 control-label">Field 2</label>
+                                 <div class="col-sm-10">
+                                     <select id="fld2" name="selectSqlServer" class="form-control">
+                                    <option value="1">Dropdown List</option>
+                                    <option value="2">Dropdown List 1</option>
+                                    <option value="3">Dropdown List 2</option>
+
+                                 </select>
+                                 </div>
+                              </div>
+							     <div class="form-group">
+                                 <label class="col-sm-2 control-label">Field 3</label>
+                                 <div class="col-sm-10">
+								<div class="btn-group radioBtn" data-toggle="buttons">
+								<label class="btn btn-default active"><input type="radio" id="op1" name="rd_signifi" value="Option 1"> Option 1</label>
+								<label class="btn btn-default"><input type="radio" id="op2" name="rd_signifi" value="Option 2"> Option 2</label>
+								<label class="btn btn-default"><input type="radio" id="op3" name="rd_signifi" value="Option 3"> Option 3</label>
+
+								</div>
+                                 </div>
+                              </div>
+								<div class="form-group">
+                                 <label for="field4" class="col-sm-2 control-label">Field 4</label>
+                                 <div class="col-sm-10">
+                                     <input type="file" id="field4" />
+                                 </div>
+                              </div>
+							  <div class="form-group">
+                                 <label for="pwd_sql" class="col-sm-2 control-label">Field 5</label>
+                                 <div class="col-sm-10">
+								 <input id="pwd_sql" type="text" placeholder="password" class="form-control"/>
+                                 </div>
+                              </div>
+							  <div class="form-group text-right">
+							   <div class="col-sm-12">
+								<button type="button" data-dismiss="modal" class="btn btn-default md-close">Cancel</button>
+                                 <button type="button" class="btn btn-primary">Upload</button>
+								 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="clearfix"></div>
+               </div>
+               <!-- {*/
+                  <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default md-close">Cancel</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-primary md-close">Upload</button>
+                  </div> /*} -->
+            </div>
+         </div>
+      </div>
+      <!-- /. Rename popup modal -->
+      <!-- Rename Popup Modal -->
+      <div id="renameCard" tabindex="-1" role="dialog" class="modal fade modal-colored-header">
+         <div class="modal-dialog custom-width">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" data-dismiss="modal" aria-hidden="true" class="close md-close"><i class="fa fa-close"></i></button>
+                  <h3 class="modal-title">Renaming the Card Title</h3>
+               </div>
+               <div class="modal-body form">
+                  <div class="form-group">
+                     <label>Please enter the new name for the story</label>
+                     <input type="text" placeholder="Please enter the name" class="form-control">
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" data-dismiss="modal" class="btn btn-default md-close">Cancel</button>
+                  <button type="button" data-dismiss="modal" class="btn btn-primary md-close">Proceed</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /. Rename popup modal -->
+      <!-- Delete Popup Modal -->
+      <div id="deleteCard" class="modal fade">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">Confirmation</h4>
+               </div>
+               <div class="modal-body">
+                  <div class="text-center">
+                     <div class="i-circle text-danger"><i class="fa fa-4x">×</i></div>
+                     <h4>Are you sure you want to delete this card set?</h4>
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Proceed</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /. Delete popup modal -->
+      <!-- Bootstrap core JavaScript
+         ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+
+	  <!-- File Uploader Script -->
+		<script type="text/javascript" src="js/jquery.ui.widget.js"></script>
+		<script type="text/javascript" src="js/jquery.fileupload.js"></script>
+		<script type="text/javascript" src="js/jquery.iframe-transport.js"></script>
+		<script type="text/javascript" src="js/jquery.fancy-fileupload.js"></script>
+		<script type="text/javascript">
+		$(function() {
+		$('#thefiles').FancyFileUpload({
+		params : {
+			action : 'fileuploader'
+		},
+		maxfilesize : 1000000
+		});
+		});
+		</script>
+		<!-- End File Uploader Script -->
+		<script src="js/uiScripts.js"></script>
+   </body>
+</html>

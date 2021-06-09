@@ -123,7 +123,7 @@ export class OcrCreateProject extends React.Component {
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label for="projectName" className="form-label">Project Name <span class="text-danger">*</span></label>
+                        <label for="projectName" className="form-label">Project Name <span className="text-danger">*</span></label>
                         <input className="form-control" id="projectName" type="text" placeholder="Project Name" defaultValue={name} />
                       </div>
                     </div>

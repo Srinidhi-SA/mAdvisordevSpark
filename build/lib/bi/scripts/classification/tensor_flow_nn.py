@@ -347,7 +347,25 @@ class TensorFlowScript(object):
                     if params_tf['hidden_layer_info'][str(i)]["lambda"]=="Division":
                         model.add(tf.keras.layers.Lambda(lambda x:old_div(x,int(params_tf['hidden_layer_info'][str(i)]["units"]))))
 
-            model.compile(optimizer=algoParams["optimizer"],loss = algoParams["loss"], metrics=[algoParams['metrics']])
+            #model.compile(optimizer=algoParams["optimizer"],loss = algoParams["loss"], metrics=[algoParams['metrics']])
+            try:
+                if algoParams['optimizer'] == 'SGD':
+                    opt = keras.optimizers.SGD(learning_rate=algoParams['learning_rate'])
+                elif algoParams['optimizer'] == 'RMSprop':
+                    opt = tf.keras.optimizers.RMSprop(learning_rate=algoParams['learning_rate'])
+                elif algoParams['optimizer'] == 'Adagrad':
+                    opt = tf.keras.optimizers.Adagrad(learning_rate=algoParams['learning_rate'])
+                elif algoParams['optimizer'] == 'Adadelta':
+                    opt = tf.keras.optimizers.Adadelta(learning_rate=algoParams['learning_rate'])
+                elif algoParams['optimizer'] == 'Adam':
+                    opt = tf.keras.optimizers.Adam(learning_rate=algoParams['learning_rate'])
+                elif algoParams['optimizer'] == 'Adamax':
+                    opt = tf.keras.optimizers.Adamax(learning_rate=algoParams['learning_rate'])
+                elif algoParams['optimizer'] == 'Nadam':
+                    opt = tf.keras.optimizers.Nadam(learning_rate=algoParams['learning_rate'])
+                model.compile(optimizer=opt,loss = algoParams["loss"], metrics=[algoParams['metrics']])
+            except:
+                model.compile(optimizer=algoParams["optimizer"],loss = algoParams["loss"], metrics=[algoParams['metrics']])
 
             try:
                 model.fit(x_train,y_train,epochs=algoParams["number_of_epochs"],verbose=1,batch_size=algoParams["batch_size"])

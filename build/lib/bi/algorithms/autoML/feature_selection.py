@@ -11,6 +11,8 @@ from pyspark.ml.regression import RandomForestRegressor
 from pyspark.ml.feature import StringIndexer, OneHotEncoderEstimator, VectorAssembler
 from pyspark.ml import Pipeline
 from bi.stats.util import Stats
+from bi.algorithms import utils as MLUtils
+import pyspark.sql.functions as F
 from past.utils import old_div
 import math
 
@@ -28,19 +30,20 @@ class FeatureSelection():
         self.data_change_dict['SelectedColsLinear'] = []
         self._pandas_flag =  pandas_flag
 
-    def extractFeature_colname(self, featureImp, dataset, featuresCol):
-        list_extract = []
-        for i in dataset.schema[featuresCol].metadata["ml_attr"]["attrs"]:
-            list_extract = list_extract + dataset.schema[featuresCol].metadata["ml_attr"]["attrs"][i]
-        varlist = pd.DataFrame(list_extract)
-        varlist['score'] = varlist['idx'].apply(lambda x: featureImp[x])
-        varlist = varlist[varlist.score>0].sort_values('score', ascending = False)
-        return (varlist.name.tolist())
+    #def extractFeature_colname(self, featureImp, dataset, featuresCol):
+    #    list_extract = []
+    #    for i in dataset.schema[featuresCol].metadata["ml_attr"]["attrs"]:
+    #        list_extract = list_extract + dataset.schema[featuresCol].metadata["ml_attr"]["attrs"][i]
+    #    varlist = pd.DataFrame(list_extract)
+    #    varlist['score'] = varlist['idx'].apply(lambda x: featureImp[x])
+    #    varlist = varlist[varlist.score>0].sort_values('score', ascending = False)
+    #    return (varlist.name.tolist())
 
     def feature_imp_pyspark(self):
         num_var = [i[0] for i in self.data_frame.dtypes if ((i[1]=='int') | (i[1]=='double')) & (i[0]!=self.target)]
         num_var = [col for col in num_var if not col.endswith('indexed')]
-        labels_count = [len(self.data_frame.select(col).distinct().collect()) for col in num_var]
+        # labels_count = [len(self.data_frame.select(col).distinct().collect()) for col in num_var]
+        labels_count = [len(self.data_frame.agg((F.collect_set(col).alias(col))).first().asDict()[col]) for col in num_var]
         labels_count.sort()
         max_count =  labels_count[-1]
         #one_hot = [col for col in self.data_frame.columns if col.endswith('_indexed_encoded')]
@@ -61,7 +64,9 @@ class FeatureSelection():
 
         mod_fit = pipe.fit(self.data_frame)
         df2 = mod_fit.transform(self.data_frame)
-        cols_considered = self.extractFeature_colname(mod_fit.stages[-1].featureImportances, df2, "features")
+        cols = MLUtils.ExtractFeatureImp(mod_fit.stages[-1].featureImportances, df2, "features")
+        cols_considered = cols.loc[cols['score'] > 0]
+        cols_considered = list(cols_considered['name'])
         #tree_fs = list(set(cols_considered) & set(self.data_frame.columns))
         #tree_fs.extend(list(set([encoded for encoded in one_hot for column in cols_considered if column.startswith(encoded)])))
         self.data_change_dict['SelectedColsTree'] = cols_considered
@@ -115,9 +120,10 @@ class FeatureSelection():
                 indexed = indexer.fit(self.data_frame).transform(self.data_frame)
                 X_train = indexed.drop('label')
                 num_var = [i[0] for i in X_train.dtypes if ((i[1]=='int') | (i[1]=='double'))]
+                num_of_samples = indexed.select(num_var[0]).count()
                 for column_one in num_var:
                     corr = indexed.corr(column_one, 'label')
-                    num_of_samples = indexed.select(column_one).count()
+                    # num_of_samples = indexed.select(column_one).count()
                     df = num_of_samples - 2
                     std_error = math.sqrt(old_div((1 - math.pow(corr, 2)), df))
                     t_value = old_div(corr, std_error)

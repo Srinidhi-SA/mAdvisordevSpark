@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="images/favicon.ico">
+      <title>mAdvisor Variable Selection </title>
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <!-- Custom styles for this template 
+         <link href="css/nanoscroller.css" rel="stylesheet">-->
+      <link href="css/bootstrap-slider.css" rel="stylesheet">
+      <link href="css/style.css" rel="stylesheet">
+   </head>
+   <body>
+      <!-- Main Wrapper ** Mandatory -->
+      <div class="main_wrapper">
+         <!-- Header Menu -->
+         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+               <div class="brand-wrapper">
+                  <!-- Hamburger -->
+                  <button type="button" class="navbar-toggle"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                  <!-- Brand -->
+                  <div class="brand-name-wrapper"> <a class="navbar-brand" href="#"></a> </div>
+               </div>
+            </div>
+            <div class="dropdown ma-user-nav">
+               <a class="dropdown-toggle" href="#" data-toggle="dropdown"> <i class="avatar-img img-circle">M</i> <img src="images/avatar.jpg" alt="M" class="avatar-img img-circle hide"><span class="user-name">Marlabs BI</span> <span class="caret"></span></a>
+               <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a href="profile.html">Profile</a></li>
+                  <li><a href="login.html">Logout</a></li>
+               </ul>
+            </div>
+            <div class="clearfix"></div>
+         </nav>
+         <!--/.Header Menu --> 
+         <!-- Side bar Main Menu -->
+         <div class="side-menu">
+            <div class="side-menu-container">
+               <ul class="nav navbar-nav">
+                  <li><a href="dashboard.html" class="sdb_signal"> <span></span> SIGNAL</a></li>
+                  <li><a href="story.html" class="sdb_story"> <span></span> STORY</a></li>
+                  <li><a href="apps.html" class="sdb_app"> <span></span> APPS</a></li>
+                  <li class="active"><a href="data.html" class="sdb_data"> <span></span> DATA</a></li>
+                  <li><a href="settings.html" class="sdb_settings"> <span></span> SETTINGS</a></li>
+               </ul>
+            </div>
+            <!-- /.Side bar Main Menu  --> 
+         </div>
+         <!-- ./Side bar Main Menu --> 
+         <!-- Main Content starts with side-body -->
+         <div class="side-body">
+            <!-- Page Title and Breadcrumbs -->
+            <div class="page-head">
+               <!-- <ol class="breadcrumb">
+                  <li><a href="#">Story</a></li>
+                  <li class="active">Sales Performance Report</li> 
+                  </ol> -->
+               <div class="row">
+                  <div class="col-md-8">
+                     <h2>Data Mashup Configuration 
+</h2>
+                  </div>
+               </div>
+               <div class="clearfix"></div>
+            </div>
+            <!-- /.Page Title and Breadcrumbs --> 
+            <!-- Page Content Area -->
+            <div class="main-content">
+				<div class="panel panel-default">
+					<div class="panel-body md-p-40">
+						
+				 
+					<div class="row">
+					<div class="col-lg-4">
+							<label>Following Dataset:</label>
+					</div><!-- /.col-lg-4 -->
+					</div>
+					<div class="row">
+					<div class="col-lg-4">
+						<div class="panel panel-primary-p1 cst-panel-shadow">
+						<div class="panel-heading"> Data Set 1</div>
+						<div class="panel-body">
+							<!-- Row for select all-->
+							<div class="row">
+								<div class="col-md-4">
+									<div class="ma-checkbox inline">
+									<input id="check1" type="checkbox" class="needsclick">
+									<label for="check1">Select All</label>
+									</div>
+								</div> 
+							</div>
+							<!-- End -->
+							<hr />
+							<!-- Row for list of variables-->
+							<div class="row">
+								<div class="col-md-12 cst-scroll-panel">
+									<ul class="list-unstyled">
+									<li><div class="ma-checkbox inline"><input id="chk_mes1" type="checkbox" class="needsclick"><label for="chk_mes1">Column 1</label></div> </li>
+									<li><div class="ma-checkbox inline"><input id="chk_mes2" type="checkbox" class="needsclick"><label for="chk_mes2">Column 2</label></div> </li>
+									<li><div class="ma-checkbox inline"><input id="chk_mes3" type="checkbox" class="needsclick"><label for="chk_mes3">Column 3</label></div> </li>
+									<li><div class="ma-checkbox inline"><input id="chk_mes4" type="checkbox" class="needsclick"><label for="chk_mes4">Column 4</label></div> </li>
+									<li><div class="ma-checkbox inline"><input id="chk_mes5" type="checkbox" class="needsclick"><label for="chk_mes5">Column 5</label></div> </li>
+									<li><div class="ma-checkbox inline"><input id="chk_mes6" type="checkbox" class="needsclick"><label for="chk_mes6">Column 6</label></div> </li>
+									</ul>
+								</div>
+							</div>
+							<!-- End Row for list of variables-->
+						</div>
+						</div>
+							
+					</div><!-- /.col-lg-4 -->
+					<div class="col-lg-4">
+							<div class="panel panel-primary-p2 cst-panel-shadow">
+							<div class="panel-heading"> Data Set 2</div>
+								<div class="panel-body">
+										<!-- Row for select all-->
+										<div class="row">
+											<div class="col-md-4">
+												<div class="ma-checkbox inline">
+												<input id="check2" type="checkbox" class="needsclick">
+												<label for="check2">Select All</label>
+												</div>
+											</div> 
+										</div>
+										<!-- End -->
+										<hr />
+										<!-- Row for list of variables-->
+										<div class="row">
+										<div class="col-md-12 cst-scroll-panel">
+											<ul class="list-unstyled">
+											<li><div class="ma-checkbox inline"><input id="chk_dim1" type="checkbox" class="needsclick"><label for="chk_dim1">Column 1</label></div> </li>
+											<li><div class="ma-checkbox inline"><input id="chk_dim2" type="checkbox" class="needsclick"><label for="chk_dim2">Column 2</label></div> </li>
+											<li><div class="ma-checkbox inline"><input id="chk_dim3" type="checkbox" class="needsclick"><label for="chk_dim3">Column b3</label></div> </li>
+											<li><div class="ma-checkbox inline"><input id="chk_dim4" type="checkbox" class="needsclick"><label for="chk_dim4">Column b5</label></div> </li>
+											<li><div class="ma-checkbox inline"><input id="chk_dim5" type="checkbox" class="needsclick"><label for="chk_dim5">Column b6</label></div> </li>
+											<li><div class="ma-checkbox inline"><input id="chk_dim6" type="checkbox" class="needsclick"><label for="chk_dim6">Column b7</label></div> </li>
+											</ul>
+										</div>
+										</div>
+										<!-- End Row for list of variables-->
+
+
+								</div>
+							</div>
+							
+							
+					</div><!-- /.col-lg-4 -->
+					<div class="col-lg-4">
+							<div class="panel panel-primary-p3 cst-panel-shadow">
+						<div class="panel-heading">Mash-up on</div>
+						<div class="panel-body">
+							
+							<!-- Row for options all-->
+										<div class="row">
+											<div class="col-md-4">
+									<div class="ma-checkbox inline">
+									<input id="check3" type="checkbox" class="needsclick">
+									<label for="check3">Select All</label>
+									</div>
+								</div> 
+										</div>
+										<!-- End Row for options all -->
+										<hr />
+										<!-- Row for list of variables-->
+										<div class="row">
+										<div class="col-md-12 cst-scroll-panel">
+											<ul class="list-unstyled">
+											<li><div class="ma-checkbox inline"><input id="chk_mu1" type="checkbox" class="needsclick"><label for="chk_mu1">Column 1</label></div> </li>
+											<li><div class="ma-checkbox inline"><input id="chk_mu2" type="checkbox" class="needsclick"><label for="chk_mu2">Column 2</label></div> </li>
+											 
+											</ul>
+										</div>
+										</div>
+										<!-- End Row for list of variables-->						
+						
+						</div>
+						</div>
+					</div><!-- /.col-lg-4 -->
+					</div><!-- /.row -->
+						
+					
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-alt4 panel-borders">
+								<div class="panel-heading text-center">Mashup-type</div>
+								<div class="panel-body text-center">
+									<div class="ma-checkbox inline"><input id="chk_analysis0" type="checkbox" class="needsclick"><label for="chk_analysis0">Inner Join </label></div>
+									<div class="ma-checkbox inline"><input id="chk_analysis1" type="checkbox" class="needsclick"><label for="chk_analysis1">Right outer join </label></div>
+									<div class="ma-checkbox inline"><input id="chk_analysis2" type="checkbox" class="needsclick"><label for="chk_analysis2">Full outer join </label></div>
+									<div class="ma-checkbox inline"><input id="chk_analysis3" type="checkbox" class="needsclick"><label for="chk_analysis3">left outer join </label></div>
+									<div class="ma-checkbox inline"><input id="chk_analysis4" type="checkbox" class="needsclick"><label for="chk_analysis4">Cross join</label></div>
+									 
+								</div>									
+							</div>
+						</div>
+					</div>
+			 
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="otherSetting">Other Settings</label>
+								<div class="col-md-4"> 								
+								<select class="form-control input-sm" id="otherSetting">
+									<option>Select refresh time</option>
+									<option selected>Every 6 hours</option>
+									<option>Every hour</option>
+									<option>Every 12 hours</option>
+								</select>
+								  
+								</div>
+							</div>
+							<div class="clearfix"></div>
+					 <hr>
+							<div class="form-group">
+								<label class="col-md-2 control-label">Custom Columns</label>
+								<div class="col-md-10">
+							 <div class="tags">
+									<label class="btn btn-default"  title="Dataset 4 lorem ipsum dollar ">Dataset 4 lorem ipsum dollar  <i class="fa fa-times"></i> </label> <label class="btn btn-default">Data Set 2 <i class="fa fa-times"></i></label>
+									<label class="btn btn-default" title="Dataset 4 lorem ipsum dollar ">Dataset 4 lorem ipsum dollar  <i class="fa fa-times"></i></label>
+									<label class="btn btn-default" title="Dataset 54 34">Dataset 54 34  <i class="fa fa-times"></i></label>
+									<label class="btn btn-default" title="Dataset 65 ">Dataset 65  <i class="fa fa-times"></i></label>
+									<button class="btn btn-info">Create new +</button>
+									</div>
+								  
+								</div>
+							</div>
+						<div class="clearfix"></div>
+					 <hr>
+					 <div class="form-group">
+								<label class="col-md-2 control-label">Enter Name for new data set</label>
+								<div class="col-md-4"> 
+								<input type="text" class="form-control input-sm" placeholder="Enter Name for new data set"/>
+								  
+								</div>
+							</div>
+						<div class="clearfix"></div>
+					 <hr>	
+					<div class="row">
+						<div class="col-md-12 text-right">
+							<button class="btn btn-primary">Continue</button>
+						</div>
+					</div>
+					
+						
+					</div>
+				</div>
+            </div>
+            <!-- /.Page Content Area --> 
+         </div>
+         <!-- /. Main Content ends with side-body -->
+      </div>
+      <!-- /. Main Wrapper ** Mandatory --> 
+	  
+	  <!-- Modal -->
+<div id="myModal" class="modal fade modal-colored-header" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Advanced Settings</h4>
+      </div>
+      <div class="modal-body advance_settings">
+		<ul class="list-unstyled">
+			<li><div class="ma-checkbox inline">
+			  <input id="check_1" type="checkbox" class="needsclick">
+			  <label for="check_1">Overview</label>
+			</div> 
+			</li>
+			<li><div class="ma-checkbox inline">
+			  <input id="check_2" type="checkbox" class="needsclick">
+			  <label for="check_2">Trend Analysis</label>
+			</div>
+				<ul>
+					<li><div class="ma-checkbox inline">
+					<input id="check_ck2_1" type="checkbox" class="needsclick">
+					<label for="check_ck2_1">Overview</label>
+					</div>
+					</li>
+					<li>
+					<div class="ma-checkbox inline">
+					<input id="check_ck2_2" type="checkbox" class="needsclick">
+					<label for="check_ck2_2">Factors that drive up</label>
+					</div>
+					</li>
+					<li>
+					<div class="ma-checkbox inline">
+					<input id="check_ck2_3" type="checkbox" class="needsclick">
+					<label for="check_ck2_3">Factors that drive down</label>
+					</div>
+					</li>
+					<li>
+					<div class="ma-checkbox inline">
+					<input id="check_ck2_4" type="checkbox" class="needsclick">
+					<label for="check_ck2_4">Forecast</label>
+					</div>
+					</li>
+				</ul>
+			</li>
+			
+			<li><div class="ma-checkbox inline">
+			  <input id="check_3" type="checkbox" class="needsclick">
+			  <label for="check_3">Performance Analysis</label>
+			</div>
+				<ul>
+					<li><div class="ma-checkbox inline">
+					<input id="check_ck3_1" type="checkbox" class="needsclick">
+					<label for="check_ck3_1">Overview</label>
+					</div>
+					</li>
+					<li>
+					<div class="ma-checkbox inline">
+					<input id="check_ck3_2" type="checkbox" class="needsclick">
+					<label for="check_ck3_2">Top Sublevel(Miami) </label>
+					</div>
+					</li>
+					<li>
+					<div class="ma-checkbox inline">
+					<input id="check_ck3_3" type="checkbox" class="needsclick">
+					<label for="check_ck3_3">Trend for top Sublevel </label>
+					</div>
+					</li>
+					<li>
+					<div class="ma-checkbox inline">
+					<input id="check_ck3_4" type="checkbox" class="needsclick">
+					<label for="check_ck3_4">Decision Matrix</label>
+					</div>
+					<div class="clearfix"></div>
+					<div class="btn-group radioBtn" data-toggle="buttons">
+						<label class="btn btn-default active"><input type="radio" id="rd_signifi1" name="rd_signifi" value="Low" /> Low</label> 
+						<label class="btn btn-default"><input type="radio" id="rd_signifi2" name="rd_signifi" value="Medium" /> Medium</label> 
+						<label class="btn btn-default"><input type="radio" id="rd_signifi3" name="rd_signifi" value="High" /> High</label> 
+						<label class="btn btn-default"><input type="radio" id="rd_signifi4" name="rd_signifi" value="All" /> All</label>
+						<label class="btn btn-default"><input type="radio" id="rd_signifi4" name="rd_signifi" value="Custom" /> Custom</label>
+					</div>
+					</li>
+				</ul>
+			</li>
+			
+			<li><div class="ma-checkbox inline">
+			  <input id="check_4" type="checkbox" class="needsclick">
+			  <label for="check_4">Influencers</label>
+			</div>
+				<ul>
+					<li><div class="ma-checkbox inline">
+					<input id="check_ck4_1" type="checkbox" class="needsclick">
+					<label for="check_ck4_1">Overview</label>
+					</div>
+					</li> 
+					<li>
+					<div class="ma-checkbox inline">
+					<input id="check_ck4_2" type="checkbox" class="needsclick">
+					<label for="check_ck4_2">Key areas of Impact </label>
+					</div>
+					</li>
+					<li>
+					<div class="ma-checkbox inline">
+					<input id="check_ck4_3" type="checkbox" class="needsclick">
+					<label for="check_ck4_3">Trend Analysis</label>
+					</div>
+					</li>
+					<li>
+					<div class="ma-checkbox inline">
+					<input id="check_ck3_4" type="checkbox" class="needsclick">
+					<label for="check_ck3_4">Sensitivity Analysis</label>
+					</div>
+					<div class="clearfix"></div>
+					<div class="btn-group radioBtn" data-toggle="buttons">
+						<label class="btn btn-default active"><input type="radio" id="rd_infl1" name="rd_signifi" value="Low" /> Low</label> 
+						<label class="btn btn-default"><input type="radio" id="rd_infl2" name="rd_signifi" value="Medium" /> Medium</label> 
+						<label class="btn btn-default"><input type="radio" id="rd_infl3" name="rd_signifi" value="High" /> High</label> 
+						<label class="btn btn-default"><input type="radio" id="rd_infl4" name="rd_signifi" value="All" /> All</label>
+						<label class="btn btn-default"><input type="radio" id="rd_infl4" name="rd_signifi" value="Custom" /> Custom</label>
+					</div>
+					</li>
+				</ul>
+			</li>
+			
+			<li><div class="ma-checkbox inline">
+			  <input id="check_5" type="checkbox" class="needsclick">
+			  <label for="check_5">Prediction </label>
+			</div>
+			</li>
+			
+		</ul>		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+	  
+      <!-- Bootstrap core JavaScript
+         ================================================== --> 
+      <!-- Placed at the end of the document so the pages load faster --> 
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/bootstrap-slider.js"></script>
+      <script src="js/uiScripts.js"></script>
+ <script>
+ /*** Popover function ***/
+$('[data-toggle="popover"]').popover({
+	container: 'body',
+	html: true,
+	trigger: 'focus',
+	placement: 'bottom',
+	content: function () {
+		var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+		return clone;
+	}
+}).click(function(e) {
+	e.preventDefault();
+});
+ 
+ </script>
+   </body>
+</html>

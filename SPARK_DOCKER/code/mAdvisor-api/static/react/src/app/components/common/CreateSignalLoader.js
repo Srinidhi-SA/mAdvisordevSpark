@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Link, Redirect} from "react-router-dom";
+import {Link} from "react-router-dom";
 import store from "../../store";
 import {Modal, Button} from "react-bootstrap";
 import {openCsLoaderModal, closeCsLoaderModal} from "../../actions/createSignalActions";
@@ -11,14 +11,12 @@ import {STATIC_URL} from "../../helpers/env";
 
 @connect((store) => {
   return {
-    login_response: store.login.login_response,
     createSignalLoaderModal: store.signals.createSignalLoaderModal,
     createSignalLoaderValue: store.signals.createSignalLoaderValue,
-    loaderText: store.signals.loaderText,
     signalData: store.signals.signalData,
-	signalLoadedText: store.signals.signalLoadedText,
-	sigLoaderidxVal: store.signals.sigLoaderidxVal,
-	sigLoaderidx:store.signals.sigLoaderidx,
+		signalLoadedText: store.signals.signalLoadedText,
+		sigLoaderidxVal: store.signals.sigLoaderidxVal,
+		sigLoaderidx:store.signals.sigLoaderidx,
   };
 })
 
@@ -79,7 +77,7 @@ export class CreateSignalLoader extends React.Component {
 
                 <Modal show={store.getState().signals.createSignalLoaderModal}  backdrop="static" onHide={this.closeModelPopup.bind(this)} dialogClassName="modal-colored-header">
 
-                <Modal.Body style={{marginBottom:"0"}}>
+                <Modal.Body className="xs-mb-0">
 
 
 				<div className="row">
@@ -254,38 +252,20 @@ export class CreateSignalLoader extends React.Component {
 							</div>
 							<div class="modal-steps" id="loadingMsgs2">
 							</div>
-
 						</div>
 						<div className="col-sm-3 text-center">
 							{store.getState().signals.createSignalLoaderValue >= 0?<h2 className="text-white sigProgress">{store.getState().signals.createSignalLoaderValue}%</h2>:<h5 style={{display:"block", textAlign: "center" }} className="loaderValue sigProgress">In Progress</h5>}
-
 						</div>
 					</div>
 					</div>
-
-
-                   
-										
                   </div>
                 </div>
               </div>
             </div>
-
-
-
-
-
-
-
-
-
-
           </Modal.Body>
               <Modal.Footer>
                 <div>
-                  <Link to="/signals" style={{
-                    paddingRight: "10px"
-                  }} onClick={this.cancelSignalProcessing.bind(this)}>
+                  <Link to="/signals" style={{paddingRight: 10}} onClick={this.cancelSignalProcessing.bind(this)}>
                     <Button onClick={this.cancelSignalProcessing.bind(this)}>Cancel</Button>
                   </Link>
                   <Link to="/signals" onClick={this.closeModelPopup.bind(this)}>

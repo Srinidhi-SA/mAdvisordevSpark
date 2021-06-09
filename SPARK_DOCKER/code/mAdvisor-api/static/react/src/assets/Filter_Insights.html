@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="images/favicon.ico">
+<title>mAdvisor Regression aPP</title>
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<!-- Custom styles for this template 
+	<link href="css/nanoscroller.css" rel="stylesheet">-->
+<link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- Main Wrapper ** Mandatory -->
+<div class="main_wrapper"> 
+  
+  <!-- Header Menu -->
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation"> 
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <div class="brand-wrapper"> 
+        <!-- Hamburger -->
+        <button type="button" class="navbar-toggle"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        
+        <!-- Brand -->
+        <div class="brand-name-wrapper"> <a class="navbar-brand" href="#"></a> </div>
+      </div>
+    </div>
+    <div class="dropdown ma-user-nav"> <a class="dropdown-toggle" href="#" data-toggle="dropdown"> <i class="avatar-img img-circle">M</i> <img src="images/avatar.jpg" alt="M" class="avatar-img img-circle hide"><span class="user-name">Marlabs BI</span> <span class="caret"></span></a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Logout</a></li>       
+      </ul>
+    </div>
+    <div class="clearfix"></div>     
+  </nav>
+   <!--/.Header Menu -->
+   
+  <!-- Side bar Main Menu -->
+  <div class="side-menu">      
+      <div class="side-menu-container">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="typography.html"> <span><i class="fa fa-dashboard fa-2x"></i> </span> TYPOGR</a></li>
+          <li><a href="tabs_accordion.html"> <span><i class="fa fa-database fa-2x"></i></span> Tabs & ACC</a></li>
+          <li><a href="#" class="sdb_signal"> <span></span> SIGNAL</a></li>
+          <li><a href="#" class="sdb_story"> <span></span> STORY</a></li>
+          <li><a href="#" class="sdb_app"> <span></span> APPS</a></li>
+          <li><a href="#" class="sdb_data"> <span></span> DATA</a></li>
+          <li><a href="#" class="sdb_settings"> <span></span> SETTINGS</a></li>         
+        </ul>
+      </div>
+      <!-- /.Side bar Main Menu  -->       
+    </div>
+  <!-- ./Side bar Main Menu -->
+  
+  <!-- Main Content starts with side-body -->  
+  <div class="side-body">
+    
+  	<!-- Page Title and Breadcrumbs -->
+    <div class="page-head">      
+      <h2>Title</h2>
+    </div>
+    <!-- /.Page Title and Breadcrumbs -->
+    
+    <!-- Page Content Area -->
+    <div class="main-content">       
+		<div class="row">
+			<div class="col-md-12">		 
+				<div class="panel box-shadow">
+					<div class="panel-body no-border xs-p-20">
+					 
+					<h4>mAdvisor has run <b><ChosenAlgorithmName></b> model on the data set and the distribution of the predicted values are as follows:
+</h4>
+					 <div class="row">
+						<div class="col-md-3">
+						<div class="form-horizontal">
+							<div class="form-group">
+								<label class="col-md-4 control-label">Y-Axis</label>
+								<div class="col-md-8">
+									<select class="form-control">
+									<option selected>Sum of < Target > </option>
+									<option>Dimension 1</option>
+									<option>Dimension </option>
+								</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-4 control-label">X-Axis</label>
+								<div class="col-md-8">
+								<select class="form-control">
+									<option>Dimension 1 </option>
+									<option>Dimension 2</option>
+									<option selected>Dimension 3</option>
+								</select>
+								</div>
+							</div>
+							<h4>Filters <a href="javascript:void(0)" class="pull-right">Clear All</a></h4>
+							<div class="form-group bg-color">
+								<div class="col-md-12 insight_filter">
+								
+									<div id="accordion1" class="panel-group accordion">
+									<div class="panel panel-default">
+									<div class="panel-heading">
+									<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion1" href="#collapseOne" aria-expanded="false" class="collapsed"><i class="fa fa-angle-down"></i> Dimension #1</a></h4>
+									</div>
+									<div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+									<div class="panel-body">
+									<ul class="list-unstyled">
+										<li>
+											<div class="ma-checkbox"><input type="checkbox" id="sublevel1" class="dimension" value="Name">
+											<label for="sublevel1">Dimension Level 1</label></div>
+										</li>
+										<li>
+											<div class="ma-checkbox"><input type="checkbox" id="sublevel2" class="dimension" value="Name">
+											<label for="sublevel2">Dimension Level 2</label></div>
+										</li>
+										<li>
+											<div class="ma-checkbox"><input type="checkbox" id="sublevel3" class="dimension" value="Name">
+											<label for="sublevel3">Dimension Level 3</label></div>
+										</li>
+									</ul>
+									
+									</div>
+									</div>
+									</div>
+									<div class="panel panel-default">
+									<div class="panel-heading">
+									<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo" class="collapsed" aria-expanded="false"><i class="fa fa-angle-down"></i> Dimension #2</a></h4>
+									</div>
+									<div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+									<div class="panel-body">
+										<ul class="list-unstyled">
+										<li>
+											<div class="ma-checkbox"><input type="checkbox" id="sublevel4" class="dimension" value="Name">
+											<label for="sublevel4">Dimension Level 4</label></div>
+										</li>
+										<li>
+											<div class="ma-checkbox"><input type="checkbox" id="sublevel5" class="dimension" value="Name">
+											<label for="sublevel5">Dimension Level 5</label></div>
+										</li>
+										<li>
+											<div class="ma-checkbox"><input type="checkbox" id="sublevel6" class="dimension" value="Name">
+											<label for="sublevel6">Dimension Level 6</label></div>
+										</li>
+										</ul>
+										
+										
+									</div>
+									</div>
+									</div>
+									<div class="panel panel-default">
+									<div class="panel-heading">
+									<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion1" href="#collapseThree" class="" aria-expanded="true"><i class="fa fa-angle-down"></i> Binned measure 1</a></h4>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse in" aria-expanded="true" style="">
+									<div class="panel-body">
+										<ul class="list-unstyled">
+										<li>
+											<div class="ma-checkbox"><input type="checkbox" id="bm1" class="dimension" value="Name">
+											<label for="bm1">Sub-level 1</label></div>
+										</li>
+										<li>
+											<div class="ma-checkbox"><input type="checkbox" id="bm2" class="dimension" value="Name">
+											<label for="bm2">Sub-level 2</label></div>
+										</li>
+										<li>
+											<div class="ma-checkbox"><input type="checkbox" id="bm3" class="dimension" value="Name">
+											<label for="bm3">Sub-level 3</label></div>
+										</li>
+										</ul>
+									</div>
+									</div>
+									</div>
+									</div>
+								
+								</div>
+							</div>
+							
+							<!-- Form actions -->
+							<div class="form-group">
+								<div class="col-md-12 text-right">
+								<button type="submit" class="btn btn-primary">Apply</button>
+								</div>
+							</div>
+						</div>
+						</div>
+						<div class="col-md-9">
+							<img src="images/graph_1.png" class="img-responsive" />
+						</div>
+					 </div>
+					
+				
+					 
+					
+			 
+					</div> <!-- Panel Body -->
+				</div> <!-- Panel Box -->
+			</div> <!-- Open Column -->
+		</div> <!-- End Row -->
+	</div><!-- End Main Content -->
+    </div>
+    <!-- /.Page Content Area -->
+    
+  </div>
+  <!-- /. Main Content ends with side-body -->  
+  
+</div>
+<!-- /. Main Wrapper ** Mandatory -->
+
+<!-- Bootstrap core JavaScript
+    ================================================== --> 
+<!-- Placed at the end of the document so the pages load faster --> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+<script src="js/bootstrap.min.js"></script>
+<script>
+	$(function () {
+		/** In small device sidebar will dis-appear, with the help of below jq will appear the side menu **/
+		$('.navbar-toggle').click(function () {
+			$('.navbar-nav').toggleClass('slide-in');
+			$('.side-body').toggleClass('body-slide-in');        
+		});		
+	});
+</script>
+</body>
+</html>

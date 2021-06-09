@@ -14,7 +14,7 @@ import ReactTooltip from 'react-tooltip';
     originalImgPath: store.ocr.originalImgPath,
     imageSlug: store.ocr.imageSlug,
     ocrDocList: store.ocr.OcrRevwrDocsList,
-    imageTaskId: store.ocr.imageTaskId,
+    docTaskId: store.ocr.docTaskId,
     projectName: store.ocr.selected_project_name,
     reviewerName: store.ocr.selected_reviewer_name,
     selected_image_name: store.ocr.selected_image_name,
@@ -26,6 +26,7 @@ import ReactTooltip from 'react-tooltip';
     pdfSize: store.ocr.pdfSize,
     pdfNumber: store.ocr.pdfNumber,
     pdfDoc: store.ocr.pdfDoc,
+    pdfSlug: store.ocr.pdfSlug,
   };
 })
 
@@ -98,14 +99,18 @@ export class OcrCompleteExtract extends React.Component {
   }
 
   handleMarkComplete = () => {
-    let id = this.props.imageTaskId;
-    var data = new FormData();
-    data.append("status", "reviewed");
-    data.append("remark", "good");
-    return fetch(API + '/ocrflow/tasks/' + id + '/', {
+    let id = this.props.docTaskId;
+    let slug= this.props.pdfDoc ? this.props.pdfSlug : this.props.imageSlug
+    var data = {
+      "status":"reviewed",
+      "remarks":"good",
+      "task_id": id,
+      "slug": slug,
+    }
+    return fetch(API + '/ocrflow/tasks/submit_task/', {
       method: 'post',
-      headers: this.getHeaderWithoutContent(getUserDetailsOrRestart.get().userToken),
-      body: data
+      headers: this.getHeader(getUserDetailsOrRestart.get().userToken),
+      body: JSON.stringify(data)
     }).then(response => response.json())
       .then(data => {
         if (data.submitted === true) {
@@ -116,31 +121,58 @@ export class OcrCompleteExtract extends React.Component {
       });
   }
   handleBadScan = () => {
-    //window.history.go(-1)
     if (this.state.feedback != "") {
-      let feedbackID = this.props.imageTaskId;
-      var data = new FormData();
-      data.append("bad_scan", this.state.feedback);
-      data.append("slug", this.props.imageSlug);
-      return fetch(API + '/ocrflow/tasks/feedback/?feedbackId=' + feedbackID, {
-        method: 'post',
-        headers: this.getHeaderWithoutContent(getUserDetailsOrRestart.get().userToken),
-        body: data
-      }).then(response => response.json())
-        .then(data => {
-          if (data.submitted === true) {
-            $('#modal_badscan').hide();
-            $('.modal-backdrop').hide();
-            this.setState({ badScanFlag: true });
-            document.getElementById("badScan").disabled = true;
-            document.getElementById("mac").disabled = true;
-            bootbox.alert(statusMessages("success", "Feedback submitted.", "small_mascot"));
-          }
-        });
+    let id = this.props.docTaskId;
+    let slug= this.props.pdfDoc ? this.props.pdfSlug : this.props.imageSlug
+    var data = {
+      "bad_scan": this.state.feedback,
+      "task_id": id,
+      "slug": slug,
+    }
+    return fetch(API + '/ocrflow/tasks/feedback/', {
+      method: 'post',
+      headers: this.getHeader(getUserDetailsOrRestart.get().userToken),
+      body: JSON.stringify(data)
+    }).then(response => response.json())
+      .then(data => {
+        if (data.submitted === true) {
+          $('#modal_badscan').hide();
+          $('.modal-backdrop').hide();
+          this.setState({ badScanFlag: true });
+          document.getElementById("badScan").disabled = true;
+          document.getElementById("mac").disabled = true;
+          bootbox.alert(statusMessages("success", "Feedback submitted.", "small_mascot"));
+        }
+      })
     }
     else {
       document.getElementById("resetMsg").innerText = "Please provide the feedback"
     }
+
+    // if (this.state.feedback != "") {
+    //   let feedbackID = this.props.docTaskId;
+    //   var data = new FormData();
+    //   data.append("bad_scan", this.state.feedback);
+    //   data.append("slug", this.props.imageSlug);
+    //   return fetch(API + '/ocrflow/tasks/feedback/?feedbackId=' + feedbackID, {
+    //     method: 'post',
+    //     headers: this.getHeaderWithoutContent(getUserDetailsOrRestart.get().userToken),
+    //     body: data
+    //   }).then(response => response.json())
+    //     .then(data => {
+    //       if (data.submitted === true) {
+    //         $('#modal_badscan').hide();
+    //         $('.modal-backdrop').hide();
+    //         this.setState({ badScanFlag: true });
+    //         document.getElementById("badScan").disabled = true;
+    //         document.getElementById("mac").disabled = true;
+    //         bootbox.alert(statusMessages("success", "Feedback submitted.", "small_mascot"));
+    //       }
+    //     });
+    // }
+    // else {
+    //   document.getElementById("resetMsg").innerText = "Please provide the feedback"
+    // }
   }
   finalAnalysis = () => {
     return fetch(API + '/ocr/ocrimage/final_analysis/', {

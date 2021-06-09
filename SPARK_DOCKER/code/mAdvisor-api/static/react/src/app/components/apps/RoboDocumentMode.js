@@ -10,9 +10,7 @@ import {STATIC_URL} from "../../helpers/env.js"
 import {isEmpty} from "../../helpers/helper";
 
 @connect((store) => {
-	return {login_response: store.login.login_response, 
-		currentAppId:store.apps.currentAppId,
-		roboUploadTabId:store.apps.roboUploadTabId,
+	return {
 		signal: store.signals.signalAnalysis,
 		roboDatasetSlug:store.apps.roboDatasetSlug,
 		};
@@ -52,15 +50,15 @@ export class RoboDocumentMode extends React.Component {
 		                        <div className="btn-group btn-space">
 		                        <Link className="tabs-control right grp_legends_green continue" to={cardModeLink}>
 		                          <button type="button" className="btn btn-default" title="Card mode">
-		                            <i class="zmdi zmdi-hc-lg zmdi-view-carousel"></i>
+		                            <i class="fa fa-columns"></i>
 		                          </button>
 		                          </Link>
 		                          <button type="button" className="btn btn-default" disabled = "true" title="Document Mode">
-		                              <i class="zmdi zmdi-hc-lg zmdi-view-web"></i>
+		                              <i style={{fontSize:16}} class="fa fa-file-text-o fa-2x"></i>
 		                            </button>
 							   <Link className="continue" to="/apps-robo">
 		                          <button type="button" className="btn btn-default">
-		                            <i class="zmdi zmdi-hc-lg zmdi-close"></i>
+		                            <i class="fa fa-times"></i>
 		                          </button>
 								 </Link>
 		                        </div>

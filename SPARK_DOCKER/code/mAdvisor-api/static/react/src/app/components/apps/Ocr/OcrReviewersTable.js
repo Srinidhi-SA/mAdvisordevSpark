@@ -1,5 +1,6 @@
+//Reviewers table with list of reviewers
 import React, { Component } from 'react'
-import {getOcrReviewersList,saveRevDocumentPageFlag,selectedReviewerDetails,ocrRevFilterTime,ocrRevFilterAccuracy, ReviewerTablePagesize}from '../../../actions/ocrActions'
+import {getOcrReviewersList,saveRevDocumentPageFlag,selectedReviewerDetails,ocrRevFilterAccuracy, ReviewerTablePagesize}from '../../../actions/ocrActions'
 import { connect } from "react-redux";
 import store from "../../../store";
 import { Pagination } from "react-bootstrap";
@@ -20,32 +21,26 @@ export default class OcrReviewersTable extends Component {
     }
   }
 
-  componentWillMount = () => {
-    this.props.dispatch(getOcrReviewersList())
- }
+componentWillMount = () => this.props.dispatch(getOcrReviewersList())
+ 
+handlePagination = (pageNo) => this.props.dispatch(getOcrReviewersList(pageNo))
 
-
-handlePagination = (pageNo) => {
-  this.props.dispatch(getOcrReviewersList(pageNo))
-}
-handlePageRow=(e)=>{
-  let selectedVal= e.target.value;
-  this.props.dispatch(ReviewerTablePagesize(selectedVal));
+handlePageRow = (e) => {
+  this.props.dispatch(ReviewerTablePagesize(e.target.value));
   this.props.dispatch(getOcrReviewersList())
 }
-handleDocumentPageFlag (slug,name){
+handleDocumentPageFlag = (slug,name) => {
   this.props.dispatch(saveRevDocumentPageFlag(true));
   this.props.dispatch(selectedReviewerDetails(slug,name))
 }
 
-handleFil(mode){                 
+handleFil = (mode) => {                 
   this.disableInputs(mode,'')
   this.setState({filterVal:mode})
 }
 
-disableInputs(mode,reset){    
-  let  idList=''
-  mode[0]=="C"? idList= ['CEQL','CGTE','CLTE']:idList= ['TEQL','TGTE','TLTE']
+disableInputs = (mode,reset) => {    
+  let  idList=['CEQL','CGTE','CLTE']
   
   let disableIds=reset!='reset'?idList.filter(i=>i!=mode):idList
 
@@ -55,20 +50,13 @@ disableInputs(mode,reset){
   disableIds.map(i=>$(`#${i}`).attr('disabled', false))
 }
 
-filterRevList(filtertBy, filterOn,reset) {
+filterRevList = (reset) => {
   var filterByVal=''
 
-  if(reset!='reset'){
-    filterByVal = (filterOn==('time')||(filterOn=='accuracy'))?$(`#${this.state.filterVal}`).val().trim()!=''?(this.state.filterVal.slice(1,4)+$(`#${this.state.filterVal}`).val().trim()):"":filtertBy;
-    }
-  switch (filterOn) {
-    case 'time':
-    this.props.dispatch(ocrRevFilterTime(filterByVal))
-    break;
-    case 'accuracy':
-    this.props.dispatch(ocrRevFilterAccuracy(filterByVal))
-    break;
-  }
+  if(reset!='reset')
+    filterByVal = $(`#${this.state.filterVal}`).val().trim()!=''?(this.state.filterVal.slice(1,4)+$(`#${this.state.filterVal}`).val().trim()):"";
+  
+  this.props.dispatch(ocrRevFilterAccuracy(filterByVal))
   this.props.dispatch(getOcrReviewersList())
   if(reset=='reset'){
     if(this.state.filterVal!=""){
@@ -107,7 +95,6 @@ filterRevList(filtertBy, filterOn,reset) {
             <td>
               <i className="fa fa-user-o"></i>
             </td>
-
             <td><Link to='/apps/ocr-mq44ewz7bp/reviewer/' onClick={() => { this.handleDocumentPageFlag(item.ocr_profile.slug,item.username) }} title={item.username}>{item.username}</Link></td>
             <td>{item.ocr_profile.role[0]}</td>
             <td>{item.ocr_data.assignments}</td>
@@ -129,7 +116,7 @@ filterRevList(filtertBy, filterOn,reset) {
            <h4>Reviewers</h4>
         </div>
         <div className="col-sm-12 xs-mt-20">
-          <div className="table-responsive" style={{overflowX:'inherit'}}>
+          <div className="table-responsive" style={{overflowX:'inherit', minHeight:250, background:'rgb(255, 255, 255)'}}>
             <table className="table table-condensed table-hover cst_table ">
               <thead>
                 <tr>
@@ -142,15 +129,15 @@ filterRevList(filtertBy, filterOn,reset) {
                     <a href="#" data-toggle="dropdown" className="dropdown-toggle cursor" title="Confidence Level" aria-expanded="true">
                       <span>Model Accuracy</span> <b className="caret"></b>
                     </a>
-                    <ul class="dropdown-menu scrollable-menu filterOptions">
-                      <li><a className="cursor" onClick={this.filterRevList.bind(this, '', 'accuracy','reset')} name="all" data-toggle="modal" data-target="#modal_equal">All</a></li>
+                    <ul className="dropdown-menu scrollable-menu filterOptions">
+                      <li><a className="cursor" onClick={()=>this.filterRevList('reset')} name="all" data-toggle="modal" data-target="#modal_equal">All</a></li>
                       <li><a>Equal to</a>
-                        <input id='CEQL' onChange={this.handleFil.bind(this,'CEQL')} type='number' ></input></li>
+                        <input id='CEQL' onChange={()=>this.handleFil('CEQL')} type='number' ></input></li>
                       <li><a>Greater than</a>
-                        <input id='CGTE' onChange={this.handleFil.bind(this,'CGTE')} type='number' ></input></li>
+                        <input id='CGTE' onChange={()=>this.handleFil('CGTE')} type='number' ></input></li>
                       <li><a>Less than</a>
-                        <input id='CLTE' onChange={this.handleFil.bind(this,'CLTE')} type='number'></input></li>
-                      <button className="btn btn-primary filterCheckBtn" onClick={this.filterRevList.bind(this, '', 'accuracy','')}><i className="fa fa-check"></i></button>
+                        <input id='CLTE' onChange={()=>this.handleFil('CLTE')} type='number'></input></li>
+                      <button className="btn btn-primary filterCheckBtn" onClick={()=>this.filterRevList('')}><i className="fa fa-check"></i></button>
                     </ul>
                   </th>
                   <th>Last Login</th>

@@ -37,7 +37,7 @@ from pyspark.ml.feature import IndexToString
 from pyspark.sql.functions import udf,col
 from pyspark.sql.types import *
 from bi.narratives.decisiontree.decision_tree import DecisionTreeNarrative
-
+import pyspark.sql.functions as F
 from bi.settings import setting as GLOBALSETTINGS
 from pyspark.ml.feature import StringIndexer, VectorAssembler
 from pyspark.ml.pipeline import PipelineModel
@@ -218,7 +218,7 @@ class NaiveBayesPysparkScript(object):
 
             else:
                 if automl_enable:
-                    paramGrid = (ParamGridBuilder().addGrid(clf.smoothing, [0.0,0.2,0.4,0.6,0.8,1.0]).build())
+                    paramGrid = (ParamGridBuilder().addGrid(clf.smoothing, [1.0,0.2]).build())
                 crossval = CrossValidator(estimator=estimator,
                               estimatorParamMaps=paramGrid,
                               evaluator=BinaryClassificationEvaluator() if levels == 2 else MulticlassClassificationEvaluator(),
@@ -260,7 +260,8 @@ class NaiveBayesPysparkScript(object):
 
         MLUtils.save_pipeline_or_model(bestModel,model_filepath)
         predsAndLabels = prediction.select(['prediction', 'label']).rdd.map(tuple)
-        label_classes = prediction.select("label").distinct().collect()
+        # label_classes = prediction.select("label").distinct().collect()
+        # label_classes = prediction.agg((F.collect_set('label').alias('label'))).first().asDict()['label']
         #results = transformed.select(["prediction","label"])
         # if len(label_classes) > 2:
         #     metrics = MulticlassMetrics(predsAndLabels) # accuracy of the model
@@ -300,9 +301,13 @@ class NaiveBayesPysparkScript(object):
             gain_lift_ks_obj = GainLiftKS(pys_df, 'y_prob_for_eval', 'prediction', 'label', posLabel, self._spark)
             gain_lift_KS_dataframe = gain_lift_ks_obj.Run().toPandas()
         except:
-            print("gain chant failed")
-            pass
-
+            try:
+                temp_df = pys_df.toPandas()
+                gain_lift_ks_obj = GainLiftKS(temp_df, 'y_prob_for_eval', 'prediction', 'label', posLabel, self._spark)
+                gain_lift_KS_dataframe = gain_lift_ks_obj.Rank_Ordering()
+            except:
+                print("gain chant failed")
+                gain_lift_KS_dataframe = None
 
 
         #feature_importance = MLUtils.calculate_sparkml_feature_importance(df, bestModel.stages[-1], categorical_columns, numerical_columns)
@@ -570,6 +575,7 @@ class NaiveBayesPysparkScript(object):
 
         CommonUtils.create_update_and_save_progress_message(self._dataframe_context,self._scriptWeightDict,self._scriptStages,self._slug,"completion","info",display=True,emptyBin=False,customMsg=None,weightKey="total")
 
+        print("\n\n")
 
     def Predict(self):
         self._scriptWeightDict = self._dataframe_context.get_ml_model_prediction_weight()

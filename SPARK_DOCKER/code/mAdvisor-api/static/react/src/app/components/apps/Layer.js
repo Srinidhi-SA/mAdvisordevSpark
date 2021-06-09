@@ -6,7 +6,6 @@ import {statusMessages} from  "../../helpers/helper";
 
 @connect((store) => {
 	return {
-    login_response: store.login.login_response, 
     tensorFlowInputs:store.apps.tensorFlowInputs,
   };
 })

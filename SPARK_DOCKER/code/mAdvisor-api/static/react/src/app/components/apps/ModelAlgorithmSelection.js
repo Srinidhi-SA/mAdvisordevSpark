@@ -1,9 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Link, Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import store from "../../store";
 import {Button,Tabs,Tab,FormGroup} from "react-bootstrap";
-import {createModel,setDefaultAutomatic,updateAlgorithmData,saveParameterTuning,changeHyperParameterType, pytorchValidateFlag, setPyTorchSubParams,updateTensorFlowArray, modifyActiveAlgorithmTab} from "../../actions/appActions";
+import {createModel,saveParameterTuning,changeHyperParameterType, pytorchValidateFlag, setPyTorchSubParams,updateTensorFlowArray, modifyActiveAlgorithmTab} from "../../actions/appActions";
 import {AppsLoader} from "../common/AppsLoader";
 import {RegressionParameter} from "./RegressionParameter";
 import {STATIC_URL} from "../../helpers/env.js";
@@ -32,8 +32,9 @@ export class ModelAlgorithmSelection extends React.Component {
     componentWillMount() {
         if(this.props.apps_regression_modelName == "" || this.props.currentAppDetails == null){
             window.history.go(-1);
+        }else{
+            this.props.dispatch(modifyActiveAlgorithmTab(this.props.automaticAlgorithmData.filter(i=>i.selected)[0].algorithmSlug))
         }
-        this.props.dispatch(modifyActiveAlgorithmTab(this.props.automaticAlgorithmData[0].algorithmSlug))
     }
 
     componentDidMount() {
@@ -248,21 +249,7 @@ export class ModelAlgorithmSelection extends React.Component {
         }
         this.props.dispatch(createModel(store.getState().apps.apps_regression_modelName,store.getState().apps.apps_regression_targetType,store.getState().apps.apps_regression_levelCount,store.getState().datasets.dataPreview.slug,"analyst"));
     }
-    handleOptionChange(e){
-        if(e.target.value == 1){
-            $("#automaticBlock_111").removeClass("dispnone");
-            $("#manualBlock_111").addClass("dispnone");
-        }else{
-            $("#automaticBlock_111").addClass("dispnone");
-            $("#manualBlock_111").removeClass("dispnone");
-        }
-        this.props.dispatch(setDefaultAutomatic(e.target.value));
-    }
-
-    changeAlgorithmSelection(data){
-        this.props.dispatch(updateAlgorithmData(data.algorithmSlug));
-    }
-
+    
     changeParameter(slug){
         var isContinueRange = this.checkRangeValidation();
         var isContinueSelect = this.checkMultiSelectValidation();
@@ -282,16 +269,26 @@ export class ModelAlgorithmSelection extends React.Component {
             $(".learningGrid .for_multiselect").removeClass("disableGrid");
         }
     }
+    componentDidUpdate(){
+        setTimeout(function(){
+            let curSelects = document.querySelectorAll("#multislct_"+store.getState().apps.activeAlgorithmTab)
+            for(let i=0;i<curSelects.length;i++){
+                let curNode = curSelects[i].childNodes
+                if( curNode.length>=2){
+                    curNode[0].style.display = "block"
+                    curNode[1].remove();
+                }
+            }
+        });
+    }
 
     handleBack=()=>{
-        const appId = this.props.match.params.AppId;
-        const slug = this.props.match.params.slug;
-        this.props.history.replace(`/apps/${appId}/analyst/models/data/${slug}/createModel/algorithmSelection`);
+        this.props.history.replace(`/apps/${this.props.match.params.AppId}/analyst/models/data/${this.props.match.params.slug}/createModel/algorithmSelection`);
       }
 
     render() {
-        if(store.getState().apps.modelSummaryFlag){ 
-            var modeSelected= store.getState().apps.analystModeSelectedFlag?'/analyst' :'/autoML'
+        if(store.getState().apps.modelSummaryFlag){
+            var modeSelected= window.location.pathname.includes("autoML")?'/autoML':'/analyst'
             let _link = "/apps/"+store.getState().apps.currentAppDetails.slug+modeSelected+'/models/'+store.getState().apps.modelSlug;
             return(<Redirect to={_link}/>);
         }

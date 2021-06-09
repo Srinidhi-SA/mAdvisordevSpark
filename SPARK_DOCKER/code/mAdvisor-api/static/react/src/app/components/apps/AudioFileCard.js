@@ -1,28 +1,17 @@
 import React from "react";
-import {MainHeader} from "../common/MainHeader";
-import {Tabs,Tab,Pagination,Tooltip,OverlayTrigger,Popover} from "react-bootstrap";
-import {Link, Redirect} from "react-router-dom";
-import store from "../../store";
+import {OverlayTrigger,Popover} from "react-bootstrap";
+import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {APPID4,APPNAME4} from "../../helpers/helper.js";
-import {AudioFileUpload} from "./AudioFileUpload";
-import {AppsLoader} from "../common/AppsLoader";
-import {getAudioFile,getAudioFileList,handleAudioDelete,handleAudioRename} from "../../actions/appActions";
+import {getAudioFile,handleAudioDelete,handleAudioRename} from "../../actions/appActions";
 import {STATIC_URL} from "../../helpers/env.js"
-import {isEmpty,SEARCHCHARLIMIT,getUserDetailsOrRestart} from "../../helpers/helper";
+import {getUserDetailsOrRestart,setDateFormatHelper} from "../../helpers/helper";
 import {DetailOverlay} from "../common/DetailOverlay";
 import Dialog from 'react-bootstrap-dialog'
-import Breadcrumb from 'react-breadcrumb';
 
-var dateFormat = require('dateformat');
 
 @connect((store) => {
-    return {login_response: store.login.login_response,
-        currentAppId:store.apps.currentAppId,
-        audioFileSummaryFlag:store.apps.audioFileSummaryFlag,
-        audioFileSlug:store.apps.audioFileSlug,
+    return {
         audioList:store.apps.audioList,
-        audio_search_element:store.apps.audio_search_element
         };
 })
 
@@ -74,7 +63,7 @@ export class AudioFileCard extends React.Component {
                     <div class="btn-toolbar pull-right">
                     {/*<!-- Rename and Delete BLock  -->*/}
                     <a className="dropdown-toggle more_button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More..">
-                    <i className="ci zmdi zmdi-hc-lg zmdi-more-vert"></i>
+                    <i className="ci glyphicon glyphicon-option-vertical"></i>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                     <li onClick={this.handleAudioRename.bind(this,data.slug,data.name)}>
@@ -92,10 +81,6 @@ export class AudioFileCard extends React.Component {
                     
                     <div className="clearfix"></div>
                         
-                        {/* <div class="inProgressIcon">
-                            <i class="fa fa-circle"></i>
-                            <span class="inProgressIconText">&nbsp;{story.completed_percentage}&nbsp;%</span>
-                            </div> */}
                             
                     {/*<!-- Popover Content link -->*/}
                      <OverlayTrigger trigger="click" rootClose  placement="left" overlay={<Popover id="popover-trigger-focus"><DetailOverlay details={data}/></Popover>}><a  className="pover cursor">
@@ -114,7 +99,7 @@ export class AudioFileCard extends React.Component {
                     <div className="card-footer">
                     <div className="left_div">
                     <span className="footerTitle"></span>{getUserDetailsOrRestart.get().userName}
-                    <span className="footerTitle">{dateFormat(data.created_at, "mmm d,yyyy HH:MM")}</span>
+                    <span className="footerTitle">{setDateFormatHelper(data.created_at)}</span>
                     </div>
 
                      

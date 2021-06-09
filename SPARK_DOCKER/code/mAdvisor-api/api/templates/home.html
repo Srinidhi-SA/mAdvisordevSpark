@@ -1,68 +1,51 @@
 <!doctype html>
 <html lang="en">
 {% load static %}
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>mAdvisor</title>
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <!-- Custom Fonts -->
-  <link href="/static/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <!-- Latest compiled and minified CSS -->
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-  <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
-  <link href="/static/assets/css/bootstrap-slider.css" rel="stylesheet">
-  <link href="/static/assets/css/style.css?v={{ UI_VERSION }}" rel="stylesheet">
-  <link href="/static/assets/css/c3.css?v={{ UI_VERSION }}" rel="stylesheet">
-
-  <link rel="icon" href="/static/assets/images/favicon.ico" />
-  <link rel="stylesheet" href="/static/assets/css/fancy_fileupload.css?v={{ UI_VERSION }}" type="text/css" media="all" />
-  <link href="/static/assets/css/theme.ice.css" rel="stylesheet">
-  <link rel="stylesheet" href="/static/assets/css/bootstrap-multiselect.css" type="text/css" />
-  <link rel="stylesheet" href="/static/assets/css/d3.parcoords.css" type="text/css" />
-  <title>Euclid - Welcome to Euclid</title>
+ <meta charset="UTF-8">
+ <title>mAdvisor</title>
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+ <link rel="icon" href="/static/assets/images/favicon.ico" />
+ <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
+ <link href="/static/assets/css/bootstrap-slider.css" rel="stylesheet">
+ <link href="/static/assets/css/style.css?v={{ UI_VERSION }}" rel="stylesheet">
+ <link href="/static/assets/css/c3.css?v={{ UI_VERSION }}" rel="stylesheet">
+ <link rel="stylesheet" href="/static/assets/css/d3.parcoords.css" type="text/css" />
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"/>
+ <link href="/static/assets/css/theme.ice.css" rel="stylesheet">
+ <link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"/>
+ <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"/>
+ 
 </head>
-
 <body>
-  <div id="app"></div>
-
-  <script>
-    var APP_BASE_URL = "{{APP_BASE_URL}}";
-      var SCORES_BASE_URL = "{{SCORES_BASE_URL}}"
-      var STATIC_URL_PATH = "{{STATIC_URL}}"
-      var KYLO_UI_URL = "{{KYLO_UI_URL}}"
-      var ENABLE_KYLO  = "{{ENABLE_KYLO}}"
-  </script>
-  <script src="/static/assets/js/jquery.min.js"></script>
-  <script src="/static/assets/js/bootstrap.min.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-  <script src="/static/assets/js/d3.min.js"></script>
-  <script src="/static/assets/js/c3.min.js"></script>
-  <script src="/static/assets/js/jquery.pleaseWait.js"></script>
-  <script src="/static/assets/js/saveSvgAsPng.js"></script>
-  <script src="/static/assets/js/bootstrap-slider.js"></script>
-  <script src="/static/assets/js/bootbox.min.js"></script>
-
-  <script type="text/javascript" src="/static/assets/js/jquery.tablesorter.js"></script>
-  <script type="text/javascript" src="/static/assets/js/jquery.tablesorter.widgets.js"></script>
-    <script type="text/javascript" src="/static/assets/js/bootstrap-multiselect.js"></script>
-    <script src="/static/assets/js/d3.parcoords.js"></script>
-  <script src="/static/assets/js/divgrid.js"></script>
-  <script src="/static/assets/js/sorttable.js"></script>
-  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.48.0.min.js"></script>
-  <script src="/static/assets/js/lex/aws-lex-audio.js"></script>
-  <script src="/static/assets/js/lex/renderer.js"></script>
-<!-- for chatbot-->
-<!-- <script src="https://prodx.in/m-advisor-measure/client-plugin/bot.js" async type="text/javascript"></script> -->
-
-    <!--<script src="/assets/js/bootstrap.min.js"></script>-->
-  <script src="/static/react/dist/app/bundle.js?v={{ UI_VERSION }}"></script>
-
-<!--  <script src="/assets/js/uiScripts.js"></script>-->
-  <!-- Latest compiled and minified JavaScript -->
-
+ <div id="app"></div>
+ <script>
+ var APP_BASE_URL = "{{APP_BASE_URL}}";
+ var SCORES_BASE_URL = "{{SCORES_BASE_URL}}"
+ var STATIC_URL_PATH = "{{STATIC_URL}}"
+ var KYLO_UI_URL = "{{KYLO_UI_URL}}"
+ var ENABLE_KYLO = "{{ENABLE_KYLO}}"
+ </script>
+ <script src="https://use.fontawesome.com/5cdb973467.js"></script>
+ <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ <script src="/static/assets/js/bootstrap-slider.js"></script>
+ <script src="/static/assets/js/bootbox.min.js"></script>
+ <script src="/static/assets/js/d3.min.js"></script>
+ <script src="/static/assets/js/c3.min.js"></script>
+ <script src="/static/assets/js/saveSvgAsPng.js"></script>
+ <script type="text/javascript" src="/static/assets/js/jquery.tablesorter.js"></script>
+ <script type="text/javascript" src="/static/assets/js/bootstrap-multiselect.js"></script>
+ <script src="https://d3js.org/d3.v3.min.js"></script>
+ <script src="/static/assets/js/d3.parcoords.js"></script>
+ <script src="/static/assets/js/divgrid.js"></script>
+ <script src="https://sdk.amazonaws.com/js/aws-sdk-2.48.0.min.js"></script>
+ <script src="/static/assets/js/lex/aws-lex-audio.js"></script>
+ <script src="/static/assets/js/lex/renderer.js"></script>
+ <!-- for chatbot-->
+ <!-- <script src="https://prodx.in/m-advisor-measure/client-plugin/bot.js" async type="text/javascript"></script> -->
+ <!-- <script src="/assets/js/uiScripts.js"></script>-->
+ <script src="/static/react/dist/app/bundle.js?v={{ UI_VERSION }}"></script>
 </body>
-
 </html>

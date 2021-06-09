@@ -81,7 +81,7 @@ class AuthenticationMiddlewareJWT(object):
             try:
                 payload = jwt_decode_handler(jwt_value)
             except jwt.ExpiredSignature:
-                print("Siganture expiredddd")
+                print("Signature expired.")
                 msg = {
                     'jwtResponse': 'Signature has expired.'
                 }

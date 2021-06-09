@@ -1,27 +1,7 @@
-export function openBinsOrLevelsModalAction(selectedItem) {
-  return {
-    type: "BINS_LEVELS_SHOW_MODAL",
-    selectedItem
+export function showBinsLevelsTransformModalAction(flag,item,btn){
+  return{
+    type: "SHOW_BINS_LEVELS_TRANSFORM_MODAL",flag,item,btn
   }
-}
-
-export function closeBinsOrLevelsModalAction() {
-   return {
-     type: "BINS_LEVELS_HIDE_MODAL",
-   }
-}
-
-export function openTransformColumnModalAction(selectedItem) {
-  return {
-    type: "TRANSFORM_COLUMN_SHOW_MODAL" ,
-    selectedItem
-  }
-}
-
-export function closeTransformColumnModalAction() {
-   return {
-     type: "TRANSFORM_COLUMN_HIDE_MODAL",
-   }
 }
 
 export function selectedBinsOrLevelsTabAction(selectedBinsOrLevelsTab) {

@@ -1,7 +1,6 @@
 import { getUserDetailsOrRestart } from "../helpers/helper";
 import { getHeader } from "./appActions";
 import { API } from "../helpers/env";
-import store from "../store";
 
 export function chartObjStore(chartObj) {
 	return {
@@ -22,7 +21,7 @@ export function setCloudImageLoader(flag){
 }
 export function fetchWordCloudImg(data){
 	return (dispatch) => {
-		return fetchWordCloudImgAPI(data,getUserDetailsOrRestart.get().userToken,dispatch).then(([response,json]) => {
+		return fetchWordCloudImgAPI(data,getUserDetailsOrRestart.get().userToken).then(([response,json]) => {
 			if(response.status === 200){
 				dispatch(setCloudImageLoader(false));
 				dispatch(wordCloudImgResponse(json));

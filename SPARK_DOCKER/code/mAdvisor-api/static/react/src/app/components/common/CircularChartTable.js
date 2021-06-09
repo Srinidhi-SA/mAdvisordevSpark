@@ -10,7 +10,7 @@ export class CircularChartTable extends React.Component {
    var headerComponents = generateHeaders(data);
    var rowComponents = generateCircularChartRows(data);
    return (
-           <table className="table table_borderless" style={{"width":"100%"}}>
+           <table className="table table_borderless" style={{width:"100%"}}>
                <thead><tr>{headerComponents}</tr></thead>
                <tbody >{rowComponents}</tbody>
            </table>

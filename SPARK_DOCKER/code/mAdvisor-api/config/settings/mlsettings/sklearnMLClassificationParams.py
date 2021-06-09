@@ -251,29 +251,6 @@ SKLEANR_ML_RF_CLASSIFICATION_PARAMS = SKLEARN_ML_TREE_BASED_CLASSIFICATION_COMMO
         "allowedDataType": ["string"]
     },
     {
-        "name": "bootstrap",
-        "displayName": "Bootstrap Sampling",
-        "description": "It defines whether bootstrap samples are used when building trees",
-        "defaultValue": [
-            {
-                "name": "false",
-                "selected": False,
-                "displayName": "False"
-            },
-            {
-                "name": "true",
-                "selected": False,
-                "displayName": "True"
-            }
-        ],
-        "paramType": "list",
-        "uiElemType": "checkbox",
-        "display": True,
-        "hyperpatameterTuningCandidate": True,
-        "expectedDataType": ["bool"],
-        "allowedDataType": ["bool"]
-    },
-    {
         "name": "oob_score",
         "displayName": "use out-of-bag samples",
         "description": "It defines whether to use out-of-bag samples to estimate the R^2 on unseen data",
@@ -291,8 +268,31 @@ SKLEANR_ML_RF_CLASSIFICATION_PARAMS = SKLEARN_ML_TREE_BASED_CLASSIFICATION_COMMO
         ],
         "paramType": "list",
         "uiElemType": "checkbox",
-        "display": False,
-        "hyperpatameterTuningCandidate": False,
+        "display": True,
+        "hyperpatameterTuningCandidate": True,
+        "expectedDataType": ["bool"],
+        "allowedDataType": ["bool"]
+    },
+    {
+        "name": "bootstrap",
+        "displayName": "Bootstrap Sampling",
+        "description": "It defines whether bootstrap samples are used when building trees",
+        "defaultValue": [
+            {
+                "name": "false",
+                "selected": True,
+                "displayName": "False"
+            },
+            {
+                "name": "true",
+                "selected": False,
+                "displayName": "True"
+            }
+        ],
+        "paramType": "list",
+        "uiElemType": "checkbox",
+        "display": True,
+        "hyperpatameterTuningCandidate": True,
         "expectedDataType": ["bool"],
         "allowedDataType": ["bool"]
     },
@@ -372,6 +372,102 @@ SKLEANR_ML_RF_CLASSIFICATION_PARAMS = SKLEARN_ML_TREE_BASED_CLASSIFICATION_COMMO
         "hyperpatameterTuningCandidate": False,
         "expectedDataType": ["int", None],
         "allowedDataType": ["int", None]
+    },
+    {
+        "uiElemType": "checkbox",
+        "display": True,
+        "paramType": "list",
+        "description": "The number of features to consider when looking for the best split",
+        "defaultValue": [
+            {
+                "selected": True,
+                "name": "auto",
+                "displayName": "auto"
+            },
+            {
+                "selected": False,
+                "name": "sqrt",
+                "displayName": "sqrt"
+            },
+            {
+                "selected": False,
+                "name": "log2",
+                "displayName": "log2"
+            }
+        ],
+        "displayName": "Max Features",
+        "hyperpatameterTuningCandidate": True,
+        "expectedDataType": [
+            "bool"
+        ],
+        "name": "max_features",
+        "className": "max_features_rf",
+        "allowedDataType": [
+            "bool"
+        ]
+    },
+    {
+        "uiElemType": "slider",
+        "paramType": "number",
+        "description": "The minimum weighted fraction of the sum total of weights(of all the input samples) required to be at a leaf node",
+        "defaultValue": 0.0,
+        "displayName": "Minimum Weight Fraction Leaf",
+        "hyperpatameterTuningCandidate": True,
+        "name": "min_weight_fraction_leaf",
+        "valueRange": [
+            0,
+            0.5
+        ],
+        "display": True,
+        "acceptedValue": None,
+        "expectedDataType": [
+            "float"
+        ],
+        "allowedDataType": [
+            "float"
+        ]
+    },
+    {
+        "uiElemType": "slider",
+        "paramType": "number",
+        "description": "Threshold for early stopping in tree growth",
+        "defaultValue": 0.0,
+        "displayName": "Minimum Impurity Split",
+        "hyperpatameterTuningCandidate": True,
+        "name": "min_impurity_split",
+        "valueRange": [
+            0,
+            1
+        ],
+        "display": True,
+        "acceptedValue": None,
+        "expectedDataType": [
+            "float"
+        ],
+        "allowedDataType": [
+            "float"
+        ]
+    },
+    {
+        "uiElemType": "slider",
+        "paramType": "number",
+        "description": "Determines what fraction of the original dataset is given to any individual tree",
+        "defaultValue": 1,
+        "displayName": "Maximum Samples",
+        "hyperpatameterTuningCandidate": True,
+        "name": "max_samples",
+        "valueRange": [
+            1,
+            100
+        ],
+        "display": True,
+        "acceptedValue": None,
+        "expectedDataType": [
+            "int"
+        ],
+        "allowedDataType": [
+            "int"
+        ]
     }
 ]
 
@@ -470,18 +566,67 @@ SKLEARN_ML_LOGISTIC_REGRESSION_PARAMS = [
         "allowedDataType": ["bool"]
     },
     {
-        "name": "solver",
-        "displayName": "Solver Used",
-        "className": "solver_lr",
-        "description": "Algorithm to use in the Optimization",
-        # "defaultValue":[obj if obj["name"] != "lbfgs" else {"name":obj["name"],"selected":True,"displayName":obj["displayName"]} for obj in SKLEARN_ML_SUPPORTED_SOLVER_CLASSIFICATION],
-        "defaultValue": [obj for obj in SKLEARN_ML_SUPPORTED_SOLVER_CLASSIFICATION],
+        "name": "penalty",
+        "displayName": "Penalty Option",
+        "className": "penalty_lr",
+        "description": "Regularization options for classification",
+        "defaultValue": [
+            {
+                "selected": False,
+                "name": "l1",
+                "displayName": "l1"
+            },
+            {
+                "selected": True,
+                "name": "l2",
+                "displayName": "l2"
+            },
+            {
+                "selected": False,
+                "name": "elasticnet",
+                "displayName": "elasticnet"
+            },
+            {
+                "selected": False,
+                "name": "none",
+                "displayName": "none"
+            }
+        ],
         "paramType": "list",
         "uiElemType": "checkbox",
         "display": True,
         "hyperpatameterTuningCandidate": True,
-        "expectedDataType": ["string"],
-        "allowedDataType": ["string"]
+        "expectedDataType": [
+            "string"
+        ],
+        "allowedDataType": [
+            "string"
+        ]
+    },
+    {
+        "name": "l1_ratio",
+        "displayName": "L1 Ratio",
+        "className": "l1_ratio_lr",
+        "description": "Comparison of the sparsity (percentage of zero coefficients) of solutions when L1, "
+                       "L2 and Elastic-Net penalty are used for different values of C",
+        "defaultValue": 0,
+        "acceptedValue": None,
+        "valueRange": [
+            0,
+            1
+        ],
+        "paramType": "number",
+        "uiElemType": "slider",
+        "display": True,
+        "hyperpatameterTuningCandidate": True,
+        "expectedDataType": [
+            "int",
+            "float"
+        ],
+        "allowedDataType": [
+            "int",
+            "float"
+        ]
     },
     {
         "name": "multi_class",
@@ -493,9 +638,52 @@ SKLEARN_ML_LOGISTIC_REGRESSION_PARAMS = [
         "paramType": "list",
         "uiElemType": "checkbox",
         "display": True,
-        "hyperpatameterTuningCandidate": False,
+        "hyperpatameterTuningCandidate": True,
         "expectedDataType": ["string"],
         "allowedDataType": ["string"]
+    },
+    {
+        "name": "solver",
+        "displayName": "Solver Used",
+        "className": "solver_lr",
+        "description": "Algorithm to use in the Optimization",
+        "defaultValue": [
+            {
+                "name": "newton-cg",
+                "selected": False,
+                "displayName": "newton-cg"
+            },
+            {
+                "name": "lbfgs",
+                "selected": True,
+                "displayName": "lbfgs"
+            },
+            {
+                "name": "sag",
+                "selected": False,
+                "displayName": "sag"
+            },
+            {
+                "name": "liblinear",
+                "selected": False,
+                "displayName": "liblinear"
+            },
+            {
+                "name": "saga",
+                "selected": False,
+                "displayName": "saga"
+            }
+        ],
+        "paramType": "list",
+        "uiElemType": "checkbox",
+        "display": True,
+        "hyperpatameterTuningCandidate": True,
+        "expectedDataType": [
+            "string"
+        ],
+        "allowedDataType": [
+            "string"
+        ]
     },
     {
         "name": "warm_start",
@@ -572,7 +760,7 @@ SKLEARN_ML_LOGISTIC_REGRESSION_PARAMS = [
         "hyperpatameterTuningCandidate": True,
         "expectedDataType": ["float", "int"],
         "allowedDataType": ["float"]
-    }
+    },
 
 ]
 
@@ -1131,7 +1319,7 @@ SKLEARN_ML_XGBOOST_CLASSIFICATION_PARAMS = [
         "defaultValue": [
             {"name": "cpu_predictor", "selected": True, "displayName": "Multicore CPU prediction algorithm"},
             {"name": "gpu_predictor", "selected": True, "displayName": "Prediction using GPU"}
-            ],
+        ],
         "paramType": "list",
         "uiElemType": "checkbox",
         "display": False,
@@ -1183,20 +1371,20 @@ SKLEARN_ML_NAIVE_BAYES_PARAMS = [
     },
 ]
 TENSORFLOW_ACTIVATION_PARAMETERS = [
-    #{"name": "deserialize", "selected": True, "displayName": "deserialize"},
+    # {"name": "deserialize", "selected": True, "displayName": "deserialize"},
     {"name": "elu", "selected": False, "displayName": "elu"},
     {"name": "exponential", "selected": False, "displayName": "exponential"},
-    #{"name":"get","selected":False,"displayName":"get"},
+    # {"name":"get","selected":False,"displayName":"get"},
     {"name": "hard_sigmoid", "selected": False, "displayName": "hard_sigmoid"},
-    {"name":"linear","selected":False,"displayName":"Linear"},
-    {"name":"relu","selected":False,"displayName":"relu"},
-    {"name":"selu","selected":False,"displayName":"selu"},
-    #{"name":"serialize","selected":False,"displayName":"serialize"},
-    {"name":"sigmoid","selected":False,"displayName":"sigmoid"},
-    {"name":"softmax","selected":False,"displayName":"softmax"},
-    {"name":"softplus","selected":False,"displayName":"softplus"},
-    {"name":"softsign","selected":False,"displayName":"softsign"},
-    {"name":"tanh","selected":False,"displayName":"tanh"},
+    {"name": "linear", "selected": False, "displayName": "Linear"},
+    {"name": "relu", "selected": False, "displayName": "relu"},
+    {"name": "selu", "selected": False, "displayName": "selu"},
+    # {"name":"serialize","selected":False,"displayName":"serialize"},
+    {"name": "sigmoid", "selected": False, "displayName": "sigmoid"},
+    {"name": "softmax", "selected": False, "displayName": "softmax"},
+    {"name": "softplus", "selected": False, "displayName": "softplus"},
+    {"name": "softsign", "selected": False, "displayName": "softsign"},
+    {"name": "tanh", "selected": False, "displayName": "tanh"},
 ]
 TENSORFLOW_COMMON_INITIALIZER_PARAMETERS = [
     {"name": "Zeros", "selected": True, "displayName": "Zeros"},
@@ -1466,8 +1654,10 @@ TENSORFLOW_LAMBDA_PARAMETERS = [
     },
 ]
 SKLEARN_ML_SUPPORTED_TF_LAYER = [
-    {"name": "Dense", "selected": True, "displayName": "Dense","parameters":[obj for obj in TENSORFLOW_DENSE_PARAMETERS]},
-    {"name": "Dropout", "selected": False, "displayName": "Dropout","parameters":[obj for obj in TENSORFLOW_DROPOUT_PARAMETERS]},
+    {"name": "Dense", "selected": True, "displayName": "Dense",
+     "parameters": [obj for obj in TENSORFLOW_DENSE_PARAMETERS]},
+    {"name": "Dropout", "selected": False, "displayName": "Dropout",
+     "parameters": [obj for obj in TENSORFLOW_DROPOUT_PARAMETERS]},
     # {"name": "Lambda", "selected": False, "displayName": "Lambda","parameters":[obj for obj in TENSORFLOW_LAMBDA_PARAMETERS]}
 ]
 
@@ -1490,7 +1680,7 @@ SKLEARN_ML_TENSORFLOW_CLASSIFICATION_PARAMS = [
         "name": "loss",
         "displayName": "Loss",
         "description": "The function used to evaluate the candidate solution (i.e. a set of weights).",
-        "defaultValue":[obj for obj in SKLEARN_ML_SUPPORTED_TF_LOSS_PARAMETERS],
+        "defaultValue": [obj for obj in SKLEARN_ML_SUPPORTED_TF_LOSS_PARAMETERS],
         "acceptedValue": None,
         "valueRange": None,
         "paramType": "list",
@@ -1504,7 +1694,7 @@ SKLEARN_ML_TENSORFLOW_CLASSIFICATION_PARAMS = [
         "name": "optimizer",
         "displayName": "Optimizer",
         "description": "Method used to minimize the loss function.",
-        "defaultValue":[obj for obj in SKLEARN_ML_SUPPORTED_TF_OPTIMIZER_PARAMETERS],
+        "defaultValue": [obj for obj in SKLEARN_ML_SUPPORTED_TF_OPTIMIZER_PARAMETERS],
         "acceptedValue": None,
         "valueRange": None,
         "paramType": "list",
@@ -1546,7 +1736,7 @@ SKLEARN_ML_TENSORFLOW_CLASSIFICATION_PARAMS = [
         "name": "metrics",
         "displayName": "Metrics",
         "description": "List of metrics to be evaluated by the model during training And testing.",
-        "defaultValue":[obj for obj in TF_CLASSIFICATION_METRICS],
+        "defaultValue": [obj for obj in TF_CLASSIFICATION_METRICS],
         "acceptedValue": None,
         "valueRange": None,
         "paramType": "list",
@@ -1555,5 +1745,28 @@ SKLEARN_ML_TENSORFLOW_CLASSIFICATION_PARAMS = [
         "hyperpatameterTuningCandidate": True,
         "expectedDataType": ["string"],
         "allowedDataType": ["string"]
+    },
+    {
+        "name": "learning_rate",
+        "displayName": "Learning Rate",
+        "description": "It is the step size shrinkage used to prevent Overfitting",
+        "defaultValue": 0.3,
+        "acceptedValue": None,
+        "valueRange": [
+            0,
+            1
+        ],
+        "paramType": "number",
+        "uiElemType": "slider",
+        "display": True,
+        "hyperpatameterTuningCandidate": True,
+        "expectedDataType": [
+            "int",
+            "float"
+        ],
+        "allowedDataType": [
+            "int",
+            "float"
+        ]
     },
 ]

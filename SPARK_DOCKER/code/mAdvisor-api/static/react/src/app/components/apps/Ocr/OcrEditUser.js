@@ -168,7 +168,7 @@ export class OcrEditUser extends React.Component{
                                 <form role="form" id="userProfileRoles" onChange={this.updateFormSelected.bind(this)}>
                                 <div className="row">
                                     <div className="col-sm-12 allApplist">
-                                        <label className="mandate" style={{marginBottom:5}} >Select required App</label>
+                                        <label className="mandate xs-mb-5" >Select required App</label>
                                         <MultiSelect id="appList" className="applist-disabled"
                                         value={this.state.appId} style={{width: "100%" }} name="app_list" 
                                         options={this.handleAllAppsOptions()} onChange={(e)=>this.setState({appId:e.value},this.saveAppList)}
@@ -194,14 +194,14 @@ export class OcrEditUser extends React.Component{
                             </div>
                         }
                         {this.props.loaderFlag && !this.props.editUserSuccessFlag &&
-                            <div style={{ height:"100%",width:"100%", background: 'rgba(0,0,0,0.1)', position: 'absolute',top:0,left:0 }}>
+                            <div className="add-editUserLoader" >
                                 <img className="ocrLoader" src={STATIC_URL + "assets/images/Preloader_2.gif"} />
                             </div>
                         }
                         {this.props.editUserSuccessFlag &&
                              <div className="ocrSuccess wow bounceIn" data-wow-delay=".25s" data-wow-offset="20" data-wow-duration="5s" data-wow-iteration="10">
                                 <img src={STATIC_URL + "assets/images/success_outline.png"} style={{width: 105 }} />
-                                 <span style={{ paddingTop: 10, color: 'rgb(50, 132, 121)', display: 'block' }}>Saved Successfully</span>
+                                 <span className="userSaved">Saved Successfully</span>
                             </div>
                         }
                 </Modal.Body>

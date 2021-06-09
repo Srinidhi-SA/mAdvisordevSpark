@@ -2,11 +2,10 @@
 
 .c3 svg {
     font-size: 10px ;
-
 }
 .c3 path, .c3 line {
    fill: none;
-    stroke: #000;
+   stroke: #000;
 }
 .c3 text {
     -webkit-user-select: none;
@@ -27,38 +26,29 @@
  .c3-axis-x .tick {
 	 fill: #848484;
 	 font-size:1.28em;
-	/* font-family: 'Quicksand', sans-serif;*/
 }
 .c3-axis-x:not(.c3-axis) .tick {
-    /*visibility: hidden;*/
 		display:none;
 }
-.c3-axis-x-label {
-	font-size:13px;
-	/* font-family: 'Quicksand', sans-serif;*/
-}
+
 .c3-axis-y .tick {
 	fill: #848484;
 	font-size:1.28em;
-	/* font-family: 'Quicksand', sans-serif;*/
 }
 .c3-axis-y-label {
 	font-size:13px;
-	/* font-family: 'Quicksand', sans-serif;*/
 	margin-right: 5px;
 }
 .c3-axis-y2 .tick {
 	fill: #848484;
 	font-size:1.28em;
-	/* font-family: 'Quicksand', sans-serif;*/
 }
 .c3-axis-y2-label {
 	font-size:13px;
-	/* font-family: 'Quicksand', sans-serif;*/
 }
 /*-- Grid --*/
  .c3-grid line {
-    stroke: #e1e5e4; /*#f6f6f6;*/
+    stroke: #e1e5e4; 
 }
 .c3-grid text {
     fill: #aaa;
@@ -66,11 +56,7 @@
 .c3-xgrid, .c3-ygrid {
     stroke-dasharray: 0 0;
 }
-.c3-xgrid-focus {
-}
 /*-- Text on Chart --*/
- .c3-text {
-}
 .c3-text.c3-empty {
     fill: #808080;
     font-size: 2em;
@@ -118,13 +104,9 @@
  .c3-brush .extent {
     fill-opacity: .1;
 }
-/*-- Select - Drag --*/
- .c3-dragarea {
-}
 /*-- Legend --*/
  .c3-legend-item {
     font-size: 12px;
-	/* font-family: 'Quicksand', sans-serif;*/
 }
 .c3-legend-item-hidden {
     opacity: 0.7;
@@ -132,7 +114,6 @@
 .c3-legend-background {
     opacity: 0.75;
     fill: white;
-    /*stroke: lightgray;*/
     stroke-width: 1
 }
 /*-- Tooltip --*/
@@ -173,12 +154,6 @@
     height: 10px;
     margin-right: 6px;
 }
-.c3-tooltip td.value {
-    text-align: left;
-}
-.c3-tooltip tr.value {
-    text-align: left;
-}
 .c3-area {
     stroke-width: 0;
     opacity: 0.2;
@@ -199,7 +174,6 @@
 }
 .c3-chart-arc .c3-gauge-value {
     fill: #000;
-    /*  font-size: 28px !important;*/
 }
 .c3 .c3-axis-x path, .c3 .c3-axis-x line {
  stroke: #a1a1a1;
@@ -209,9 +183,7 @@
 }
 .c3 .c3-axis-y2 path, .c3 .c3-axis-y2 line {
  stroke: #a1a1a1;
-}
-.c3 svg .c3-title{
+}.c3 svg .c3-title{
 	font-size:17px;
 	fill:#6f6f6f !important;
-	/* font-family: 'Quicksand', sans-serif;*/
 }

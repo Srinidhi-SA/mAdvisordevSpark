@@ -50,13 +50,23 @@ export function pdfPagination(data) {
 		data
 	}
 }
-
+export function savePdfFlag(data){
+	return{
+		type: "SAVE_PDF_SLUG",
+		data
+	}
+}
+export function saveTaskId(data){
+	return{
+		type:"TASK_ID",
+		data
+	}
+}
 export function clearImageDetails() {
 	return {
 		type: "CLEAR_IMAGE_DETAILS",
 	}
 }
-//Actions for fetching Projects list 
 export function updateOcrImage(data) {
 	return {
 		type: "UPDATE_OCR_IMAGE",
@@ -118,8 +128,7 @@ function fetchProjects(pageNo = store.getState().ocr.projectPage, token) {
 	}
 }
 
-export function fetchProjectsSuccess(doc) {
-	var data = doc;
+export function fetchProjectsSuccess(data) {
 	return {
 		type: "OCR_PROJECT_LIST",
 		data,
@@ -137,7 +146,7 @@ export function fetchProjectsFail(data) {
 //Actions for fetching documentlist based on the 'Project' selected
 export function getOcrUploadedFiles(pageNo) {
 	return (dispatch) => {
-		return fetchUploadedFiles(pageNo, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return fetchUploadedFiles(pageNo, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200) {
 				dispatch(fetchUploadsSuccess(json))
 				dispatch(setProjectTabLoaderFlag(false));
@@ -179,8 +188,7 @@ function fetchUploadedFiles(pageNo = store.getState().ocr.docTablePage, token) {
 	};
 }
 
-export function fetchUploadsSuccess(doc) {
-	var data = doc;
+export function fetchUploadsSuccess(data) {
 	return {
 		type: "OCR_UPLOADS_LIST",
 		data,
@@ -244,7 +252,7 @@ export function setProjectTabLoaderFlag(flag) {
 //Actions for Reviewers list 
 export function getOcrReviewersList(pageNo) {
 	return (dispatch) => {
-		return fetchReviewersList(pageNo, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return fetchReviewersList(pageNo, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200) {
 				dispatch(fetchReviewersSuccess(json))
 			}
@@ -292,7 +300,7 @@ export function fetchReviewersFail(data) {
 //Actions for fetching documentlist based on the 'Reviewer' selected
 export function getRevrDocsList(pageNo) {
 	return (dispatch) => {
-		return fetchRevrDocsList(pageNo, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return fetchRevrDocsList(pageNo, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200) {
 				dispatch(fetchRevrDocsSuccess(json))
 			}
@@ -346,8 +354,7 @@ function fetchRevrDocsList(pageNo = 1, token) {
 	}
 }
 
-export function fetchRevrDocsSuccess(doc) {
-	var data = doc;
+export function fetchRevrDocsSuccess(data) {
 	return {
 		type: "OCR_REV_DOCS_LIST",
 		data,
@@ -360,7 +367,11 @@ export function fetchRevrDocsFail(data) {
 		data,
 	}
 }
-////
+export function hideS3Modal(flag){
+	return {
+		type: "HIDE_S3_MODAL", flag
+	}
+}
 
 export function setS3Loader(flag) {
 	return {
@@ -384,12 +395,32 @@ export function clearS3Data() {
 
 export function getS3BucketFileList(s3BucketDetails) {
 	return (dispatch) => {
-		return fetchS3FileDetails(s3BucketDetails, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return fetchS3FileDetails(s3BucketDetails, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200 && json.status != "FAILED") {
-				dispatch(fetchs3DetailsSuccess(json))
+				var len = (json.file_list).length;
+				let fileList = [];
+				for (var i = 0; i < len; i++) {
+					if (/\.(jpe?g|tif|png|pdf)$/i.test(json.file_list[i])) {
+						fileList.push(json.file_list[i]);
+					}
+				}
+				if(fileList.length === 0){
+					$("#bucket_name").val("")
+					$("#access_key_id").val("")
+					$("#secret_key").val("")
+					dispatch(clearS3Data());
+					dispatch(fetchs3DetailsError(true));
+					dispatch(s3FetchErrorMsg("Files of type jpg, jpeg, pdf not found"));
+				}else{
+					dispatch(fetchs3DetailsSuccess(fileList))
+				}
 			} else if (response.status === 200 && json.status === "FAILED") {
-				dispatch(fetchs3DetailsError(true));
-				dispatch(s3FetchErrorMsg(json.message));
+				if(store.getState().ocr.hideS3Modal){
+					dispatch(hideS3Modal(false))
+				}else{
+					dispatch(fetchs3DetailsError(true));
+					dispatch(s3FetchErrorMsg(json.message));
+				}
 			} else {
 				dispatch(fetchs3DetailsError(true))
 			}
@@ -405,14 +436,7 @@ function fetchS3FileDetails(s3BucketDetails, token) {
 	}).then(response => Promise.all([response, response.json()]));
 }
 
-export function fetchs3DetailsSuccess(data) {
-	var len = (data.file_list).length;
-	let fileList = [];
-	for (var i = 0; i < len; i++) {
-		if (/\.(jpe?g|tif|png|pdf)$/i.test(data.file_list[i])) {
-			fileList.push(data.file_list[i]);
-		}
-	}
+export function fetchs3DetailsSuccess(fileList) {
 	return {
 		type: "SAVE_S3_FILE_LIST", fileList
 	}
@@ -437,11 +461,23 @@ export function saveS3SelFiles(fileName) {
 export function uploadS3Files(selectedFiles, projectSlug) {
 	let data = Object.assign({ "dataSourceType": "S3" }, { "file_names": selectedFiles }, store.getState().ocr.ocrS3BucketDetails, { "projectslug": projectSlug })
 	return (dispatch) => {
-		return uploadS3FilesAPI(data, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return uploadS3FilesAPI(data, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200 && json.message != "FAILED") {
-				dispatch(uploadS3FileSuccess(true));
+				if(store.getState().ocr.hideS3Modal){
+					dispatch(hideS3Modal(false));
+				}else{
+					dispatch(uploadS3FileSuccess(true));
+				}
 			} else if (response.status === 200 && json.message === "FAILED") {
-				dispatch(uploadS3FileError())
+				if(store.getState().ocr.hideS3Modal){
+					dispatch(hideS3Modal(false));
+				}else{
+					$("#bucket_name").val("")
+					$("#access_key_id").val("")
+					$("#secret_key").val("")
+					dispatch(clearS3Data());
+					dispatch(uploadS3FileError())
+				}
 			} else {
 				dispatch(uploadS3FileError())
 			}
@@ -472,69 +508,31 @@ export function storeOcrSortElements(ocrFilesSortOn, ocrFilesSortType) {
 		ocrFilesSortType
 	}
 }
-export function storeOcrFilterStatus(status) {
+export function storeOcrTableFilterDetails(filterOn,value){
+		 return {
+			type: `FILTER_BY_${filterOn.toUpperCase()}`,
+			value,
+		}
+	}
+export function resetOcrTableFilterValues() {
 	return {
-		type: "FILTER_BY_STATUS",
-		status,
+		type: "RESET_OCR_TABLE_FILTERS",
 	}
 }
-export function storeOcrFilterConfidence(confidence) {
+export function ocrRdFilterDetails(filterOn,value) {
 	return {
-		type: "FILTER_BY_CONFIDENCE",
-		confidence,
-	}
-}
-export function storeOcrFilterAssignee(assignee) {
-	return {
-		type: "FILTER_BY_ASSIGNEE",
-		assignee
-	}
-}
-export function storeOcrFilterTemplate(template) {
-	return {
-		type: "FILTER_BY_TEMPLATE",
-		template
-	}
-}
-export function storeOcrFilterFields(fields) {
-	return {
-		type: "FILTER_BY_FIELDS",
-		fields
-	}
-}
-export function ocrRdFilterStatus(status) {
-	return {
-		type: "FILTER_RD_BY_STATUS",
-		status,
-	}
-}
-export function ocrRdFilterConfidence(confidence) {
-	return {
-		type: "FILTER_RD_BY_CONFIDENCE",
-		confidence,
+		type: "UPDATE_FILTER_RD_DETAILS",
+		value,
+		filterOn
 	}
 }
 
-export function ocrRdFilterFields(fields) {
+export function resetRdFilterSearchDetails() {
 	return {
-		type: "FILTER_RD_BY_FIELDS",
-		fields
-	}
+		type: "RESET_RD_FILTER_SEARCH"
+		}
 }
 
-export function ocrRdFiltertemplate(template) {
-	return {
-		type: "FILTER_RD_BY_TEMPLATE",
-		template
-	}
-}
-
-export function ocrRevFilterTime(time) {
-	return {
-		type: "FILTER_REV_BY_TIME",
-		time,
-	}
-}
 
 export function ocrRevFilterAccuracy(accuracy) {
 	return {
@@ -577,10 +575,7 @@ export function fetchAllOcrUsersAction(pageNo) {
 		})
 	}
 }
-export function fetchAllOcrUsersAPI(pageNo, token) {
-	if (pageNo === undefined) {
-		pageNo = 1;
-	}
+export function fetchAllOcrUsersAPI(pageNo=1, token) {
 	let searchElement = store.getState().ocr.ocrSearchElement;
 	let userTablePagesize = store.getState().ocr.userTablePagesize;
 	if (userTablePagesize === "All") {
@@ -636,10 +631,7 @@ export function fetchOcrListByReviewerType(id, pageNo) {
 		})
 	}
 }
-function fetchOcrListByReviewerTypeAPI(id, pageNo, token) {
-	if (pageNo === undefined) {
-		pageNo = 1;
-	}
+function fetchOcrListByReviewerTypeAPI(id, pageNo=1, token) {
 	let searchElement = store.getState().ocr.ocrSearchElement;
 	let userTablePagesize = store.getState().ocr.userTablePagesize;
 
@@ -674,7 +666,7 @@ function fetchOcrListByReviewerTypeAPI(id, pageNo, token) {
 
 export function getReviewersListAction() {
 	return (dispatch) => {
-		return getReviewersListApi(getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return getReviewersListApi(getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200) {
 				dispatch(saveReviewersList(json));
 			} else {
@@ -685,7 +677,7 @@ export function getReviewersListAction() {
 }
 export function getallAppsList() {
 	return (dispatch) => {
-		return getallApps(getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return getallApps(getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200) {
 				dispatch(saveAppsList(json.appIDMapping));
 			} else {
@@ -767,7 +759,7 @@ export function saveNewUserProfileDetails(name, value) {
 }
 export function submitNewUserProfileAction(userProfileDetails, curUserSlug) {
 	return (dispatch) => {
-		return submitNewUserProfileAPI(userProfileDetails, curUserSlug, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return submitNewUserProfileAPI(userProfileDetails, curUserSlug, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200 && json.updated) {
 				dispatch(userProfileCreationSuccess(json.updated));
 			} else if (response.status === 200 && !json.updated) {
@@ -806,7 +798,7 @@ export function selectAllOcrUsers(flag) {
 export function deleteOcrUserAction(userNames) {
 	let data = { "username": userNames }
 	return (dispatch) => {
-		return deleteOcrActionAPI(data, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return deleteOcrActionAPI(data, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200 && json.deleted) {
 				store.getState().ocr.selectedTabId === "none" ?
 					dispatch(fetchAllOcrUsersAction(store.getState().ocr.ocrUserPageNum))
@@ -833,7 +825,7 @@ function deleteOcrActionAPI(data, token) {
 export function activateOcrUserAction(userNames) {
 	let data = { "username": userNames, "is_active": "True" }
 	return (dispatch) => {
-		return activateOcrActionAPI(data, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return activateOcrActionAPI(data, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200 && json.updated) {
 				store.getState().ocr.selectedTabId === "none" ?
 					dispatch(fetchAllOcrUsersAction(store.getState().ocr.ocrUserPageNum))
@@ -927,7 +919,7 @@ export function submitEditUserDetailsAction(editedUserDt) {
 		formdt.append(key, editedUserDt[key]);
 	}
 	return (dispatch) => {
-		return submitEditUserDetailsAPI(formdt, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return submitEditUserDetailsAPI(formdt, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200 && json.updated) {
 				dispatch(setCreateUserLoaderFlag(false));
 				dispatch(editUserSuccess(true));
@@ -947,7 +939,7 @@ function submitEditUserDetailsAPI(data, token) {
 export function submitEditedUserRolesAction(editedUserDt, reviewersList, slug) {
 	editedUserDt.role = reviewersList.filter(i => i.name === editedUserDt.role)[0].id
 	return (dispatch) => {
-		return submitEditedUserRolesAPI(editedUserDt, slug, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return submitEditedUserRolesAPI(editedUserDt, slug, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200 && json.updated) {
 				dispatch(setCreateUserLoaderFlag(false));
 				dispatch(editUserSuccess(true));
@@ -1052,7 +1044,7 @@ export function setIRLoaderFlagAction(flag) {
 }
 export function fetchReviewersRules() {
 	return (dispatch) => {
-		return fetchReviewersRulesAPI(getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return fetchReviewersRulesAPI(getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200) {
 				dispatch(saveRulesForConfigPage(json))
 			} else {
@@ -1074,7 +1066,7 @@ function saveRulesForConfigPage(data) {
 }
 export function fetchInitialReviewerList(roleNo) {
 	return (dispatch) => {
-		return fetchInitialReviewerListAPI(roleNo, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return fetchInitialReviewerListAPI(roleNo, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200) {
 				dispatch(setIRLoaderFlagAction(false))
 				dispatch(saveInitialReviewerList(json));
@@ -1102,7 +1094,7 @@ export function saveIRToggleValAction(val) {
 }
 export function autoAssignmentAction(stage, val) {
 	return (dispatch) => {
-		return autoAssignmentActionAPI(stage, val, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return autoAssignmentActionAPI(stage, val, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200) {
 				bootbox.alert(statusMessages("warning", json.message, "small_mascot"))
 			} else {
@@ -1139,7 +1131,7 @@ export function setSRLoaderFlagAction(flag) {
 }
 export function fetchSeconadryReviewerList(roleNo) {
 	return (dispatch) => {
-		return fetchSeconadryReviewerListAPI(roleNo, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return fetchSeconadryReviewerListAPI(roleNo, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200) {
 				dispatch(setSRLoaderFlagAction(false));
 				dispatch(saveSeconadryReviewerList(json));
@@ -1209,7 +1201,7 @@ export function submitReviewerConfigAction(selTab, config) {
 		rule = "modifyRulesL2"
 	}
 	return (dispatch) => {
-		return submitReviewerConfigAPI(data, rule, getUserDetailsOrRestart.get().userToken, dispatch).then(([response, json]) => {
+		return submitReviewerConfigAPI(data, rule, getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
 			if (response.status === 200) {
 				bootbox.alert(statusMessages("success", "All the given rules for the reviewer assignment is saved successfully.", "small_mascot"))
 			} else {

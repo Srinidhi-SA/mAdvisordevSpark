@@ -21,7 +21,7 @@ from pyspark.sql.types import *
 from pyspark.sql.types import StringType,DoubleType,FloatType
 from pyspark.sql.types import IntegerType
 from sklearn.model_selection import train_test_split
-
+import pyspark.sql.functions as F
 from bi.common import ContextSetter
 from bi.common import utils as CommonUtils
 from bi.common import MetaParser
@@ -332,6 +332,7 @@ class DataFrameHelper(object):
             return list(self._data_frame[column_name].unique())
         else:
             return [levels[0] for levels in self._data_frame.select(column_name).distinct().collect()]
+    # return df.agg((F.collect_set(column_name).alias(column_name))).first().asDict()[column_name]
 
     def get_num_unique_values(self,column_name):
         if self._pandas_flag:

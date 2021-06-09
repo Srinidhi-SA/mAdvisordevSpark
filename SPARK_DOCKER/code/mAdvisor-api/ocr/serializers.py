@@ -100,8 +100,8 @@ class OCRImageListSerializer(serializers.ModelSerializer):
         serialized_data['modified_by'] = (UserSerializer(instance.modified_by).data['username']).capitalize()
         serialized_data['type'] = serialized_data['imagefile'][-4:]
 
-        if serialized_data['doctype'] == 'pdf_page':
-            return None
+        # if serialized_data['doctype'] == 'pdf_page':
+        #     return None
 
         return serialized_data
 
@@ -112,7 +112,7 @@ class OCRImageListSerializer(serializers.ModelSerializer):
         model = OCRImage
         fields = ['name', 'slug', 'status', 'confidence', 'comment', 'imagefile', 'classification', 'flag',
                   'created_at', 'created_by',
-                  'modified_at', 'modified_by', 'assignee', 'fields', 'doctype']
+                  'modified_at', 'modified_by', 'assignee', 'fields', 'doctype', 'identifier']
 
 
 class OCRImageListPDFSerializer(serializers.ModelSerializer):
@@ -458,4 +458,4 @@ class OCRImageReviewSerializer(serializers.ModelSerializer):
         Meta class definition for OCRImageListSerializer
         """
         model = OCRImage
-        fields = ['name', 'slug', 'imagefile', 'fields', 'confidence', 'modified_by', 'classification']
+        fields = ['name', 'slug', 'imagefile', 'fields', 'confidence', 'modified_by', 'classification', 'doctype']

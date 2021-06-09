@@ -41,20 +41,6 @@ var LIST_OF_KYLO_OPERATIONS=[
   "slug":"categoriesfhiufbewuf",
   "description":"Create new users, groups and manage existing ones"
 }
-// {
-//   "name":"visual_query",
-//   "displayName":"Visual Query",
-//   "logo":"icon_ctrl_vquery.png",
-//   "relative_url":"visual-query/",
-//   "slug":"visualqueryfhiufbewuf"
-// },
-// {
-//   "name":"charts",
-//   "displayName":"Charts",
-//   "logo":"icon_ctrl_charts.png",
-//   "relative_url":"charts",
-//   "slug":"dchartsfhiufbewuf"
-// }
 ]
 
 export {LIST_OF_KYLO_OPERATIONS}

@@ -5,22 +5,26 @@ import {
   fetchCard,
   fetchNodeFromTree,
   getPrevNext,
-  getLastCardOfTree
+  getLastCardOfTree,
+  fetchMaxDepthCard
 } from "../../helpers/processStory";
 import {connect} from "react-redux";
 import {isEmpty, subTreeSetting, getUserDetailsOrRestart} from "../../helpers/helper";
 import {Card} from "./Card";
 import store from "../../store";
 import {getSignalAnalysis, updateselectedL1} from "../../actions/signalActions";
-import {STATIC_URL,API} from "../../helpers/env.js"
+import {STATIC_URL} from "../../helpers/env.js"
 import Slider from "react-slick";
-import {getRoboDataset, getStockAnalysis,getAppsScoreSummary,getScoreSummaryInCSV,uploadStockAnalysisFlag, setLoaderFlagAction} from "../../actions/appActions";
+import {getRoboDataset, getStockAnalysis,getScoreSummaryInCSV,uploadStockAnalysisFlag, setLoaderFlagAction} from "../../actions/appActions";
 import {hideDataPreview} from "../../actions/dataActions";
 import {AppsStockDataPreview} from "../apps/AppsStockDataPreview";
 import { chartdate } from "../../actions/chartActions";
 
 @connect((store) => {
-  return {signal: store.signals.signalAnalysis, urlPrefix: store.signals.urlPrefix, customerDataset_slug: store.apps.customerDataset_slug};
+  return {
+    signal: store.signals.signalAnalysis, 
+    urlPrefix: store.signals.urlPrefix, 
+    customerDataset_slug: store.apps.customerDataset_slug};
 })
 
 export class OverViewPage extends React.Component {
@@ -36,13 +40,13 @@ export class OverViewPage extends React.Component {
   }
 
   componentWillMount() {
-    if (isEmpty(this.props.signal)) {
-      if (this.props.match.url.indexOf("apps-robo") != -1) {
+		this.props.dispatch(uploadStockAnalysisFlag(false));
+    if(isEmpty(this.props.signal)) {
+      if(this.props.match.url.indexOf("apps-robo") != -1) {
         this.props.dispatch(getRoboDataset(this.props.match.params.slug));
-      } else if (this.props.match.url.indexOf("apps-stock") != -1) {
+      }else if (this.props.match.url.indexOf("apps-stock") != -1) {
         this.props.dispatch(getStockAnalysis(this.props.match.params.slug));
-      }
-      else {
+      }else {
         this.props.dispatch(getSignalAnalysis(getUserDetailsOrRestart.get().userToken, this.props.match.params.slug));
       }
     }
@@ -68,15 +72,14 @@ export class OverViewPage extends React.Component {
   componentWillUnmount = () => {            
     clearTimeout(this.setTime);    
     this.props.dispatch(setLoaderFlagAction(true))  
-}; 
+  };
 
-
-  prevNext(path) {
-    let currentSuffix = path.location.pathname;
+  prevNext(path,sigData) {
+    let currentSuffix = path;
     var delimiter = "/";
     var tokens = currentSuffix.split(delimiter).slice(3);
     currentSuffix = tokens.join(delimiter);
-    let expectedURL = getPrevNext(this.props.signal, currentSuffix);
+    let expectedURL = getPrevNext(sigData, currentSuffix);
     return expectedURL;
   }
   redirectPush(url) {
@@ -91,7 +94,7 @@ export class OverViewPage extends React.Component {
       this.props.history.push("/apps-robo")
     else if (this.props.match.url.indexOf("apps-stock") != -1){
       this.props.dispatch(uploadStockAnalysisFlag(false))
-      this.props.history.push("/apps-stock-advisor")
+      this.props.history.push("/apps-stock-advisor/")
     }else
       window.location.pathname = "/signals"
   }
@@ -104,6 +107,7 @@ export class OverViewPage extends React.Component {
     that.urlPrefix = "/signals";
     let breadcrumb_label = "Signals";
     let storyName = ""
+    let hideListOfAnalysis = true;
     if (this.props.urlPrefix) {
       that.urlPrefix = this.props.urlPrefix;
       storyName = this.props.signal.name;
@@ -113,14 +117,7 @@ export class OverViewPage extends React.Component {
       }
     }
 
-    var settings = {
-      dots: false,
-      infinite: false,
-      speed: 5,
-      slidesToShow: 6,
-      slidesToScroll: 1,
-      className:"overViewSlider",
-    };
+    var settings = { dots: false, infinite: false,speed: 5,slidesToShow: 6,slidesToScroll: 1,className:"overViewSlider"};
     const { loading } = this.state;
     if(loading && isEmpty(this.props.signal)) { // if your component doesn't have to wait for an async action, remove this block 
       return (
@@ -151,101 +148,145 @@ export class OverViewPage extends React.Component {
           stock_sense_app=true;
         if ((stock_sense_app) && !this.props.match.params.l1) {
           var url=that.urlPrefix+"/"+this.props.match.params.slug+"/"+this.props.signal.listOfNodes[0].slug
-         return(<Redirect to ={url}/>)
+          return(<Redirect to ={url}/>)
         }
         
         let urlSplit = this.props.location.pathname.split("/");
-        let tabList = null;
+        let tabList = [];
         let varList = null;
         let cardList = null;
         let card = null;
         let node = null
         let params = this.props.match.params;
-        this.props.dispatch(chartdate("slug",this.props.match.params.slug))
-        tabList = [];
+        this.props.dispatch(chartdate("slug",this.props.match.params.slug));
+
         if (this.props.signal.listOfNodes && this.props.signal.listOfNodes.length != 0) {
-          tabList = this.props.signal.listOfNodes.map((tab, i) => {
-            let selectedLink = that.urlPrefix + "/" + params.slug + "/" + tab.slug;
-            let classname1 = "mAd_icons tab_" + tab.name.toLowerCase();
+          tabList = this.props.signal.listOfNodes.map((tab,key) => {
             return (
-              <li key={i}>
-                <NavLink to={selectedLink}>
-                  <i className={classname1}></i>
+              <li key={key}>
+                <NavLink to={that.urlPrefix + "/" + params.slug + "/" + tab.slug}>
+                  <i className={`mAd_icons tab ${tab.name.toLowerCase()}`}></i>
                   <span>{tab.name}</span>
                 </NavLink>
               </li>
             )
           });
         }
-
-        if (Object.keys(params).length < 3) {
-          card = getFirstCard(this.props.signal, params.l1);
-          let cardLink = that.urlPrefix + "/" + params.slug + "/" + params.l1 + "/" + card.slug;
-          node  = fetchNodeFromTree(params.l1, this.props.signal)
-          if(node.listOfCards.length==0){
-            if(node.listOfNodes.length>0){
-              let level2 = node.listOfNodes[0].slug
-              cardLink = that.urlPrefix + "/" + params.slug + "/" + params.l1 + "/"+ level2+"/"+ card.slug
-            }
-          }
-          return (<Redirect to={cardLink}/>);
-        }else {
-          card = fetchCard(params, this.props.signal);
-          if (params.l3 && params.l3 == "$") {
-            let cardLink = that.urlPrefix + "/" + params.slug + "/" + params.l1 + "/" + params.l2 + "/" + card.slug;
-            return (<Redirect to={cardLink}/>);
-          }
+        var cloneSigData = JSON.parse(JSON.stringify(this.props.signal));
+        if(this.props.signal.listOfNodes.filter(i=>i.name==="Prediction")[0]!=undefined && this.props.signal.listOfNodes.filter(i=>i.name==="Prediction")[0]["Depth Of Tree 3"]!=undefined){
+          let dt = cloneSigData.listOfNodes.filter(i=>i.name!="Prediction")
+          cloneSigData.listOfNodes = dt
         }
 
-        var l1Name = params.l1;
-        if (params.l1) {
-          var selectedNodeFromLevel1 = fetchNodeFromTree(params.l1, this.props.signal);
-          l1Name = selectedNodeFromLevel1.name;
-          this.l1Name = l1Name
-          if (!isEmpty(selectedNodeFromLevel1) && selectedNodeFromLevel1.listOfNodes.length > 0) {
-            varList = selectedNodeFromLevel1.listOfNodes.map((variable, i) => {
-              let selectedl2Link = that.urlPrefix + "/" + params.slug + "/" + selectedNodeFromLevel1.slug + "/" + variable.slug + "/$";
-              let l2Class = "mAd_icons ic_perf"
-              if (l1Name == "Influencers")
-                l2Class = "mAd_icons ic_measure"
+        if(params.l1.includes("prediction_maxdepth") && this.props.signal.listOfNodes.filter(i=>i.name==="Prediction")[0]["Depth Of Tree 3"]!=undefined){
+          this.l1Name = "Prediction"
+          let cardLink = "";
+          let predNodes =  JSON.parse(JSON.stringify(this.props.signal.listOfNodes.filter(i=>i.name==="Prediction")[0]))
+          var settings = { dots: false, infinite: false,speed: 5,slidesToShow: 6,slidesToScroll: 1,className:"predictionSlider"};
+          varList = Object.values(predNodes).map((maxNode,key)=>{
+            if(maxNode.name!=undefined && maxNode.name.includes("Depth Of Tree")){
               return (
-                <li key={i}>
-                  <NavLink to={selectedl2Link} title={variable.name}>
-                    <i className={l2Class}></i>
-                    <span id={variable.slug}>{variable.name}</span>
+                <li key={key}>
+                  <NavLink to={that.urlPrefix + "/" + params.slug + "/" + params.l1 + "/" + maxNode.slug} title={maxNode.listOfCards[0].name}>
+                    <i className="mAd_icons ic_perf"></i>
+                    <span id={maxNode.slug}>{maxNode.name}</span>
                   </NavLink>
                 </li>
               )
-            });
-            that.showSubTree = true;
+            }
+          });
+          varList.filter(Boolean)
+
+          if(Object.keys(params).length < 3){
+            for(let i=0;i<Object.keys(predNodes).length;i++){
+              if(predNodes[Object.keys(predNodes)[i]].listOfCards!=undefined){
+                card = getFirstCard(predNodes[Object.keys(predNodes)[i]],predNodes[Object.keys(predNodes)[i]].slug)
+                cardLink = that.urlPrefix + "/" + params.slug + "/" + params.l1 + "/" + predNodes[Object.keys(predNodes)[i]].slug;
+                return( <Redirect to={cardLink} /> )
+              }
+            }
+          }else {
+            let selectedMaxNode = Object.values(predNodes).filter(i=>i.slug===params.l2)[0];
+            card = fetchMaxDepthCard(selectedMaxNode);
+            if(!card.cardData[0].data.includes("style")){
+              card.cardData[0].data = "<h3 style=text-align:left;padding-bottom:15px>" + /<h3>(.*?)<\/h3>/g.exec(card.cardData[0].data)[1] + "</h3>"
+            } 
+            card.cardData.filter(i=>i.data.tableType==="popupDecisionTreeTable")[0].data["name"] = selectedMaxNode.name;
+            card.cardData.filter(i=>i.dataType==="dropdown")[0]["dropdownName"] = selectedMaxNode.name;
+            cardLink = that.urlPrefix + "/" + params.slug + "/" + params.l1 + "/" + params.l2;
           }
+        }else{
+          if (Object.keys(params).length < 3) {
+            card = getFirstCard(cloneSigData, params.l1);
+            let cardLink = that.urlPrefix + "/" + params.slug + "/" + params.l1 + "/" + card.slug;
+            node  = fetchNodeFromTree(params.l1, cloneSigData)
+            if(node.listOfCards.length==0){
+              if(node.listOfNodes.length>0){
+                let level2 = node.listOfNodes[0].slug
+                cardLink = that.urlPrefix + "/" + params.slug + "/" + params.l1 + "/"+ level2+"/"+ card.slug
+              }
+            }
+            return (<Redirect to={cardLink}/>);
+          }else {
+            card = fetchCard(params, cloneSigData);
+            if (params.l3 && params.l3 == "$") {
+              let cardLink = that.urlPrefix + "/" + params.slug + "/" + params.l1 + "/" + params.l2 + "/" + card.slug;
+              return (<Redirect to={cardLink}/>);
+            }
+          }
+
+          var l1Name = params.l1;
+          if (params.l1) {
+            var selectedNodeFromLevel1 = fetchNodeFromTree(params.l1, cloneSigData);
+            l1Name = selectedNodeFromLevel1.name;
+            this.l1Name = l1Name
+            if (!isEmpty(selectedNodeFromLevel1) && selectedNodeFromLevel1.listOfNodes.length > 0) {
+              varList = selectedNodeFromLevel1.listOfNodes.map((variable, key) => {
+                let selectedl2Link = that.urlPrefix + "/" + params.slug + "/" + selectedNodeFromLevel1.slug + "/" + variable.slug + "/$";
+                let l2Class = (l1Name === "Influencers")?"mAd_icons ic_measure":"mAd_icons ic_perf"
+                return (
+                  <li key={key}>
+                    <NavLink to={selectedl2Link} title={variable.name}>
+                      <i className={l2Class}></i>
+                      <span id={variable.slug}>{variable.name}</span>
+                    </NavLink>
+                  </li>
+                )
+              });
+              that.showSubTree = true;
+            }
+          }
+          let selectedNode = null;
+          let selectedNode_slug = null;
+          let selectedURL = ""
+          if (Object.keys(params).length == 3) {
+            selectedNode_slug = params.l1;
+            selectedURL = that.urlPrefix + "/" + params.slug + "/" + params.l1;
+          } else {
+            selectedNode_slug = params.l2;
+            selectedURL = that.urlPrefix + "/" + params.slug + "/" + params.l1 + "/" + params.l2;
+          }
+       
+          selectedNode = fetchNodeFromTree(selectedNode_slug, cloneSigData);
+          if(selectedNode.listOfCards.length!=1) {
+            hideListOfAnalysis = false;
+            cardList = selectedNode.listOfCards.map((card, key) => {
+              let selectedLink = selectedURL + "/" + card.slug;
+              return (
+                <li key={key}><NavLink to={selectedLink} key={key} className="list-group-item" title={card.name}>
+                  <i className="fa fa-bar-chart"></i>
+                  <span>{card.name}</span>
+                </NavLink></li>
+              )
+            });
+          }
+
+          let classname=".sb_navigation #subTab i.mAd_icons.ic_perf ~ span"
+          if(l1Name=="Influencers")
+            classname=".sb_navigation #subTab i.mAd_icons.ic_measure ~ span"
+          subTreeSetting(urlSplit.length, 6, that.props.match.params.l2,classname); // setting of subtree and active classes
         }
 
-        let selectedNode = null;
-        let selectedNode_slug = null;
-        let selectedURL = ""
-        let hideListOfAnalysis = true;
-        if (Object.keys(params).length == 3) {
-          selectedNode_slug = params.l1;
-          selectedURL = that.urlPrefix + "/" + params.slug + "/" + params.l1;
-        } else {
-          selectedNode_slug = params.l2;
-          selectedURL = that.urlPrefix + "/" + params.slug + "/" + params.l1 + "/" + params.l2;
-        }
-       
-        selectedNode = fetchNodeFromTree(selectedNode_slug, this.props.signal);
-        if(selectedNode.listOfCards.length!=1) {
-          hideListOfAnalysis = false;
-          cardList = selectedNode.listOfCards.map((card, i) => {
-            let selectedLink = selectedURL + "/" + card.slug;
-            return (
-              <li key={i}><NavLink to={selectedLink} key={i} className="list-group-item" title={card.name}>
-                <i className="fa fa-bar-chart"></i>
-                <span>{card.name}</span>
-              </NavLink></li>
-            )
-          });
-        }
         let documentModeLink = "";
         if (that.urlPrefix.indexOf("signals") != -1) {
           documentModeLink = "/signaldocumentMode/" + this.props.match.params.slug;
@@ -255,7 +296,7 @@ export class OverViewPage extends React.Component {
           documentModeLink = "/apps-robo-document-mode/" + this.props.match.params.slug;
         }
 
-        let expectedURL = this.prevNext(this.props);
+        let expectedURL = this.prevNext(this.props.location.pathname,this.props.signal);
         let prevURL = that.urlPrefix + "/" + this.props.match.params.slug + "/" + expectedURL.prev;
         let nextURL = that.urlPrefix + "/" + this.props.match.params.slug + "/" + expectedURL.next;
         this.nextRedirect = nextURL;
@@ -291,10 +332,6 @@ export class OverViewPage extends React.Component {
           nameLink = that.urlPrefix + "/" + this.props.match.params.slug + "/" + params.l1;
         }
 
-        let classname=".sb_navigation #subTab i.mAd_icons.ic_perf ~ span"
-        if(l1Name=="Influencers")
-          classname=".sb_navigation #subTab i.mAd_icons.ic_measure ~ span"
-        subTreeSetting(urlSplit.length, 6, that.props.match.params.l2,classname); // setting of subtree and active classes
         return (
           <div>
             {this.state.showStockSenceDataPreview?
@@ -316,10 +353,10 @@ export class OverViewPage extends React.Component {
                         </div>
                         {(this.props.match.url.indexOf('/apps-stock-advisor') >= 0) &&
                           <button type="button" className="btn btn-default" onClick={this.showStockSenceDataPreview.bind(this)} title="Show Data Preview">
-                            <i class="zmdi zmdi-hc-lg zmdi-grid"></i>
+                            <i class="fa fa-th"></i>
                         </button>}
                         <button type="button" className="btn btn-default" disabled="true" title="Card mode">
-                          <i class="zmdi zmdi-hc-lg zmdi-view-carousel"></i>
+                          <i class="fa fa-columns"></i>
                         </button>
                         <Link className="btn btn-default continue" to={{
                           pathname: documentModeLink,
@@ -327,10 +364,10 @@ export class OverViewPage extends React.Component {
                               lastVar: lastcard.slug
                             }
                           }} title="Document mode">
-                          <i class="zmdi zmdi-hc-lg zmdi-view-web"></i>
+                          <i style={{fontSize:16}} class="fa fa-file-text-o"></i>
                         </Link>
                         <button type="button" className="btn btn-default" onClick={this.closeDocumentMode.bind(this)}>
-                          <i class="zmdi zmdi-hc-lg zmdi-close"></i>
+                          <i class="fa fa-times"></i>
                         </button>
                       </div>
                     </div>
@@ -352,7 +389,7 @@ export class OverViewPage extends React.Component {
                               <div className="tab-content">
                                 { varList!=null &&
                                 <div className="sb_navigation">
-                                  <div id="subTab" style={{paddingTop:"15px"}}>
+                                  <div id="subTab" className="xs-pt-15">
                                     <Slider ref='slider' {...settings}>{varList}</Slider>
                                   </div>
                                   <div className="clearfix"></div>

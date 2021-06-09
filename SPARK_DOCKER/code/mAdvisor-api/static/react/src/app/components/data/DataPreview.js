@@ -75,7 +75,7 @@ export class DataPreview extends React.Component {
       if(this.props.match.path.includes("models") && this.props.match.path.includes("modelSlug") && this.props.match.path.includes("slug")) {
         let modeSelected =  window.location.pathname.includes("analyst")?"/analyst":"/autoML"
         this.buttons['close'] = {
-          url: "/apps/"+this.props.match.params.AppId+modeSelected+"/models",
+          url: "/apps/"+this.props.match.params.AppId+modeSelected+"/models/"+this.props.match.params.modelSlug,
           text: "Close"
         };
         this.buttons['create'] = {
@@ -165,13 +165,6 @@ export class DataPreview extends React.Component {
       if(this.buttons.create.url.indexOf("apps-robo") != -1){
         url = "/apps-robo/" + store.getState().apps.roboDatasetSlug + "/" + store.getState().signals.signalAnalysis.slug
         this.props.history.push(url);
-      }else if(store.getState().datasets.curUrl.indexOf("scores") != -1){
-        if (store.getState().apps.scoreToProceed == true) {
-          this.props.history.push(url);
-        }else{
-          this.props.dispatch(hideDataPreview());
-          popupAlertBox("One or few variables are missing from the scoring data. Score cannot be created",this.props,url.split("/data")[0])
-        }
       }else{
         this.props.history.push(url);
       }
@@ -311,7 +304,7 @@ export class DataPreview extends React.Component {
         isCreateAllowed = permission_details.create_score;
         isDataValidationAllowed = false;
       }else if(this.buttons.create.text == "Compose Insight") {
-        isCreateAllowed = true  //need to change in future
+        isCreateAllowed = true
       }
 
       if(this.props.createSigLoaderFlag){
@@ -398,7 +391,7 @@ export class DataPreview extends React.Component {
               iconCls = "mAd_icons ic_dime_s";
               break;
             case "datetime":
-              iconCls = "pe-7s-timer pe-lg pe-va";
+              iconCls = "timeDimIcon fa fa-clock-o";
               break;
           }
           if(isDataValidationAllowed){
@@ -586,11 +579,10 @@ export class DataPreview extends React.Component {
                         <div className="navbar">
                           <ul className="nav navbar-nav navbar-right">
                             <li>
-                              {(this.isSubsetted && !this.props.location.pathname.includes("/models/data"))?
-                              (<div className="form-group">
+                              {this.isSubsetted && !this.props.location.pathname.includes("/models/data") &&
+                              <div className="form-group">
                                 <input type="text" name="newSubsetName" id="newSubsetName" className="form-control input-sm col-sm-12" placeholder="New Dataset Name"/>
-                              </div>)
-                              :(<div/>)}
+                              </div>}
                             </li>
                             <li className="text-right">
                               <Button id="dpClose" onClick={this.closePreview.bind(this)}>{this.buttons.close.text}</Button>

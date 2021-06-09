@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM 210201387539.dkr.ecr.us-east-2.amazonaws.com/ubuntu-docker-image:latest
 ENV TZ=US
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 LABEL project="apache-spark"
@@ -18,9 +18,9 @@ RUN apt-get install -y python3-pip python3-dev \
   && pip3 install --upgrade pip
 
 #adding madvisor code 
-RUN mkdir /home/mAdvisor/
-WORKDIR /home/mAdvisor/
-ADD requirements /home/mAdvisor
+#RUN mkdir /home/mAdvisor/
+#WORKDIR /home/mAdvisor/
+#ADD requirements /home/mAdvisor
 #ADD requirements.tgz /home/mAdvisor/
 #RUN virtualenv --python=python3 myenv
 #RUN . myenv/bin/activate && 
@@ -50,9 +50,9 @@ RUN pip3 install pyenchant
 RUN pip3 install -r requirements.txt
 
 #copy api code
-ADD code /home/mAdvisor/
+#ADD code /home/mAdvisor/
 #ADD code.tgz /home/mAdvisor
-WORKDIR /home/mAdvisor/mAdvisor-api/
+#WORKDIR /home/mAdvisor/mAdvisor-api/
 RUN mkdir hadoop_conf/
 ENV HADOOP_CONF_DIR=/home/mAdvisor/mAdvisor-api/hadoop_conf/
 #Virtual Env
@@ -78,9 +78,9 @@ RUN chmod +x $SPARK_HOME/startup.sh && chmod +x /home/mAdvisor/mAdvisor-api/scri
 EXPOSE 8080 4040 6379
 WORKDIR /home/mAdvisor/mAdvisor-api/
 RUN mkdir server_log
-COPY lock.sh /home/mAdvisor/mAdvisor-api/
+#COPY lock.sh /home/mAsdvisor/mAdvisor-api/
 COPY hadoop_conf/ /home/mAdvisor/mAdvisor-api/hadoop_conf/
-RUN chmod +x /home/mAdvisor/mAdvisor-api/lock.sh
+#RUN chmod +x /home/mAdvisor/mAdvisor-api/lock.sh
 
 #RUN chown marlabs:marlabs /home/mAdvisor/mAdvisor-api
 #RUN chown marlabs:marlabs /usr/local/spark-2.3.0-bin-hadoop2.7/startup.sh

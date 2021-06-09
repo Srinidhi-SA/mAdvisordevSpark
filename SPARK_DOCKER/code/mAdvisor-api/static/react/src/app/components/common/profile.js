@@ -3,26 +3,21 @@ import {Scrollbars} from 'react-custom-scrollbars';
 import {connect} from "react-redux";
 import store from "../../store";
 import {isEmpty, getUserDetailsOrRestart} from "../../helpers/helper";
-var dateFormat = require('dateformat');
-import Breadcrumb from 'react-breadcrumb';
 import {STATIC_URL, API} from "../../helpers/env";
 import renderHTML from 'react-render-html';
 import {saveFileToStore,clearDataUploadFile} from "../../actions/dataSourceListActions";
 import Dropzone from 'react-dropzone'
-import {
-  Modal,
-  Button,
-  Tab,
-  Row,
-  Col,
-  Nav,
-  NavItem
-} from "react-bootstrap";
-import {openImg, closeImg, uploadImg, getUserProfile, saveProfileImage} from "../../actions/loginActions";
+import { Modal, Button } from "react-bootstrap";
+import { uploadImg, getUserProfile, saveProfileImage} from "../../actions/loginActions";
+import {openImg, closeImg} from "../../actions/dataUploadActions";
 import { C3ChartNew } from "../C3ChartNew";
 
 @connect((store) => {
-  return {login_response: store.login.login_response, profileInfo: store.login.profileInfo, fileUpload: store.dataSource.fileUpload, showModal: store.dataUpload.imgUploadShowModal, profileImgURL: store.login.profileImgURL};
+  return {
+    profileInfo: store.login.profileInfo, 
+    fileUpload: store.dataSource.fileUpload, 
+    imgUploadShowModal:store.dataUpload.imgUploadShowModal,
+    profileImgURL: store.login.profileImgURL};
 })
 
 export class Profile extends React.Component {
@@ -32,11 +27,9 @@ export class Profile extends React.Component {
   componentWillMount() {
       this.props.dispatch(getUserProfile(getUserDetailsOrRestart.get().userToken))
       this.props.dispatch(saveProfileImage(getUserDetailsOrRestart.get().image_url))
-      //clear dataSource variable as it is common in data upload
       this.props.dispatch(clearDataUploadFile())
 
   }
-
 
   popupMsg() {
     $("#fileErrorMsg").removeClass("visibilityHidden");
@@ -73,36 +66,35 @@ export class Profile extends React.Component {
     }
   }
   resetOnchange=(e)=>{
-      if(e.target.value!=""){
+      if(e.target.value!="")
         document.getElementById("resetMsg").innerText=""
-      }
   }
 
 resetPassword=()=>{
   var num=/[0-9]/;
   var char= /[A-Za-z]/;
   if($(".oldPass").val()==="" || $(".newPass").val()==="" || $(".confirmPass").val()===""  ){
-    document.getElementById("resetMsg").innerText="please enter *mandatory fields"
+    document.getElementById("resetMsg").innerText="Please enter *mandatory fields"
   }
   else if( $(".newPass").val()!= $(".confirmPass").val()){
-    document.getElementById("resetMsg").innerText="new password and confirm password should be same"
+    document.getElementById("resetMsg").innerText="New password and confirm password should be same"
   }
   else if(($(".newPass").val().length<8) || !char.test($(".newPass").val()) || !num.test($(".newPass").val())){
-    document.getElementById("resetMsg").innerText="password must contain at least 8 characters and can't be entirely numeric."
+    document.getElementById("resetMsg").innerText="Password must contain at least 8 characters and can't be entirely numeric."
   }
   else{
-  var oldPassword= $(".oldPass").val();
-  var newPassword= $(".confirmPass").val();
-  this.resetAPI(oldPassword,newPassword).then(([response, json]) =>{
-    if(response.status === 200){
-      $("#resetModal").modal('hide');
-        bootbox.alert(`Password changed successfully.`)
-    }
-    else{
-      document.getElementById("resetMsg").innerText="old password is wrong"
-    }
-})
-}
+    var oldPassword= $(".oldPass").val();
+    var newPassword= $(".confirmPass").val();
+    this.resetAPI(oldPassword,newPassword).then(([response, json]) =>{
+      if(response.status === 200){
+        $("#resetModal").modal('hide');
+          bootbox.alert(`Password changed successfully.`)
+      }
+      else{
+        document.getElementById("resetMsg").innerText="Old password is wrong"
+      }
+    })
+  }
 }
 getHeader=(token)=>{
   return {
@@ -120,12 +112,23 @@ resetAPI=(oldPassword,newPassword) =>{
   addDefaultSrc(ev) {
     ev.target.src = STATIC_URL + "assets/images/iconp_default.png"
   }
+
+  setDateFormat(created_at){
+    let date = new Date( Date.parse(created_at) );
+    let fomattedDate=date.toLocaleString('default', { month: 'short' })+" "+date.getDate()+","+date.getFullYear()
+   return fomattedDate
+   }
+
+   handleErr(e){
+		e.target.src =	STATIC_URL + "assets/images/avatar.png"
+	}
+
   render() {
     let lastLogin = null;
     if (getUserDetailsOrRestart.get().last_login != "null") {
-      lastLogin = dateFormat(getUserDetailsOrRestart.get().last_login, "mmm d,yyyy");
+      lastLogin = this.setDateFormat(getUserDetailsOrRestart.get().last_login);
     } else {
-      lastLogin = dateFormat(new Date(), "mmm d,yyyy");
+      lastLogin = this.setDateFormat(new Date());
     }
 
     if (isEmpty(this.props.profileInfo)) {
@@ -148,21 +151,19 @@ resetAPI=(oldPassword,newPassword) =>{
     } else {
       var fileName = ""
       var fileSize=0
-      if(store.getState().dataSource.fileUpload){
-        fileName=store.getState().dataSource.fileUpload.name;
-        fileSize=store.getState().dataSource.fileUpload.size
+      if(store.getState().dataSource.fileUpload.length>0){
+        fileName=store.getState().dataSource.fileUpload[0].name;
+        fileSize=store.getState().dataSource.fileUpload[0].size
       }
 
       let fileSizeInKB = (fileSize / 1024).toFixed(3)
       if (fileSizeInKB > 2000)
         this.popupMsgForSize()
       let imgSrc = API + this.props.profileImgURL + fileSizeInKB + new Date().getTime();
-      if (!this.props.profileImgURL||this.props.profileImgURL==null||this.props.profileImgURL=="null")
-        imgSrc = STATIC_URL + "assets/images/avatar.png"
       let statsList = this.props.profileInfo.info.map((analysis, i) => {
         return (
           <div key={i} className="col-md-2 co-sm-4 col-xs-6">
-            <h2 className="text-center text-primary" style={{paddingBottom:"0px"}}>{analysis.count}<br/>
+            <h2 className="text-center text-primary xs-pb-0">{analysis.count}<br/>
               <small>{analysis.displayName}
               </small>
             </h2>
@@ -179,7 +180,7 @@ resetAPI=(oldPassword,newPassword) =>{
         var minutesDifference = Math.floor(timediff / 1000 / 60);
         var secondsDifference = Math.floor(timediff / 1000);
 
-        let action_time_string=dateFormat(recAct.action_time, "mmm d,yyyy")
+        let action_time_string=this.setDateFormat(recAct.action_time)
         if(hoursDifference<60){
           if(hoursDifference==0){
             if(minutesDifference==0)
@@ -197,10 +198,10 @@ resetAPI=(oldPassword,newPassword) =>{
         return (
           <li key={i}>
             <img onError={this.addDefaultSrc} src={img_name} className="img-responsive pull-left xs-pl-5 xs-pr-10"/>
-            <span className="pull-left">
+            <span className="pull-left xs-pt-10">
               <div class="crop">{msg}</div>
             </span>
-            <span className="pull-right">
+            <span className="pull-right xs-pt-10">
               {action_time_string}
             </span>
           </li>
@@ -223,7 +224,10 @@ resetAPI=(oldPassword,newPassword) =>{
                 <div className="panel-body no-border box-shadow">
                   <div className="user-display">
                     <div className="user-avatar col-md-2 text-center">
-                      <img src={imgSrc} className="img-responsive img-center img-circle"/>
+                    {(!this.props.profileImgURL||this.props.profileImgURL==null||this.props.profileImgURL=="null")
+                      ?<i className="profileImg_alpha avatar-img img-circle">{getUserDetailsOrRestart.get().userName.substr(0,1).toUpperCase()}</i>
+                      :<img src={imgSrc} onError={this.handleErr.bind(this)} className="img-responsive img-center img-circle"/>
+                      }
                       <a onClick={this.openPopup.bind(this)} href="javascript:void(0)">
                         <i class="fa fa-camera" style={{
                           fontSize: "36px",
@@ -240,9 +244,8 @@ resetAPI=(oldPassword,newPassword) =>{
                             <div className="row">
                               <div className="col-md-9 col-md-offset-1 col-xs-12">
                                 <div className="clearfix"></div>
-                                <div className="xs-pt-20"></div>
 
-                                <div className="dropzone md-pl-50">
+                                <div style={{paddingTop:65}} className="dropzone md-pl-50">
                                   <Dropzone id={1} onDrop={this.onDrop.bind(this)} accept=".png, .jpg,.jpeg" onDropRejected={this.popupMsg}>
                                     <p>Please drag and drop your file here or browse.</p>
                                   </Dropzone>
@@ -354,7 +357,7 @@ resetAPI=(oldPassword,newPassword) =>{
                               <p className="xs-pt-30">
                                 Date Joined :&nbsp;
                                 <b>
-                                  {dateFormat(getUserDetailsOrRestart.get().date, "mmm d,yyyy")}</b>
+                                  {this.setDateFormat(getUserDetailsOrRestart.get().date)}</b>
                                 <br/>
                                 Last Login :&nbsp;
                                 <b>{lastLogin}</b>
@@ -385,7 +388,7 @@ resetAPI=(oldPassword,newPassword) =>{
                     <div className="minHP">
                       <h5 class="text-center">TOTAL SPACE</h5>
                       <C3ChartNew chartInfo={chartInfo} classId="_profile" data={this.props.profileInfo.chart_c3}/>
-                      <p className="xs-pl-20">{renderHTML(this.props.profileInfo.comment)}</p>
+                      <div className="xs-pl-20">{renderHTML(this.props.profileInfo.comment)}</div>
                     </div>
                   </div>
                 </div>
@@ -397,7 +400,7 @@ resetAPI=(oldPassword,newPassword) =>{
                       <br/>
                       Date Joined :
                       <b>
-                        {dateFormat(getUserDetailsOrRestart.get().date, "mmm d,yyyy")}</b>
+                        {this.setDateFormat(getUserDetailsOrRestart.get().date)}</b>
                       <br/>
                       Last Login :
                       <b>{lastLogin}</b>

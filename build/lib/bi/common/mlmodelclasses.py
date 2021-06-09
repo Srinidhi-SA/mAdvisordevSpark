@@ -118,6 +118,7 @@ class MLModelSummary(object):
         self.algorithmName = None
         self.algorithmDisplayName = None
         self.validationMethod = None
+        self.hyperParamAlgoName = None
         self.modelFeatures = None
         self.levelCounts = None
         self.nTrees = None
@@ -649,6 +650,9 @@ class MLModelSummary(object):
     def set_validation_method(self, data):
         self.validationMethod = data
 
+    def set_hyperParamAlgoName(self,data):
+        self.hyperParamAlgoName = data
+
     def set_model_features(self, data):
         self.modelFeatures = data
 
@@ -666,6 +670,9 @@ class MLModelSummary(object):
 
     def set_slug(self, data):
         self.slug = data
+
+    def get_hyperParamAlgoName(self):
+        return self.hyperParamAlgoName
 
     def get_confusion_matrix(self):
         return self.confusionMatrix

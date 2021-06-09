@@ -1,6 +1,3 @@
-import store from "../store";
-import {isEmpty} from "../helpers/helper";
-
 export function openCreateSignalModal() {
 		 return {
 				type: "CREATE_SIGNAL_SHOW_MODAL",

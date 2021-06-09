@@ -1,9 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import {
-  getOcrUploadedFiles, saveImagePageFlag, saveDocumentPageFlag, saveImageDetails, pdfPagination,
-  saveSelectedImageName, storeOcrSortElements, updateCheckList, storeOcrFilterStatus, setProjectTabLoaderFlag,
-  storeOcrFilterConfidence, storeOcrFilterAssignee, storeDocSearchElem, tabActiveVal, storeOcrFilterFields, clearImageDetails, storeOcrFilterTemplate, docTablePage, docTablePagesize
+  getOcrUploadedFiles, saveImagePageFlag, saveDocumentPageFlag, saveImageDetails, pdfPagination,storeOcrTableFilterDetails,resetOcrTableFilterValues,
+  saveSelectedImageName, updateCheckList, setProjectTabLoaderFlag, storeDocSearchElem, tabActiveVal, clearImageDetails, docTablePage, docTablePagesize
 } from '../../../actions/ocrActions';
 import { connect } from "react-redux";
 import store from "../../../store";
@@ -63,8 +62,7 @@ export class OcrTable extends React.Component {
     this.props.dispatch(getOcrUploadedFiles(pageNo))
   }
   handlePageRow=(e)=>{
-    let selectedVal= e.target.value;
-    this.props.dispatch(docTablePagesize(selectedVal));
+    this.props.dispatch(docTablePagesize(e.target.value));
     this.setState({ checkAll: false, checkedList: [] });
     this.props.dispatch(getOcrUploadedFiles());
   }
@@ -95,17 +93,13 @@ export class OcrTable extends React.Component {
         });
     }
   }
-  sortOcrList(sortBy, sortOrder) {
-    this.props.dispatch(storeOcrSortElements(sortBy, sortOrder))
-    this.props.dispatch(getOcrUploadedFiles())
-  }
 
-  handleFil(mode) {
+  handleFil = (mode) =>  {
     this.disableInputs(mode, '')
     this.setState({ filterVal: mode })
   }
 
-  disableInputs(mode, reset,filterOn=null) {
+  disableInputs = (mode, reset, filterOn=null) => {
     if(reset=="reset"){ //clear entered value and enable all fields on reset(All)
       var selectedFieldIds = filterOn=='confidence'? ['CEQL','CGTE','CLTE']:['FEQL','FGTE','FLTE'];
       selectedFieldIds.map(i=>document.getElementById(i).value='')
@@ -122,28 +116,12 @@ export class OcrTable extends React.Component {
     }
   }
 
-  filterOcrList(filtertBy, filterOn, reset) {
+  filterOcrList = (filtertBy, filterOn, reset) => {
     var filterByVal = ''
     if (reset != 'reset') {
       filterByVal = (filterOn == ('confidence') || (filterOn == 'fields')) ? $(`#${this.state.filterVal}`).val().trim() != '' ? (this.state.filterVal.slice(1, 4) + $(`#${this.state.filterVal}`).val().trim()) : "" : filtertBy;
     }
-    switch (filterOn) {
-      case 'status':
-        this.props.dispatch(storeOcrFilterStatus(filterByVal))
-        break;
-      case 'confidence':
-        this.props.dispatch(storeOcrFilterConfidence(filterByVal))
-        break;
-      case 'assignee':
-        this.props.dispatch(storeOcrFilterAssignee(filterByVal))
-        break;
-      case 'fields':
-        this.props.dispatch(storeOcrFilterFields(filterByVal))
-        break;
-      case 'template':
-        this.props.dispatch(storeOcrFilterTemplate(filterByVal))
-        break;
-    }
+    this.props.dispatch(storeOcrTableFilterDetails(filterOn,filterByVal))
     this.props.dispatch(getOcrUploadedFiles())
     if (reset == 'reset') {
       this.disableInputs(this.state.filterVal, 'reset',filterOn)
@@ -235,11 +213,11 @@ export class OcrTable extends React.Component {
       )
   }
 
-  closePopup() {
+  closePopup = () => {
     this.setState({ showRecognizePopup: false })
   }
 
-  hideClick() {
+  hideClick = () => {
     this.closePopup();
     this.setState({ checkAll: false, checkedList: [] })
     var refreshList = setInterval(() => {
@@ -254,25 +232,22 @@ export class OcrTable extends React.Component {
     this.props.dispatch(getOcrUploadedFiles());
   }
 
-  proceedClick() {
+  proceedClick = () => {
     this.closePopup();
     this.setState({ checkAll: false, checkedList: [] })
     this.props.dispatch(getOcrUploadedFiles());
   }
 
-  handleSearchBox() {
+  handleSearchBox = () => {
     var searchElememt = document.getElementById('search').value.trim()
     this.props.dispatch(storeDocSearchElem(searchElememt))
     this.props.dispatch(getOcrUploadedFiles())
   }
 
-  filterByImageStatus(e) {
+  filterByImageStatus = (e) => {
     this.setState({ checkAll: false, checkedList: [] })
     this.props.dispatch(setProjectTabLoaderFlag(true));
-    this.props.dispatch(storeOcrFilterStatus(''));
-    this.props.dispatch(storeOcrFilterConfidence(''));
-    this.props.dispatch(storeOcrFilterAssignee(''));
-    this.props.dispatch(storeOcrFilterFields(''));
+    this.props.dispatch(resetOcrTableFilterValues());
     this.props.dispatch(tabActiveVal(e.target.id))
     this.props.dispatch(getOcrUploadedFiles())
   }
@@ -395,21 +370,21 @@ export class OcrTable extends React.Component {
     }
 
     var getAssigneeOptions = (this.props.OcrDataList != '' ? this.props.OcrDataList.data.length != 0 ? [...new Set(this.props.OcrDataList.data.map(i => i.assignee).filter(j => j != null))].map((item,index) => {
-      return <li key={index}><a className="cursor" onClick={this.filterOcrList.bind(this, item, 'assignee')} name="all" data-toggle="modal" data-target="#modal_equal"> {item}</a></li>
+      return <li key={index}><a className="cursor" onClick={()=>this.filterOcrList(item, 'assignee')} name="all" data-toggle="modal" data-target="#modal_equal"> {item}</a></li>
     }
     ) : '' : '')
 
     var getTemplateOptions = (this.props.OcrDataList != '' ? this.props.OcrDataList.values.map((item,index) => {
-      return <li key={index}><a className= { store.getState().ocr.filter_template== item ? "active cursor" : "cursor" } onClick={this.filterOcrList.bind(this, item, 'template')} name="all" data-toggle="modal" data-target="#modal_equal"> {item}</a></li>
+      return <li key={index}><a className= { store.getState().ocr.filter_template== item ? "active cursor" : "cursor" } onClick={()=>this.filterOcrList(item, 'template')} name="all" data-toggle="modal" data-target="#modal_equal"> {item}</a></li>
     }
     ) : '')
 
 
 
     var ShowModel = (<div id="uploadData" role="dialog" className="modal fade modal-colored-header">
-      <Modal backdrop="static" show={this.state.showRecognizePopup} onHide={this.closePopup.bind(this)} dialogClassName="modal-colored-header">
-        <Modal.Body style={{ padding: 0 }} >
-          <div className="row" style={{ margin: 0 }}>
+      <Modal backdrop="static" show={this.state.showRecognizePopup} onHide={this.closePopup} dialogClassName="modal-colored-header">
+        <Modal.Body className="xs-p-0">
+          <div className="row xs-m-0">
             <h4 className="text-center">Recognizing Document</h4>
             {(this.state.loader && !this.state.recognized) &&
               <img src={STATIC_URL + "assets/images/Processing_mAdvisor.gif"} className="img-responsive" style={{ margin: "auto" }} />
@@ -442,8 +417,8 @@ export class OcrTable extends React.Component {
         </Modal.Body>
         <Modal.Footer>
           <div id="resetMsg"></div>
-          <Button id="Rd_dataCloseBtn" onClick={this.hideClick.bind(this)} bsStyle="primary">Hide</Button>
-          <Button id="Rd_loadDataBtn" onClick={this.proceedClick.bind(this)} disabled={this.state.loader} bsStyle="primary">Proceed</Button>
+          <Button id="Rd_dataCloseBtn" onClick={this.hideClick} bsStyle="primary">Hide</Button>
+          <Button id="Rd_loadDataBtn" onClick={this.proceedClick} disabled={this.state.loader} bsStyle="primary">Proceed</Button>
         </Modal.Footer>
       </Modal>
     </div>)
@@ -532,12 +507,12 @@ export class OcrTable extends React.Component {
 
         <div className="tab-container">
           {this.props.OcrDataList != '' ? this.props.OcrDataList.total_data_count_wf >= 1 ? <ul className="nav nav-tabs" style={{ cursor: "default" }}>
-            <li className="active"><a data-toggle="tab" id="backlog" name="Backlog" onClick={this.filterByImageStatus.bind(this)} data-tip="Documents that are pending assignment are displayed here">Backlog</a></li>
-            <li className=""><a data-toggle="tab" id="active" name="Active" onClick={this.filterByImageStatus.bind(this)} data-tip="Documents that are assigned for review are displayed here">Active</a></li>
+            <li className="active"><a data-toggle="tab" id="backlog" name="Backlog" onClick={this.filterByImageStatus} data-tip="Documents that are pending assignment are displayed here">Backlog</a></li>
+            <li className=""><a data-toggle="tab" id="active" name="Active" onClick={this.filterByImageStatus} data-tip="Documents that are assigned for review are displayed here">Active</a></li>
 
             <li className="pull-right">
               <div className="form-group xs-mt-10 xs-mb-0">
-                <input type="text" id="search" className="form-control btn-rounded" title="Search by name..." onKeyUp={this.handleSearchBox.bind(this)} placeholder="Search by name..."></input>
+                <input type="text" id="search" className="form-control btn-rounded" title="Search by name..." onKeyUp={this.handleSearchBox} placeholder="Search by name..."></input>
               </div>
             </li>
           </ul> : "" : ""}
@@ -563,13 +538,13 @@ export class OcrTable extends React.Component {
                               <span>STATUS</span> <b className="caret"></b>
                             </a>
                             <ul className="dropdown-menu scrollable-menu dropdownScroll">
-                              <li><a className="cursor" onClick={this.filterOcrList.bind(this, '', 'status')}>All</a></li>
-                              <li><a className="cursor" onClick={this.filterOcrList.bind(this, 'R', 'status')}>Ready to Recognize</a></li>
-                              <li><a className="cursor" onClick={this.filterOcrList.bind(this, 'A', 'status')}>Ready to Assign</a></li>
-                              <li><a className="cursor" onClick={this.filterOcrList.bind(this, 'V1', 'status')}>Ready to Verify(L1)</a></li>
-                              <li><a className="cursor" onClick={this.filterOcrList.bind(this, 'C1', 'status')}>L1 Verified</a></li>
-                              <li><a className="cursor" onClick={this.filterOcrList.bind(this, 'V2', 'status')}>Ready to Verify(L2)</a></li>
-                              <li><a className="cursor" onClick={this.filterOcrList.bind(this, 'E', 'status')}>Ready to Export</a></li>
+                              <li><a className="cursor" onClick={()=>this.filterOcrList('', 'status')}>All</a></li>
+                              <li><a className="cursor" onClick={()=>this.filterOcrList('R', 'status')}>Ready to Recognize</a></li>
+                              <li><a className="cursor" onClick={()=>this.filterOcrList('A', 'status')}>Ready to Assign</a></li>
+                              <li><a className="cursor" onClick={()=>this.filterOcrList('V1', 'status')}>Ready to Verify(L1)</a></li>
+                              <li><a className="cursor" onClick={()=>this.filterOcrList('C1', 'status')}>L1 Verified</a></li>
+                              <li><a className="cursor" onClick={()=>this.filterOcrList('V2', 'status')}>Ready to Verify(L2)</a></li>
+                              <li><a className="cursor" onClick={()=>this.filterOcrList('E', 'status')}>Ready to Export</a></li>
                             </ul>
                           </th>
                           {store.getState().ocr.tabActive == 'active' &&
@@ -581,7 +556,7 @@ export class OcrTable extends React.Component {
                             </a>
                             <ul className="dropdown-menu scrollable-menu dropdownScroll template" style={{ minWidth: '130px',paddingLeft:0 }}>
                               <Scrollbars className="templateScroll" style={{ height: 160, overflowX: 'hidden' }} >
-                                <li><a className= { store.getState().ocr.filter_template== "" ? "active cursor" : "cursor" }  onClick={this.filterOcrList.bind(this, '', 'template')} name='all'>All</a></li>
+                                <li><a className= { store.getState().ocr.filter_template== "" ? "active cursor" : "cursor" }  onClick={()=>this.filterOcrList('', 'template')} name='all'>All</a></li>
                                 {getTemplateOptions} 
                               </Scrollbars>
                             </ul>
@@ -591,14 +566,14 @@ export class OcrTable extends React.Component {
                               <span>FIELDS</span> <b className="caret"></b>
                             </a>
                             <ul className="dropdown-menu scrollable-menu filterOptions">
-                              <li><a className="cursor" onClick={this.filterOcrList.bind(this, '', 'fields', 'reset')} name="all" data-toggle="modal" data-target="#modal_equal">All</a></li>
+                              <li><a className="cursor" onClick={()=>this.filterOcrList('', 'fields', 'reset')} name="all" data-toggle="modal" data-target="#modal_equal">All</a></li>
                               <li><a >Equal to</a>
-                                <input id='FEQL' onChange={this.handleFil.bind(this, 'FEQL')} type='number'></input></li>
+                                <input id='FEQL' onChange={()=>this.handleFil('FEQL')} type='number'></input></li>
                               <li><a>Greater than</a>
-                                <input id='FGTE' onChange={this.handleFil.bind(this, 'FGTE')} type='number'></input></li>
+                                <input id='FGTE' onChange={()=>this.handleFil('FGTE')} type='number'></input></li>
                               <li><a>Less than</a>
-                                <input id='FLTE' onChange={this.handleFil.bind(this, 'FLTE')} type='number'></input></li>
-                              <button className="btn btn-xs btn-primary pull-right xs-mt-10 xs-mr-5 filterCheckBtn" onClick={this.filterOcrList.bind(this, '', 'fields', '')}><i className="fa fa-check"></i></button>
+                                <input id='FLTE' onChange={()=>this.handleFil('FLTE')} type='number'></input></li>
+                              <button className="btn btn-xs btn-primary pull-right xs-mt-10 xs-mr-5 filterCheckBtn" onClick={()=>this.filterOcrList('', 'fields', '')}><i className="fa fa-check"></i></button>
                             </ul>
                           </th>
                           <th className="dropdown" >
@@ -606,14 +581,14 @@ export class OcrTable extends React.Component {
                               <span>ACCURACY</span> <b className="caret"></b>
                             </a>
                             <ul className="dropdown-menu scrollable-menu filterOptions">
-                              <li><a className="cursor" onClick={this.filterOcrList.bind(this, '', 'confidence', 'reset')} name="all" data-toggle="modal" data-target="#modal_equal">All</a></li>
+                              <li><a className="cursor" onClick={()=>this.filterOcrList('', 'confidence', 'reset')} name="all" data-toggle="modal" data-target="#modal_equal">All</a></li>
                               <li><a>Equal to</a>
-                                <input id='CEQL' onChange={this.handleFil.bind(this, 'CEQL')} type='number' ></input></li>
+                                <input id='CEQL' onChange={()=>this.handleFil('CEQL')} type='number' ></input></li>
                               <li><a>Greater than</a>
-                                <input id='CGTE' onChange={this.handleFil.bind(this, 'CGTE')} type='number' ></input></li>
+                                <input id='CGTE' onChange={()=>this.handleFil('CGTE')} type='number' ></input></li>
                               <li><a>Less than</a>
-                                <input id='CLTE' onChange={this.handleFil.bind(this, 'CLTE')} type='number'></input></li>
-                              <button className="btn btn-xs btn-primary filterCheckBtn pull-right xs-mt-10 xs-mr-5" onClick={this.filterOcrList.bind(this, '', 'confidence', '')}><i className="fa fa-check"></i></button>
+                                <input id='CLTE' onChange={()=>this.handleFil('CLTE')} type='number'></input></li>
+                              <button className="btn btn-xs btn-primary filterCheckBtn pull-right xs-mt-10 xs-mr-5" onClick={()=>this.filterOcrList('', 'confidence', '')}><i className="fa fa-check"></i></button>
 
                             </ul>
                           </th>
@@ -622,7 +597,7 @@ export class OcrTable extends React.Component {
                               <span>ASSIGNEE</span> <b className="caret"></b>
                             </a>
                             <ul className="dropdown-menu scrollable-menu dropdownScroll">
-                              <li><a className="cursor" onClick={this.filterOcrList.bind(this, '', 'assignee')} name='all'>All</a></li>
+                              <li><a className="cursor" onClick={()=>this.filterOcrList('', 'assignee')} name='all'>All</a></li>
                               {getAssigneeOptions}
                             </ul>
                           </th> : null}
@@ -660,7 +635,7 @@ export class OcrTable extends React.Component {
           </div>
         </div>
         <div role="dialog" className="modal fade modal-colored-header">
-               <Modal backdrop="static" show={this.state.deleteDocFlag} onHide={this.closeDeletePopup.bind(this)} dialogClassName="modal-colored-header">
+               <Modal backdrop="static" show={this.state.deleteDocFlag} onHide={this.closeDeletePopup} dialogClassName="modal-colored-header">
                   <Modal.Header closeButton>
                      <h3 className="modal-title">Delete Project</h3>
                   </Modal.Header>
@@ -674,7 +649,7 @@ export class OcrTable extends React.Component {
                            <div>Are you sure you want to delete {this.state.deleteDocName} document?</div>
                            <div className="xs-mt-10">
                               <Button bsStyle="primary" onClick={this.deleteDocument}>Yes</Button>
-                              <Button onClick={this.closeDeletePopup.bind(this)}>No</Button>
+                              <Button onClick={this.closeDeletePopup}>No</Button>
                            </div>
                         </div>
                      </div>

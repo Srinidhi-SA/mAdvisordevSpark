@@ -41,7 +41,7 @@ from pyspark.mllib.evaluation import BinaryClassificationMetrics, MulticlassMetr
 from pyspark.ml.feature import IndexToString
 from pyspark.sql.functions import udf,col
 from pyspark.sql.types import *
-
+import pyspark.sql.functions as F
 from bi.settings import setting as GLOBALSETTINGS
 from pyspark.ml.feature import StringIndexer, VectorAssembler
 from pyspark.ml.pipeline import PipelineModel
@@ -193,8 +193,8 @@ class RandomForestPysparkScript(object):
             else:
                 if automl_enable:
                     params_grid = {
-                                    'minInstancesPerNode': [2,3],
-                                    'numTrees': [10,20,100],
+                                    'minInstancesPerNode': [1,3],
+                                    'numTrees': [10,20],
                                     'impurity': ['gini']}
                     algoParams = {getattr(clf, k):v if isinstance(v, list) else \
                                    [v] for k,v in params_grid.items() if k in clfParams}
@@ -243,7 +243,8 @@ class RandomForestPysparkScript(object):
         modelmanagement_={param[0].name:param[1] for param in bestModel.stages[2].extractParamMap().items()}
         MLUtils.save_pipeline_or_model(bestModel,model_filepath)
         predsAndLabels = prediction.select(['prediction', 'label']).rdd.map(tuple)
-        label_classes = prediction.select("label").distinct().collect()
+        # label_classes = prediction.select("label").distinct().collect()
+        # label_classes = prediction.agg((F.collect_set('label').alias('label'))).first().asDict()['label']
 
         # prediction.select(["features", "label", "rawPrediction", "probability", "prediction"]).show()
         # print("$"*143)
@@ -290,8 +291,13 @@ class RandomForestPysparkScript(object):
             gain_lift_ks_obj = GainLiftKS(pys_df, 'y_prob_for_eval', 'prediction', 'label', posLabel, self._spark)
             gain_lift_KS_dataframe = gain_lift_ks_obj.Run().toPandas()
         except:
-            print("gain chart failed")
-            pass
+            try:
+                temp_df = pys_df.toPandas()
+                gain_lift_ks_obj = GainLiftKS(temp_df, 'y_prob_for_eval', 'prediction', 'label', posLabel, self._spark)
+                gain_lift_KS_dataframe = gain_lift_ks_obj.Rank_Ordering()
+            except:
+                print("gain chant failed")
+                gain_lift_KS_dataframe = None
 
 
         act_list = prediction.select('label').collect()

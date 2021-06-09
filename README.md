@@ -56,4 +56,3 @@ curl --data-binary @dist/marlabs_bi_jobs-0.0.0-py2.7.egg -H 'Content-Type: appli
 5. [Frequency Calculation](https://github.com/rammohan/marlabs-bi/blob/mitali_dev/docs/Frequency_Dimension.md)
 6. [Chi Square Test](https://github.com/rammohan/marlabs-bi/blob/mitali_dev/docs/ChiSquare.md)
 7. [Decision Tree](https://github.com/rammohan/marlabs-bi/blob/mitali_dev/docs/DecisionTree.md)
-# mAdvisordevSpark

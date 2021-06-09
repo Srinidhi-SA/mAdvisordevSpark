@@ -14,17 +14,16 @@ export class OcrManageUser extends React.Component {
   
   render() {
     return (
-      <div className="side-body">
-        <OcrTopNavigation/>
-		<div className="main-content">
-          <section class="ocr_section box-shadow">
-            <div class="container-fluid">
-              <OcrUserTable/>
-            </div>
-          </section>
-		  </div>
+    <div className="side-body">
+      <OcrTopNavigation/>
+      <div className="main-content">
+        <section className="ocr_section box-shadow">
+          <div className="container-fluid">
+            <OcrUserTable/>
+          </div>
+        </section>
       </div>
+    </div>
     );
   }
-
 }

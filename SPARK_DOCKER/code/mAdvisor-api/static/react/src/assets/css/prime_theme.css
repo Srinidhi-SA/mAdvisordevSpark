@@ -59,7 +59,7 @@ body .pi {
         border-color: #8ed3c9; }
       body .p-checkbox .p-checkbox-box.p-focus {
         border-color: #007ad9;
-        background-color: #ffffff;#6cc1b6
+        background-color: #ffffff;
         color: #007ad9; }
       body .p-checkbox .p-checkbox-box.p-highlight {
         border-color: #8ed3c9;
@@ -132,7 +132,7 @@ body .pi {
         -webkit-transition: background-color 0.2s;
         transition: background-color 0.2s;
         border-radius: 50%; }
-        body .p-radiobutton .p-radiobutton-box .p-radiobutton-icon:before {#6cc1b6
+        body .p-radiobutton .p-radiobutton-box .p-radiobutton-icon:before {
           display: none; }
   body .p-radiobutton-label {
     margin: 0 0 0 .5em; }
@@ -168,7 +168,7 @@ body .pi {
     body .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
       background-color: #30afa0; }
     body .p-inputswitch.p-inputswitch-checked.p-inputswitch-focus .p-inputswitch-slider {
-      background: ##00998c; }
+      background: #00998c; }
   body .p-autocomplete .p-autocomplete-input {
     padding: 0.429em; }
   body .p-autocomplete.p-autocomplete-multiple .p-autocomplete-multiple-container {
@@ -198,7 +198,7 @@ body .pi {
   body .p-autocomplete-panel {
     padding: 0;
     border: 1px solid #c8c8c8;
-    background-color: #ffffff;#6cc1b6
+    background-color: #ffffff;
     -webkit-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16); }
     body .p-autocomplete-panel .p-autocomplete-items {
@@ -246,7 +246,7 @@ body .pi {
         padding: 0;
         margin: 0; }
         body .p-chips > ul.p-inputtext .p-chips-input-token input:hover {
-          border: 0 none; }#6cc1b6
+          border: 0 none; }
         body .p-chips > ul.p-inputtext .p-chips-input-token input:focus {
           border: 0 none; }
     body .p-chips > ul.p-inputtext .p-chips-token {
@@ -276,7 +276,7 @@ body .pi {
       background-color: #ffffff;
       width: 2em;
       line-height: 2em;
-      text-align: center;#6cc1b6
+      text-align: center;
       padding: 0;
       color: #848484;
       border-radius: 3px; }

@@ -1,6 +1,5 @@
 import React from "react";
 import {connect} from "react-redux";
-import store from "../../store";
 import { decimalPlaces } from "../../helpers/helper";
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 import { MultiSelect } from "primereact/multiselect";
@@ -10,6 +9,8 @@ import { updateAlgorithmData } from "../../actions/appActions";
 @connect((store) => {
     return {
       editmodelFlag:store.datasets.editmodelFlag,
+      updatedAlgo: store.apps.regression_algorithm_data_manual,
+      dataPreview: store.datasets.dataPreview,
     };
 })
 
@@ -32,12 +33,22 @@ export class RegressionParameter extends React.Component {
       }
     }else{
       if(this.props.parameterData.paramType == "number"){
-        this.state = {
+        if(this.props.parameterData.name === "max_samples" && this.props.algorithmSlug === "f77631ce2ab24cf78c55bb6a5fce4db8rf"){
+          var noOfRows = this.props.dataPreview.meta_data.scriptMetaData.metaData.filter(rows=>rows.name=="noOfRows").map(i=>i.value)[0];
+          this.state = {
             min:(this.props.parameterData.valueRange != null)?this.props.parameterData.valueRange[0]:"",
-            max: (this.props.parameterData.valueRange != null)?this.props.parameterData.valueRange[1]:"",
-            defaultVal:this.props.parameterData.defaultValue,
+            max: noOfRows,
+            defaultVal:parseInt(noOfRows/2),
             name:this.props.parameterData.name,
-        };
+          };
+        }else{
+          this.state = {
+              min:(this.props.parameterData.valueRange != null)?this.props.parameterData.valueRange[0]:"",
+              max: (this.props.parameterData.valueRange != null)?this.props.parameterData.valueRange[1]:"",
+              defaultVal:this.props.parameterData.defaultValue,
+              name:this.props.parameterData.name,
+          };
+        }
       }else{
         this.state = {
           defaultVal:this.props.parameterData.defaultValue,
@@ -190,7 +201,192 @@ export class RegressionParameter extends React.Component {
       }else if($('.earlyStop').val() == "true" && (e.target.value == "lbfgs") ){
         $(".fractionCls").prop("disabled",true);
       }
+  }
+  
+  handleRFParams(e,updatedAlgo){
+    let val = e.target.value;
+    let bootstrapAlgo = updatedAlgo.filter(i=>i.displayName==="Bootstrap Sampling")[0].defaultValue.filter(i=>i.selected);
+    let oobScoreAlgo = updatedAlgo.filter(i=>i.displayName==="use out-of-bag samples")[0].defaultValue.filter(i=>i.selected);
+    document.getElementById("bootstrap_err").innerText = ""
+    if(!this.props.isTuning){
+      if((this.props.parameterData.name === "oob_score" && val==="true" && (bootstrapAlgo[0].displayName === "False")) ||
+         (this.props.parameterData.name === "bootstrap" && val==="false" && (oobScoreAlgo[0].displayName === "True")) ){
+           document.getElementById("bootstrap_err").innerText = "Bootstrap must be true as out-of-bag samples is selected true"
+      }
+    }else{
+      if(this.props.parameterData.name === "oob_score"){
+        if(val.includes("true") && !bootstrapAlgo.map(i=>i.displayName).includes("True") ){
+          document.getElementById("bootstrap_err").innerText = "Please select true as out-of-bag samples is selected as true"
+        }
+      }else if(this.props.parameterData.name === "bootstrap"){
+        if(!val.includes("true") && oobScoreAlgo.map(i=>i.displayName).includes("True") ){
+          document.getElementById("bootstrap_err").innerText = "Please select true as out-of-bag samples is selected as true"
+        }
+        else if(val.includes("true") && val.includes("false") && oobScoreAlgo.map(i=>i.displayName).includes("True")){
+            document.getElementById("bootstrap_err").innerText = "Please select only true as out-of-bag samples is selected as true"
+        }
+      }
+    }
+  }
+  handleLRParamsForTune(e,penaltySelectd,solverSelectd,multiClsSelectd){
+    solverSelectd = this.props.parameterData.name === "solver"?e.target.value:solverSelectd
+    penaltySelectd = this.props.parameterData.name === "penalty"?e.target.value:penaltySelectd;
+    multiClsSelectd  = this.props.parameterData.name==="multi_class"?e.target.value:multiClsSelectd;
     
+    document.getElementById("solver_err").innerText = ""
+    document.getElementById("penalty_err").innerText = ""
+    document.getElementById("multi_class_err").innerText = ""
+
+    if(solverSelectd.length===0){
+      document.getElementById("solver_err").innerText = "Please select at least one"
+    }else if(penaltySelectd.length===0){
+      document.getElementById("penalty_err").innerText = "Please select at least one"
+    }else if(multiClsSelectd.length===0){
+      document.getElementById("multi_class_err").innerText = "Please select at least one"
+    }else if(penaltySelectd.length>1 && penaltySelectd.includes("none")){
+      document.getElementById("penalty_err").innerText = "none cannot be selected with other penalties"
+    }else if(solverSelectd.length>=1 && solverSelectd.includes("liblinear") && (multiClsSelectd.length>1 || !multiClsSelectd.includes("ovr"))){
+      document.getElementById("multi_class_err").innerText = "Only one vs rest can be selected as liblinear is selected as solver"
+    }else if(solverSelectd.length === 1 && penaltySelectd.length===1){
+      if(solverSelectd.includes("lbfgs") || solverSelectd.includes("newton-cg") || solverSelectd.includes("sag")){
+        if(penaltySelectd.includes("l1") || penaltySelectd.includes("elasticnet")){
+          document.getElementById("solver_err").innerText = solverSelectd[0]+" cannot be selected as penalty is "+penaltySelectd[0]
+        }
+      }else if(solverSelectd.includes("liblinear")){
+        if(penaltySelectd.includes("elasticnet") || penaltySelectd.includes("none")){
+          document.getElementById("solver_err").innerText = "Cannot select liblinear as penalty is "+penaltySelectd[0]
+        }else if(!multiClsSelectd.includes("ovr") && (penaltySelectd.includes("l1") || penaltySelectd.includes("l2"))){
+          document.getElementById("multi_class_err").innerText = "Please select one vs rest as liblinear is selected as solver"
+        }
+      }
+    }else if(solverSelectd.length===2 && penaltySelectd.length === 1){
+      if(penaltySelectd.includes("l1") && (!solverSelectd.includes("saga") || !solverSelectd.includes("liblinear"))){
+        document.getElementById("solver_err").innerText = "Only saga and liblinear can be selected as penalty is l1"
+      }else if(penaltySelectd.includes("l2") && solverSelectd.includes("liblinear") && !multiClsSelectd.includes("ovr")){
+        document.getElementById("multi_class_err").innerText = "Please select one vs rest as liblinear is selected as solver"
+      }else if(penaltySelectd.includes("elasticnet")){
+        document.getElementById("solver_err").innerText = "Only saga can be selected as penalty is elasticnet"
+      }else if(penaltySelectd.includes("none") && solverSelectd.includes("liblinear")){
+        document.getElementById("solver_err").innerText = "liblinear cannot be selected as penalty is none"
+      }
+    }else if((solverSelectd.length===3 || solverSelectd.length===4) && penaltySelectd.length===1){
+      if(penaltySelectd.includes("l1")){
+        document.getElementById("solver_err").innerText = "Only saga and liblinear can be selected"
+      }else if(penaltySelectd.includes("l2") && solverSelectd.includes("liblinear") && !multiClsSelectd.includes("ovr")){
+        document.getElementById("multi_class_err").innerText = "Please select one vs rest as liblinear is selected as solver"
+      }else if(penaltySelectd.includes("elasticnet")){
+        document.getElementById("solver_err").innerText = "Only saga can be selected"
+      }else if(penaltySelectd.includes("none") && solverSelectd.includes("liblinear")){
+        document.getElementById("solver_err").innerText = "Liblinear cannot be selected as penalty is none"
+      }
+    }else if(solverSelectd.length === 5 && penaltySelectd.length===1){
+      if(penaltySelectd.includes("l1")){
+        document.getElementById("solver_err").innerText = "Only saga and liblinear can be selected"
+      }else if(penaltySelectd.includes("l2") && solverSelectd.includes("liblinear") && !multiClsSelectd.includes("ovr")){
+        document.getElementById("multi_class_err").innerText = "Please select one vs rest as liblinear is selected as solver"
+      }else if(penaltySelectd.includes("elasticnet")){
+        document.getElementById("solver_err").innerText = "Only saga can be selected"
+      }else if(penaltySelectd.includes("none")){
+        document.getElementById("solver_err").innerText = "liblinear cannot be selected as penalty is none"
+      }
+    }else if(solverSelectd.length===1 && penaltySelectd.length===2){
+      if(penaltySelectd.includes("l1") && penaltySelectd.includes("l2") && !solverSelectd.includes("saga") && !solverSelectd.includes("liblinear")){
+        document.getElementById("solver_err").innerText = "Select saga or liblinear as penalty is l1 and l2"
+      }else if(penaltySelectd.includes("l1") && penaltySelectd.includes("l2") && solverSelectd.includes("liblinear") && !multiClsSelectd.includes("ovr")){
+        document.getElementById("multi_class_err").innerText = "Select one vs rest as solver is liblinear"
+      }else if(!(penaltySelectd.includes("l1") && penaltySelectd.includes("l2")) && !solverSelectd.includes("saga")){
+        document.getElementById("solver_err").innerText = "Only saga can be selected"
+      }
+    }else if(solverSelectd.length===1 && penaltySelectd.length===3){
+      if(penaltySelectd.includes("l1") && penaltySelectd.includes("l2") && penaltySelectd.includes("elasticnet") && !solverSelectd.includes("saga")){
+        document.getElementById("solver_err").innerText = "Only saga can be selected"
+      }
+    }else if(solverSelectd.length===2 && penaltySelectd.length===2){
+      if(penaltySelectd.includes("l1") && penaltySelectd.includes("l2") && !(solverSelectd.includes("saga") && solverSelectd.includes("liblinear")) ){
+        document.getElementById("solver_err").innerText = "Only saga and liblinear can be selected"
+      }else if(penaltySelectd.includes("l1") && penaltySelectd.includes("l2") && (solverSelectd.includes("saga") && solverSelectd.includes("liblinear") && !multiClsSelectd.includes("ovr")) ){
+        document.getElementById("multi_class_err").innerText = "Select one vs rest as solver is liblinear"
+      }else if(!(penaltySelectd.includes("l1") && penaltySelectd.includes("l2"))){
+        document.getElementById("solver_err").innerText = "Only saga can be selected"
+      }
+    }else if( (solverSelectd.length===2 && penaltySelectd.length===3) || (solverSelectd.length===3 && penaltySelectd.length===3) ||(solverSelectd.length===4 && penaltySelectd.length===2) ||(solverSelectd.length===4 && penaltySelectd.length===3) ||(solverSelectd.length===5 && penaltySelectd.length===2) ||(solverSelectd.length===5 && penaltySelectd.length===3) ){
+      document.getElementById("solver_err").innerText = "Only saga can be selected"
+    }else if(solverSelectd.length===3 && penaltySelectd.length===2){
+      if(penaltySelectd.includes("l1") && penaltySelectd.includes("l2")){
+        document.getElementById("solver_err").innerText = "Only saga and liblinear can be selected as l1 and l2 is penalty"
+      }else{
+        document.getElementById("solver_err").innerText = "Only saga can be selected"
+      }
+    }
+    
+  }
+
+  handleLRParams(e,penaltySelectd,solverSelectd,multiClsSelectd){
+    document.getElementById("penalty_err").innerText = ""
+    document.getElementById("solver_err").innerText = ""
+    document.getElementById("multi_class_err").innerText = ""
+    if(penaltySelectd===undefined){
+      document.getElementById("penalty_err").innerText = "Please select penalty"
+    }else if(solverSelectd===undefined){
+      document.getElementById("solver_err").innerText = "Please select solver"
+    }else if(multiClsSelectd===undefined){
+      document.getElementById("multi_class_err").innerText = "Please select multiclass"
+    }else{
+      switch(e.target.value){
+        case "l1":
+          if(["newton-cg","lbfgs","sag"].indexOf(solverSelectd) > -1){
+            document.getElementById("solver_err").innerText = "Please select saga or liblinear as l1 is selected as penalty"
+          }
+          if(solverSelectd === "liblinear" && !multiClsSelectd === "ovr"){
+            document.getElementById("multi_class_err").innerText = "Please select one vs rest as liblinear is used as solver"
+          }
+          break;
+        case "l2":
+          if(solverSelectd === "liblinear" && !multiClsSelectd === "ovr"){
+            document.getElementById("multi_class_err").innerText = "Please select one vs rest as liblinear is used as solver"
+          }
+          break;
+        case "elasticnet":
+          if(["newton-cg","lbfgs","sag","liblinear"].indexOf(solverSelectd) > -1){
+            document.getElementById("solver_err").innerText = "Please select saga as elasticnet is selected as penalty"
+          }
+          break;
+        case "none":
+          if(solverSelectd === "liblinear"){
+            document.getElementById("solver_err").innerText = "Please select saga or lbfgs or newton-cg or sag as penalty is none"
+          }
+          break;
+        case "newton-cg":
+        case "lbfgs":
+          if(penaltySelectd==="l1"){
+            document.getElementById("solver_err").innerText = "Please select saga or liblinear as L1 is selected as penalty"
+          }else if(penaltySelectd.includes("elasticnet")){
+            document.getElementById("solver_err").innerText = "Please select saga or liblinear as elasticnet is selected as penalty"
+          }
+          break;
+        case "liblinear":
+          if(["l1","l2"].indexOf(penaltySelectd)>-1 && multiClsSelectd != "ovr"){
+            document.getElementById("multi_class_err").innerText = "Please select one vs rest as liblinear is used as solver"
+          }else if(penaltySelectd === "elasticnet"){
+            document.getElementById("solver_err").innerText = "Please select saga as elasticnet is selected as penalty"
+          }else if(penaltySelectd === "none"){
+            document.getElementById("solver_err").innerText = "Please select saga or lbfgs or newton-cg or sag as none is selected as penalty"
+          }
+          break;
+        case "sag":
+          if(penaltySelectd === "l1"){
+            document.getElementById("solver_err").innerText = "Please select saga or liblinear as l1 is selected as penalty"
+          }else if(penaltySelectd === "elasticnet"){
+            document.getElementById("solver_err").innerText = "Please select saga as elasticnet is selected as penalty"
+          }
+          break;
+        case "multinomial":
+          if(solverSelectd.includes("liblinear")){
+            document.getElementById("multi_class_err").innerText = "Please select one vs rest as liblinear is used as solver"
+          }
+          break;
+      }
+    }
   }
   checkType(val,type,min,max){
     if(val === min || val === max){
@@ -292,7 +488,7 @@ export class RegressionParameter extends React.Component {
   }
   validateRangeandField(e){
     let value = e.target.value;
-    let floatTypeParams = ["regParam","elasticNetParam","threshold","minInfoGain","smoothing","tol","C","min_samples_split","min_samples_leaf","eta","subsample","colsample_bytree","colsample_bylevel","alpha","learning_rate_init","power_t","momentum","validation_fraction","beta_1 ","beta_2 ","max_leaf_nodes","stepSize"]
+    let floatTypeParams = ["regParam","elasticNetParam","threshold","minInfoGain","smoothing","tol","C","min_samples_split","min_samples_leaf","eta","subsample","colsample_bytree","colsample_bylevel","alpha","learning_rate_init","power_t","momentum","validation_fraction","beta_1 ","beta_2 ","max_leaf_nodes","stepSize","min_weight_fraction_leaf","min_impurity_split","l1_ratio"]
     if(value === ""){
       e.target.parentElement.lastElementChild.innerHTML = "Enter a valid number"
     }else if(value < this.state.min || value > this.state.max){
@@ -313,7 +509,18 @@ export class RegressionParameter extends React.Component {
   }
   handleChange(paramType,e){
     if(paramType === "list"){
-      this.props.isTuning?this.handleSkLearnParamsForTune(e):this.handleSkLearnParams(e);
+      let updatedAlgo = this.props.updatedAlgo.filter(i=>i.algorithmSlug===this.props.algorithmSlug)[0].parameters;
+      if(this.props.algorithmSlug === "f77631ce2ab24cf78c55bb6a5fce4db8lr"){
+        let penaltySelectd = updatedAlgo.filter(i=>i.name==="penalty")[0].defaultValue.map(i=>i.selected?i.name:"").filter(i=>i!="")
+        let solverSelectd = updatedAlgo.filter(i=>i.name==="solver")[0].defaultValue.map(i=>i.selected?i.name:"").filter(i=>i!="")
+        let multiClsSelectd = updatedAlgo.filter(i=>i.name==="multi_class")[0].defaultValue.map(i=>i.selected?i.name:"").filter(i=>i!="")
+        this.props.isTuning?this.handleLRParamsForTune(e,penaltySelectd,solverSelectd,multiClsSelectd):this.handleLRParams(e,penaltySelectd[0],solverSelectd[0],multiClsSelectd[0])
+      } 
+      if(this.props.algorithmSlug === "f77631ce2ab24cf78c55bb6a5fce4db8rf")
+        this.handleRFParams(e,updatedAlgo)
+      if(this.props.algorithmSlug === "f77631ce2ab24cf78c55bb6a5fce4db8mlp"){
+        this.props.isTuning?this.handleSkLearnParamsForTune(e):this.handleSkLearnParams(e);
+      } 
       this.setState({dropValues: e.value})
       this.props.dispatch(updateAlgorithmData(this.props.algorithmSlug,this.props.parameterData.name,e.target.value,this.props.type));
     }
@@ -450,6 +657,10 @@ export class RegressionParameter extends React.Component {
         return {"cls":"form-control single shuffleCls"}
       }else if(parameterData.name === "nesterovs_momentum"){
         return {"cls":"form-control single nesterovsCls"}
+      }else if(parameterData.displayName === "Bootstrap Sampling"){
+        return {"cls":"form-control single bootstrapSampling"}
+      }else if(parameterData.displayName === "use out-of-bag samples"){
+        return {"cls":"form-control single oobScore"}
       }else{
         return {"cls":"form-control single"}
       }
@@ -587,7 +798,7 @@ export class RegressionParameter extends React.Component {
         return(
           <div className= {"row" + " "+getClassNameList.rowCls}>
             {tune?
-              <div className="col-md-4 for_multiselect">
+              <div id={"multislct_"+this.props.algorithmSlug} className="col-md-4 for_multiselect">
                 <MultiSelect value={this.state.dropValues} className={"form-control multi"+ ((selectedValue.length == 0)? ' regParamFocus':'')} options={optionsTemp1} onChange={this.handleChange.bind(this,"list")} placeholder="None Selected"/>
                 </div>:
               <div className="col-md-6 for_multiselect">
@@ -597,7 +808,10 @@ export class RegressionParameter extends React.Component {
               </div>
             }
             <div className="clearfix"></div>
-            {tune ?<div className="col-md-6 check-multiselect text-danger">{(selectedValue.length == 0)?"Please select at least one":""}</div>:""}
+            {(parameterData.displayName === "Bootstrap Sampling" || parameterData.className === "penalty_lr" || parameterData.className === "solver_lr" || parameterData.displayName === "Multiclass Option")?
+                <div className="col-md-6 text-danger" id={`${parameterData.name}_err`} />
+              :tune?<div className="col-md-6 check-multiselect text-danger">{(selectedValue.length == 0)&&"Please select at least one"}</div>:""
+            }
           </div>
         );
         break;

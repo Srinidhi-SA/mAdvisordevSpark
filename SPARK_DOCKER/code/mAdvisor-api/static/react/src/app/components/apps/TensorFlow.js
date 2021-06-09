@@ -50,12 +50,16 @@ export class TensorFlow extends React.Component {
       else if(name=="batch_size" && ((val < 0 ) || (val > this.props.datasetRow-1)||val=="")){
         e.target.parentElement.lastElementChild.innerHTML = `value range is 1 to ${this.props.datasetRow-1}`
       }
-      else if(!Number.isInteger(parseFloat(val)) && val!=""){
+      else if(name == "learning_rate" && (val < 0 || val > 1 || val == "")){
+        e.target.parentElement.lastElementChild.innerHTML = "value range is 0 to 1"
+      }
+      else if(name != "learning_rate" && (!Number.isInteger(parseFloat(val)) && val!="")){
         e.target.parentElement.lastElementChild.innerHTML = "Decimals are not allowed"
       }
       else{
         e.target.parentElement.lastElementChild.innerHTML = "" 
-        this.props.dispatch(updateAlgorithmData(this.props.tfAlgorithmSlug,item.name,Math.trunc(Number(val)).toString(),"NonTuningParameter"));
+        let finalVal = name == "learning_rate" ? Number(val).toString() : Math.trunc(Number(val)).toString()
+        this.props.dispatch(updateAlgorithmData(this.props.tfAlgorithmSlug,item.name,finalVal,"NonTuningParameter"));
       }
       if(e.target.parentElement.lastElementChild.innerHTML !=""){
         e.target.classList.add("regParamFocus");
@@ -222,7 +226,7 @@ export class TensorFlow extends React.Component {
               <div className="col-md-6">
                 <div className ="row">
                   <div className="col-md-2">
-                    <input type="number" className= {`form-control ${item.name}_tf`} onChange={this.changeTextboxValue.bind(this,item)} defaultValue={item.acceptedValue!=""? item.acceptedValue:(item.displayName ==="Batch Size"? this.props.datasetRow -1 : item.defaultValue)}/>
+                    <input type="number" className= {`form-control ${item.name}_tf`} onChange={this.changeTextboxValue.bind(this,item)} defaultValue={item.displayName==="Learning Rate"?item.defaultValue:(item.acceptedValue!=""? item.acceptedValue:(item.displayName ==="Batch Size"? this.props.datasetRow -1 : item.defaultValue))}/>
                     <div className="error"></div>
                   </div>
                 </div> 
@@ -242,7 +246,7 @@ export class TensorFlow extends React.Component {
                 <div className="col-md-6">
                   {this.getOptions(this.props.manualAlgorithmData.filter(i=>i.algorithmName === "Neural Network (TensorFlow)")[0].parameters[0])}
                 </div>
-                <div className="col-md-6" style={{textAlign:'center'}}>
+                <div className="col-md-6 text-center">
                   <div style={{cursor:'pointer',display:'inline-block'}} onClick={this.handleClick.bind(this,)}>
                     <span className="addLayer"> <i className="fa fa-plus" style={{color: '#fff'}}></i></span>
                     <span className="addLayerTxt">Add layer</span>

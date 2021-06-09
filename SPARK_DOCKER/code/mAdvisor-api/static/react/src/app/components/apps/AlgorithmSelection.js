@@ -20,9 +20,6 @@ import {statusMessages} from "../../helpers/helper";
 export class AlgorithmSelection extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            showParameterTuning:false
-        };
     }
     componentWillMount() {
         if(this.props.apps_regression_modelName == "" || this.props.currentAppDetails == null){
@@ -31,15 +28,15 @@ export class AlgorithmSelection extends React.Component {
         }else if(this.props.editmodelFlag){
           this.props.dispatch(saveRegressionAppAlgorithmData(this.props.modelEditconfig.config.config))
         }else if(!this.props.parameterTuningFlag)
-            this.props.dispatch(getRegressionAppAlgorithmData(this.props.match.params.slug,this.props.currentAppDetails.app_type));
+            this.props.dispatch(getRegressionAppAlgorithmData(this.props.currentAppDetails.app_type));
     }
     componentDidMount() {
+        //need to check
         $("#manualBlock_111").addClass("dispnone");
         $("#automaticBlock_111").removeClass("dispnone");
     }
 
-    createModel(event){
-        event.preventDefault();
+    createModel(){
         this.props.dispatch(parameterTuningVisited(true))
         let isSelected = checkAtleastOneSelected();
         if(isSelected == false){
@@ -57,24 +54,20 @@ export class AlgorithmSelection extends React.Component {
     }
   
     handleBack=()=>{
-        const appId = this.props.match.params.AppId;
-        const slug = this.props.match.params.slug;
-        this.props.history.replace(`/apps/${appId}/analyst/models/data/${slug}/createModel/featureEngineering?from=algorithm_selection`);
+        this.props.history.replace(`/apps/${this.props.match.params.AppId}/analyst/models/data/${this.props.match.params.slug}/createModel/featureEngineering?from=algorithm_selection`);
     }
 
     render() {
         var algorithmData = this.props.manualAlgorithmData;
-        var algoClass = "col-md-3";
         if (!$.isEmptyObject(algorithmData)){
-            var pageData = "";
-            pageData = algorithmData.map((data,Index) =>{
-                var checkboxId = "check"+Index;
+            var pageData = algorithmData.map((data,Index) =>{
                 return(                       
-                    <div key={Index} className= {algoClass}>
+                    <div key={Index} className="col-md-3">
                         <div className="bg-highlight-parent xs-mb-10 cst-panel-shadow">
                             <div className="checkbox">
                                 <div className="ma-checkbox">
-                                    <input type="checkbox" checked={data.selected} id={checkboxId} onChange={this.changeAlgorithmSelection.bind(this,data)}/><label for={checkboxId}> {data.algorithmName}</label>
+                                    <input type="checkbox" checked={data.selected} id={`check${Index}`} onChange={this.changeAlgorithmSelection.bind(this,data)}/>
+                                    <label for={`check${Index}`}> {data.algorithmName}</label>
                                 </div>							
                                 <div className="xs-mt-5"><p>{data.description}</p></div>
                             </div>
@@ -85,7 +78,7 @@ export class AlgorithmSelection extends React.Component {
             return(
                 <div className="side-body">
                     <div className="page-head">
-                        <h3 class="xs-mt-0 text-capitalize">{"Algorithm Selection"}</h3>
+                        <h3 class="xs-mt-0 text-capitalize">Algorithm Selection</h3>
                     </div>
                     <div className="main-content">
                         <div className="panel panel-mAd xs-p-20 box-shadow">                               

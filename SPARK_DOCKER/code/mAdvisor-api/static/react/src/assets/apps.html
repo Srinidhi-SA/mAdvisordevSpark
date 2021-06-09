@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="images/favicon.ico">
+      <title>mAdvisor Data Upload </title>
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <!-- Custom styles for this template 
+         <link href="css/nanoscroller.css" rel="stylesheet">-->
+      <link href="css/bootstrap-slider.css" rel="stylesheet">
+      <link href="css/style.css" rel="stylesheet">
+   </head>
+   <body>
+      <!-- Main Wrapper ** Mandatory -->
+      <div class="main_wrapper">
+         <!-- Header Menu -->
+         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+               <div class="brand-wrapper">
+                  <!-- Hamburger -->
+                  <button type="button" class="navbar-toggle"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                  <!-- Brand -->
+                  <div class="brand-name-wrapper"> <a class="navbar-brand" href="#"></a> </div>
+               </div>
+            </div>
+            <div class="dropdown ma-user-nav">
+               <a class="dropdown-toggle" href="#" data-toggle="dropdown"> <i class="avatar-img img-circle">M</i> <img src="images/avatar.jpg" alt="M" class="avatar-img img-circle hide"><span class="user-name">Marlabs BI</span> <span class="caret"></span></a>
+               <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a href="profile.html">Profile</a></li>
+                  <li><a href="login.html">Logout</a></li>
+               </ul>
+            </div>
+            <div class="clearfix"></div>
+         </nav>
+         <!--/.Header Menu --> 
+         <!-- Side bar Main Menu -->
+         <div class="side-menu">
+            <div class="side-menu-container">
+               <ul class="nav navbar-nav">
+                  <li><a href="dashboard.html" class="sdb_signal"> <span></span> SIGNAL</a></li>
+                  <li><a href="story.html" class="sdb_story"> <span></span> STORY</a></li>
+                  <li><a href="apps.html" class="sdb_app"> <span></span> APPS</a></li>
+                  <li class="active"><a href="data.html" class="sdb_data"> <span></span> DATA</a></li>
+                  <li><a href="settings.html" class="sdb_settings"> <span></span> SETTINGS</a></li>
+               </ul>
+            </div>
+            <!-- /.Side bar Main Menu  --> 
+         </div>
+         <!-- ./Side bar Main Menu --> 
+         <!-- Main Content starts with side-body -->
+         <div class="side-body">
+            <!-- Page Title and Breadcrumbs -->
+            <div class="page-head">
+               <!-- <ol class="breadcrumb">
+                  <li><a href="#">Story</a></li>
+                  <li class="active">Sales Performance Report</li> 
+                  </ol> -->
+               <div class="row">
+                  <div class="col-md-8">
+                     <h2>APPS</h2>
+                  </div>
+               </div>
+               <div class="clearfix"></div>
+            </div>
+            <!-- /.Page Title and Breadcrumbs --> 
+            <!-- Page Content Area -->
+            <div class="main-content">
+			<div class="panel">
+				<div class="panel-body">
+				
+				
+               <div class="row">
+				<div class="col-md-12">
+					<h4>Modal Summary</h4>
+					<p>mAdvisor has build 201 odel using 3 algorithms(Random Forest, XGBoost and Logistic Regression) to predict Opportunity Result and has come up with the follwoing results:</p>
+				</div>
+			   </div>
+			   <div class="row">
+                  <div class="col-md-6">
+                     <ul class="list-unstyled bullets_primary">
+						<li>Best Accuracy : Random Forest </li>
+						<li>Best Runtime : Xgboost </li>
+						<li>Best Precision : Random Forest </li>
+						<li>Best Recall : Logistic Regression</li>
+					 </ul>
+                  </div>
+                  <div class="col-md-6 ">
+				
+					 Second Block
+					 
+                  </div>
+               </div>
+			   <div class="row">
+				<div class="col-md-12">
+					<h4>Random Forest</h4>
+					
+					<div class="col-md-3 col-md-offset-1">
+					<h5>Summary</h5>
+					<p>
+						Target Varialble - Opportunity Result</p>
+					<p>	Independent Variable Chosen - 18 </p>
+					<hr />
+					<h5>Predicted Distribution</h5>
+					<p>Loss - 80.42%</p>
+					<p>	Won - 18.3% </p>
+					<p>Algorithm - Random Forest </p>
+					<p>Total Trees - 100 </p>
+					<p>Total Rules -300 </p>
+					<p>Validation Option - Train and Test</p>
+					<p>Model Accuracy - 87%</p>
+					</div>
+					<div class="col-md-8">
+						<div class="table-responsive">
+							<h5>Confusion Matrix</h5>
+							<table class="table table-bordered apps_table_style">
+								<thead>
+								<tr>
+									<th colspan="7" class="text-center">Actual</th>
+								</tr>								
+								</thead>
+								<tbody>
+								<tr>
+									<th rowspan="6" class="left_highlilght">Predicted</th>
+									<th></th>
+									<th>0 to 10</th>
+									<th>0 to 50</th>
+									<th>51 to 100</th>
+									<th>101 to 500</th>
+									<th></th>									
+								</tr>
+									<tr>
+										<td> Less than</td>
+										<td>60</td>
+										<td>83</td>
+										<td>81</td>
+										<td>140</td>
+										<td>107</td>
+									</tr>
+									<tr>
+										<td> 2.2</td>
+										<td>10</td>
+										<td>127</td>
+										<td>174</td>
+										<td>193</td>
+										<td>187</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+				</div>
+			   </div>
+			   
+			   <div class="row">
+				<div class="col-md-12 text-right">
+					<button class="btn btn-primary"> Ok </button>
+				<!--	<button class="btn btn-primary"> Save changes</button>
+					<button class="btn btn-primary"> Apply and Continue</button> -->
+				</div>
+			   </div>
+			   </div>
+			</div> <!-- /. panel body complete -->
+            </div>
+            <!-- /.Page Content Area --> 
+         </div>
+         <!-- /. Main Content ends with side-body -->
+      </div>
+      <!-- /. Main Wrapper ** Mandatory --> 
+      <!-- Bootstrap core JavaScript
+         ================================================== --> 
+      <!-- Placed at the end of the document so the pages load faster --> 
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+      <script src="js/bootstrap.min.js"></script>
+      
+	 
+      <script src="js/uiScripts.js"></script>
+   </body>
+</html>

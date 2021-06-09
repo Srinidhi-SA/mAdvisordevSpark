@@ -20,27 +20,59 @@ def get_L2_task_assignment_count(querysetCount, percentage):
                queue=CONFIG_FILE_NAME)
 def start_auto_assignment_L1():
     OCRRules_queryset = OCRRules.objects.all()
+    #Assign PDFs
     for OCRRule in OCRRules_queryset:
         if OCRRule.auto_assignmentL1:
             print("~" * 90)
-            #TODO
+            #1.Filter all PDFs
+            ocrPdfQueryset = OCRImage.objects.filter(
+                is_recognized=True,
+                is_L1assigned=False,
+                created_by = OCRRule.created_by,
+                doctype = 'pdf'
+            ).order_by('created_at')
+
+            if len(ocrPdfQueryset)>0:
+                for pdf_data in ocrPdfQueryset:
+                    if len(ReviewRequest.objects.filter(ocr_image=pdf_data))==0:
+                        ReviewRequest.objects.create(
+                            ocr_image = pdf_data,
+                            created_by = pdf_data.created_by,
+                            rule = OCRRule,
+                            doc_type = 'pdf'
+                        )
+                    else:
+                        # Try to assign the backlog task
+                        object = ReviewRequest.objects.get(ocr_image=pdf_data)
+                        object.start_simpleflow()
+
+            else:
+                print("All PDFs got assigned for review for Superuser-{0}".format(OCRRule.created_by))
+                print("~" * 90)
+
+    #Assign All Images
+    for OCRRule in OCRRules_queryset:
+        if OCRRule.auto_assignmentL1:
+            print("~" * 90)
             #1.Filter all Images with Recognised True, assigned = False
             ocrImageQueryset = OCRImage.objects.filter(
                 is_recognized=True,
                 is_L1assigned=False,
-                created_by = OCRRule.created_by
+                created_by = OCRRule.created_by,
+                doctype__in = ['jpg', 'png', 'jpeg', 'tif']
             ).order_by('created_at')
             if len(ocrImageQueryset)>0:
                 for image in ocrImageQueryset:
-                    #TODO Checkif reviewrequest already exists.
+                    # Checkif reviewrequest already exists.
                     if len(ReviewRequest.objects.filter(ocr_image=image))==0:
                         object = ReviewRequest.objects.create(
                             ocr_image = image,
                             created_by = image.created_by,
-                            rule = OCRRule
+                            rule = OCRRule,
+                            doc_type = 'image'
                         )
                     else:
-                        #TODO Try to assign the backlog task
+                        # Try to assign the backlog task
                         object = ReviewRequest.objects.get(ocr_image = image)
                         object.start_simpleflow()
 
@@ -94,18 +126,17 @@ def start_auto_assignment_L2():
                 for reviewObj in reviewRequestQueryset:
                     reviewObj.start_simpleflow(initial_state='RL2_approval')
 
-                    if reviewObj.status =='submitted_for_review(L2)':
-                        task=Task.objects.get(object_id = reviewObj.id, is_closed=False)
-                        print("Task assigned:  {0}  -  User:  {1}".format(reviewObj.ocr_image.name, task.assigned_user))
+                    if reviewObj.doc_type == 'pdf_page':
+                       print("Task assigned:  {0}  -  User:  {1}".format(reviewObj.ocr_image.name, reviewObj.ocr_image.assignee))
+                    else:
+                        if reviewObj.status =='submitted_for_review(L2)':
+                            #task=Task.objects.get(object_id = reviewObj.id, is_closed=False)
+                            print("Task assigned:  {0}  -  User:  {1}".format(reviewObj.ocr_image.name, reviewObj.ocr_image.assignee))
             else:
-                print("All images got assigned for L2 review for Superuser-{0}".format(OCRRule.created_by))
+                print("All images/PDFs got assigned for L2 review for Superuser-{0}".format(OCRRule.created_by))
 
             print("~" * 90)
         else:
             print("~" * 90)
             print("Auto-Assignment is not Active for Superuser-{0}".format(OCRRule.created_by))
             print("~" * 90)
-
-
-
-#    print("~" * 100)

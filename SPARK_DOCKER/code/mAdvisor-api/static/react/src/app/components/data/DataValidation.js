@@ -8,11 +8,8 @@ import ReactTooltip from 'react-tooltip';
 
 @connect((store) => {
 	return {
-		login_response: store.login.login_response,
-		dataList: store.datasets.dataList,
 		dataPreview: store.datasets.dataPreview,
 		dataTransformSettings:store.datasets.dataTransformSettings,
-		selectedColSlug:store.datasets.selectedColSlug,
 	};
 })
 
@@ -25,7 +22,6 @@ export class DataValidation extends React.Component {
 		this.props.dispatch(updateColSlug(colSlug));
 		if(event.target.name == "" || event.target.name == undefined)
 		 event.target.name = event.target.htmlFor;
-		//this is to prevent parent click on UInique identifier
 		if(event.target.name != "uniqueBtn")
 		this.props.dispatch(handleColumnClick(this.refs.dialog,event.target.name,colSlug,this.props.name,"",colStatus));
 	}
@@ -82,7 +78,7 @@ export class DataValidation extends React.Component {
 		if(dataPrev){
 			 let transformationSettings = store.getState().datasets.dataTransformSettings;
 			 if(transformationSettings != undefined){
-				 transformationSettings.map((columnData,columnIndex) =>{
+				 transformationSettings.map((columnData) =>{
 		              if(that.props.slug == columnData.slug){
 		            	settingsTemplate = that.renderDropdownList(columnData.slug,columnData.name,columnData.columnSetting)
 		              }

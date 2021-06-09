@@ -219,11 +219,11 @@ class QueryCommonFiltering:
         if self.accuracy is not None:
             operator, value = self.accuracy[:3], self.accuracy[3:]
             if operator == 'GTE':
-                self.query_set = self.query_set.filter(ocr_image__confidence__gte=float(value))
+                self.query_set = self.query_set.filter(ocrimage__confidence__gte=float(value))
             if operator == 'LTE':
-                self.query_set = self.query_set.filter(ocr_image__confidence__lte=float(value))
+                self.query_set = self.query_set.filter(ocrimage__confidence__lte=float(value))
             if operator == 'EQL':
-                self.query_set = self.query_set.filter(ocr_image__confidence=int(value))
+                self.query_set = self.query_set.filter(ocrimage__confidence=int(value))
 
         if self.field_count is not None:
             operator, value = self.field_count[:3], self.field_count[3:]

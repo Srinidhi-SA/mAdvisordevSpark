@@ -2,6 +2,7 @@ from pandas.api.types import is_datetime64_any_dtype as is_datetime
 from pyspark.sql.types import StringType, DoubleType, TimestampType
 import numpy as np
 import pandas as pd
+import time
 class DataValidation:
     def __init__(self,data_frame,target,problem_type,pandas_flag):
         self.data_frame = data_frame
@@ -10,8 +11,8 @@ class DataValidation:
                      "Not Available", "NOT AVAILABLE", "?", "!", "NONE", "None", "none", "null", "-"]
         if self._pandas_flag:
             self.data_frame = self.data_frame.replace(to_replace =na_values, value = np.nan)
-        else:
-            self.data_frame = self.data_frame.replace(na_values,'null')
+        #else:
+         #   self.data_frame = self.data_frame.replace(na_values,'null')
         data = self.data_frame
         if self._pandas_flag:
             data = data.apply(lambda col: pd.to_datetime(col, errors='ignore') if col.dtypes == object else col, axis=0)
@@ -121,6 +122,11 @@ class DataValidation:
 
 
     def data_validation_run(self):
+        start_time=time.time()
         self.data_change_dict['Column_settings'] = [self.find_dataType(i) for i in self.data_frame.columns]
+        print("time taken for find_dataType:{} seconds".format((time.time()-start_time)))
+
+        start_time=time.time()
         target_fitness_flag = self.target_fitness_check()
         self.data_change_dict['target_fitness_check']=target_fitness_flag
+        print("time taken for target_fitness_check:{} seconds".format((time.time()-start_time)))

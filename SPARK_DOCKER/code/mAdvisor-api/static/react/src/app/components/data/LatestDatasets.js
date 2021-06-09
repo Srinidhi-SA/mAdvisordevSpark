@@ -4,7 +4,7 @@ import {DataUpload} from "./DataUpload";
 import {DataCard} from "./DataCard";
 
 @connect((store) => {
-    return {login_response: store.login.login_response,
+    return {
         latestDatasets: store.datasets.latestDatasets};
 })
 

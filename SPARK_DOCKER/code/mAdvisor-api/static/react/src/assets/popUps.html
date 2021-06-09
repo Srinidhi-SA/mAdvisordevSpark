@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="../assets/images/favicon.ico">
+      <title>mAdvisor Typography Page</title>
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <!-- Custom styles for this template 
+         <link href="css/nanoscroller.css" rel="stylesheet">-->
+      <link href="css/style.css" rel="stylesheet">
+   </head>
+   <body>
+      <!-- Main Wrapper ** Mandatory -->
+      <div class="main_wrapper">
+         <!-- Header Menu -->
+         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+               <div class="brand-wrapper">
+                  <!-- Hamburger -->
+                  <button type="button" class="navbar-toggle"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                  <!-- Brand -->
+                  <div class="brand-name-wrapper"> <a class="navbar-brand" href="#"></a> </div>
+               </div>
+            </div>
+            <div class="dropdown ma-user-nav">
+               <a class="dropdown-toggle" href="#" data-toggle="dropdown"> <i class="avatar-img img-circle">M</i> <img src="../assets/images/avatar.jpg" alt="M" class="avatar-img img-circle hide"><span class="user-name">Marlabs BI</span> <span class="caret"></span></a>
+               <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a href="#">Profile</a></li>
+                  <li><a href="#">Logout</a></li>
+               </ul>
+            </div>
+            <div class="clearfix"></div>
+         </nav>
+         <!--/.Header Menu -->
+         <!-- Side bar Main Menu -->
+         <div class="side-menu">
+            <div class="side-menu-container">
+               <ul class="nav navbar-nav">
+                  <li><a href="typography.html"> <span><i class="fa fa-dashboard fa-2x"></i> </span> TYPOG</a></li>
+                  <li><a href="tabs_accordion.html"> <span><i class="fa fa-database fa-2x"></i></span> Tabs & ACC</a></li>
+                  <li><a href="#" class="sdb_signal"> <span></span> SIGNAL</a></li>
+                  <li><a href="#" class="sdb_story"> <span></span> STORY</a></li>
+                  <li><a href="#" class="sdb_app"> <span></span> APPS</a></li>
+                  <li><a href="#" class="sdb_data"> <span></span> DATA</a></li>
+                  <li><a href="#" class="sdb_settings"> <span></span> SETTINGS</a></li>
+                  <li class="active"><a href="popUps.html" class="sdb_settings"> <span></span> POPUPS</a></li>
+               </ul>
+            </div>
+            <!-- /.Side bar Main Menu  -->       
+         </div>
+         <!-- ./Side bar Main Menu -->
+         <!-- Main Content starts with side-body -->  
+         <div class="side-body">
+            <!-- Page Title and Breadcrumbs -->
+            <div class="page-head">
+               <ol class="breadcrumb">
+                  <li><a href="#">Home</a></li>
+                  <li class="active">PopUps </li>
+               </ol>
+               <h2>PopUps</h2>
+            </div>
+            <!-- /.Page Title and Breadcrumbs -->
+            <!-- Page Content Area -->
+            <div class="main-content">
+               <div class="row">
+                  <div class="col-md-4">
+                     <!-- Header + Text -->
+                     <div class="well well-md text-center">
+                        <button   data-toggle="modal" data-target="#smallBox">
+                        Text + Header Bar(Small)
+                        </button>
+                        <button   data-toggle="modal" data-target="#biggerBox">
+                        Text + Header Bar
+                        </button>
+                        <button   data-toggle="modal" data-target="#onlyText">
+                        Text Only
+                        </button>
+                     </div>
+                     <!-- Modal Success Popup -->
+                     <div class="modal fade success-popup" id="smallBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog modal-sm" role="document">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                 <h4 class="modal-title">Small Modal</h4>
+                              </div>
+                              <div class="modal-body text-center">
+                                 <p class="lead">Contact form successfully submitted. Thank you, We will get back to you soon!</p>
+                                 <a href="#" class="rd_more btn btn-default">Go to Home</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="modal fade success-popup" id="biggerBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                 <h4 class="modal-title">Bigger Modal</h4>
+                              </div>
+                              <div class="modal-body text-center">
+                                 <p class="lead">Contact form successfully submitted. Thank you, We will get back to you soon!</p>
+                                 <a href="#" class="rd_more btn btn-default">Go to Home</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- ONly Text -->
+                     <div class="modal fade success-popup" id="onlyText" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-body text-center">
+                                 <p class="lead">Contact form successfully submitted. Thank you, We will get back to you soon!</p>
+                                 <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Go to Home</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- ONly Text -->
+                  </div>
+                  <div class="col-md-8">
+                     <div class="well well-md text-center">
+                        <button   data-toggle="modal" data-target="#Warning1">
+                        Warning
+                        </button>	
+                        <button   data-toggle="modal" data-target="#errorBox1">
+                        Error
+                        </button>
+                        <button   data-toggle="modal" data-target="#successBox1">
+                        Success
+                        </button>	
+                     </div>
+                     <!-- Warning -->
+                     <div class="modal fade success-popup" id="Warning1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content ">
+                              <div class="modal-body alert alert-warning xs-m-0 text-center">
+                                 <h4 class="alert-heading">Warning!</h4>
+                                 <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                 <br>
+                                 <a href="#" class="rd_more btn btn-default" data-dismiss="modal">OK</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Warning Text -->
+                     <!-- Error -->
+                     <div class="modal fade success-popup" id="errorBox1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-body alert alert-danger xs-m-0 text-center">
+                                 <h4 class="alert-heading">Error !</h4>
+                                 <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                 <br>
+                                 <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Ok</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Error Text -->
+                     <!-- Error -->
+                     <div class="modal fade success-popup" id="successBox1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-body alert alert-success xs-m-0 text-center">
+                                 <h4 class="alert-heading">Success !</h4>
+                                 <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                 <br>
+                                 <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Ok</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Error Text -->
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-4">
+                     <div class="well well-md text-center">
+                        <button   data-toggle="modal" data-target="#Warning2">
+                        Warning
+                        </button>	
+                        <button   data-toggle="modal" data-target="#errorBox2">
+                        Error
+                        </button>
+                        <button   data-toggle="modal" data-target="#successBox2">
+                        Success
+                        </button>	
+                     </div>
+                     <!-- Warning -->
+                     <div class="modal fade success-popup" id="Warning2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content ">
+                              <div class="modal-body text-center">
+                                 <div class="border border-warning">
+                                    <h4 class="alert-heading">Warning !</h4>
+                                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                 </div>
+                                 <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Ok</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Warning Text -->
+                     <!-- Error -->
+                     <div class="modal fade success-popup" id="errorBox2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-body text-center">
+                                 <div class="border border-danger">
+                                    <h4 class="alert-heading">Error !</h4>
+                                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                 </div>
+                                 <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Ok</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Error Text -->
+                     <!-- Error -->
+                     <div class="modal fade success-popup" id="successBox2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-body text-center">
+                                 <div class="border border-success">
+                                    <h4 class="alert-heading">Success !</h4>
+                                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                 </div>
+                                 <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Ok</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Error Text -->
+                  </div>
+                  <div class="col-md-4">
+                     <div class="well well-md text-center box-shadow">
+                        <button   data-toggle="modal" data-target="#Warning3">
+                        Warning
+                        </button>	
+                        <button   data-toggle="modal" data-target="#errorBox3">
+                        Error
+                        </button>
+                        <button   data-toggle="modal" data-target="#successBox3">
+                        Success
+                        </button>	
+                     </div>
+                     <!-- Warning -->
+                     <div class="modal fade success-popup" id="Warning3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content ">
+                              <div class="modal-body text-center">
+                                 <img src="../assets/images/alert_warning.png" />
+                                 <h4 class="text-warning">Warning !</h4>
+                                 <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                 <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Ok</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Warning Text -->
+                     <!-- Error -->
+                     <div class="modal fade success-popup" id="errorBox3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-body text-center">
+                                 <img src="../assets/images/alert_danger.png" />
+                                 <h4 class="text-danger">Ooops !</h4>
+                                 <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                 <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Ok</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Error Text -->
+                     <!-- Error -->
+                     <div class="modal fade success-popup" id="successBox3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-body text-center">
+                                 <img src="../assets/images/alert_success.png" />
+                                 <h4 class="text-primary">Success !</h4>
+                                 <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                 <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Ok</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Error Text -->
+                  </div>
+                  <div class="col-md-4">
+                     <div class="well well-md text-center box-shadow">
+                        <button   data-toggle="modal" data-target="#Warning4">
+                        Warning
+                        </button>	
+                        <button   data-toggle="modal" data-target="#errorBox4">
+                        Error
+                        </button>
+                        <button   data-toggle="modal" data-target="#successBox4">
+                        Success
+                        </button>	
+                     </div>
+                     <!-- Warning -->
+                     <div class="modal fade success-popup" id="Warning4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content ">
+                              <div class="modal-body text-center">
+                                 <div class="row">
+                                    <div class="col-md-4">
+                                       <img src="../assets/images/alert_warning.png" class="img-responsive" />
+                                    </div>
+                                    <div class="col-md-8">
+                                       <h4 class="text-warning">Warning !</h4>
+                                       <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                       <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Ok</a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Warning Text -->
+                     <!-- Error -->
+                     <div class="modal fade success-popup" id="errorBox4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-body text-center">
+                                 <div class="row">
+                                    <div class="col-md-4">
+                                       <img src="../assets/images/alert_danger.png" class="img-responsive" />
+                                    </div>
+                                    <div class="col-md-8">
+                                       <h4 class="text-danger">Ooops !</h4>
+                                       <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                       <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Ok</a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Error Text -->
+                     <!-- Error -->
+                     <div class="modal fade success-popup" id="successBox4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-body text-center">
+                                 <div class="row">
+                                    <div class="col-md-4">
+                                       <img src="../assets/images/alert_success.png" class="img-responsive" />
+                                    </div>
+                                    <div class="col-md-8">
+                                       <h4 class="text-primary">Success !</h4>
+                                       <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                       <a href="#" class="rd_more btn btn-default" data-dismiss="modal">Ok</a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Error Text -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /.Page Content Area -->
+      </div>
+      <!-- /. Main Content ends with side-body -->  
+      </div>
+      <!-- /. Main Wrapper ** Mandatory -->
+      <!-- Bootstrap core JavaScript
+         ================================================== --> 
+      <!-- Placed at the end of the document so the pages load faster --> 
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+      <script src="js/bootstrap.min.js"></script>
+   </body>
+</html>

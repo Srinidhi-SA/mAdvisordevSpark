@@ -11,7 +11,8 @@ import {statusMessages} from "../../helpers/helper";
 
 @connect((store) => {
   return {
-    dataPreview: store.datasets.dataPreview
+    dataPreview: store.datasets.dataPreview,
+    scoreSummaryFlag: store.apps.scoreSummaryFlag
   };
 })
 
@@ -41,19 +42,15 @@ export class ScoreVariableSelection extends React.Component {
   }
 
   handleBack=()=>{
-    const appId = this.props.match.params.AppId;
-    const slug = this.props.match.params.slug;
-    const modelSlug =this.props.match.params.modelSlug
     this.props.dispatch(variableSlectionBack(true));
     this.props.dispatch(SaveScoreName($("#createScoreName").val()))
-    this.props.history.replace(`/apps/${appId}/analyst/models/${modelSlug}/data/${slug}#?from=variableSelection`);      
+    this.props.history.replace(`/apps/${this.props.match.params.AppId}/analyst/models/${this.props.match.params.modelSlug}/data/${this.props.match.params.slug}#?from=variableSelection`);      
   }
 
   render() {
-    if(store.getState().apps.scoreSummaryFlag){
+    if(this.props.scoreSummaryFlag){
       let mod = window.location.pathname.includes("analyst")?"/analyst":"/autoML"
-      let _link = "/apps/"+this.props.match.params.AppId+mod+'/scores/'+store.getState().apps.scoreSlug;
-      return(<Redirect to={_link}/>);
+      return(<Redirect to={`/apps/${this.props.match.params.AppId}${mod}/scores/${store.getState().apps.scoreSlug}`}/>);
     }
     let dataPrev = store.getState().datasets.dataPreview;
     let renderSelectBox = null;

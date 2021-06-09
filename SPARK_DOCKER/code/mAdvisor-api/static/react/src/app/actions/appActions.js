@@ -49,7 +49,7 @@ export function closeModelPopup() {
   return { type: "APPS_MODEL_HIDE_POPUP" }
 }
 
-export function refreshAppsModelList(props) {
+export function refreshAppsModelList() {
   return (dispatch) => {
     if (refreshAppsModelInterval != null)
       clearInterval(refreshAppsModelInterval);
@@ -190,9 +190,9 @@ export function clearAppsAlgoList(){
 }
 export function createDeploy(slug) {
   return (dispatch) => {
-    return triggerCreateDeploy(getUserDetailsOrRestart.get().userToken, slug, dispatch).then(([response, json]) => {
+    return triggerCreateDeploy(getUserDetailsOrRestart.get().userToken, slug).then(([response, json]) => {
       if (response.status === 200) {
-        dispatch(createDeploySuccess(json, slug, dispatch))
+        dispatch(createDeploySuccess(json, slug))
         dispatch(getDeploymentList(slug, store.getState().apps.current_page));
       }
       else {
@@ -201,19 +201,18 @@ export function createDeploy(slug) {
     })
   }
 }
-function triggerCreateDeploy(token, slug, dispatch) {
+function triggerCreateDeploy(token) {
   let deploy_details = store.getState().apps.deployData;
-  var slug = slug;
   var details = deploy_details;
   return fetch(API + '/api/deploymodel/', {
     method: 'post',
     headers: getHeader(token),
     body: JSON.stringify(details)
-  }).then(response => Promise.all([response, response.json()])).catch(function (error) {
+  }).then(response => Promise.all([response, response.json()])).catch(function () {
     bootbox.alert("Unable to connect to server. Check your connection please try again.")
   });
 }
-function createDeploySuccess(slug, dispatch) {
+function createDeploySuccess(slug) {
   return { type: "CREATE_DEPLOY_SUCCESS", slug }
 }
 function createDeployError() {
@@ -235,7 +234,7 @@ function fetchAlgoList(pageNo, token, filtername) {
   }
 }
 
-export function refreshAppsAlgoList(props) {
+export function refreshAppsAlgoList() {
   return (dispatch) => {
     if (refreshAppsModelInterval != null)
       clearInterval(refreshAppsModelInterval);
@@ -277,7 +276,7 @@ export function handleAlgoDelete(slug, dialog) {
   }
 }
 
-export function getAllProjectList(pageNo,appId) {
+export function getAllProjectList(appId) {
   return (dispatch) => {
     return fetchAllProjectList(appId,getUserDetailsOrRestart.get().userToken).then(([response, json]) => {
       if (response.status === 200) {
@@ -298,13 +297,11 @@ function fetchAllProjectList(appId,token) {
 
 export function fetchAllProjectSuccess(doc) {
   var data = ""
-  var slug = "";
   if (doc.data[0] != undefined) {
-    slug = doc.data[0].slug;
     data = doc;
   }
   return {
-    type: "PROJECT_ALL_LIST",data,slug
+    type: "PROJECT_ALL_LIST",data
   }
 }
 
@@ -482,7 +479,7 @@ function triggerCreateModel(token, modelName, targetVariable, targetLevel, datas
         "outlierRemoval": store.getState().datasets.outlierRemoval,
       },
       "overallSettings": {
-        "remove_duplicate_attributes": store.getState().datasets.removeDuplicateAttributes,
+        // "remove_duplicate_attributes": store.getState().datasets.removeDuplicateAttributes,
         "remove_duplicate_observations": store.getState().datasets.removeDuplicateObservations,
       },
     }
@@ -528,7 +525,7 @@ function triggerCreateModel(token, modelName, targetVariable, targetLevel, datas
     method: 'post',
     headers: getHeader(token),
     body: JSON.stringify({ "name": modelName, "dataset": datasetSlug, "app_id": app_id, "mode": mode, "config": details })
-  }).then(response => Promise.all([response, response.json()])).catch(function (error) {
+  }).then(response => Promise.all([response, response.json()])).catch(function () {
     dispatch(closeAppsLoaderValue());
     dispatch(updateModelSummaryFlag(false));
     bootbox.alert("Unable to connect to server. Check your connection please try again.")
@@ -602,7 +599,7 @@ export function createModelSuccessAnalysis(data) {
   }
 }
 
-export function refreshAppsScoreList(props) {
+export function refreshAppsScoreList() {
   return (dispatch) => {
     if (refreshAppsScoresInterval != null)
       clearInterval(refreshAppsScoresInterval);
@@ -681,11 +678,10 @@ export function hideCreateScorePopup() {
   return { type: "APPS_SCORE_HIDE_POPUP" }
 }
 
-export function getAppsModelSummary(slug, fromCreateModel) {
+export function getAppsModelSummary(slug) {
   return (dispatch) => {
     return fetchModelSummary(getUserDetailsOrRestart.get().userToken, slug).then(([response, json]) => {
       if (response.status === 200) {
-
         if (json.message && json.message == "failed") {
           let myColor = { background: '#00998c', text: "#FFFFFF" };
           notify.show("You are not authorized to view this content.", "custom", 2000, myColor);
@@ -694,7 +690,7 @@ export function getAppsModelSummary(slug, fromCreateModel) {
           }, 2000);
         }else if(json.status === SUCCESS && json.data.model_summary.listOfCards.length===0){
           bootbox.dialog({
-            message:"Unable to fetch score summary, try creating again.",
+            message:"Unable to fetch model summary, try creating again.",
             buttons: {
                 'confirm': {
                     label: 'Ok',
@@ -704,9 +700,7 @@ export function getAppsModelSummary(slug, fromCreateModel) {
                 },
             },
           });
-        }
-
-        else if (json.status == SUCCESS) {
+        }else if(json.status == SUCCESS) {
           if (store.getState().apps.appsLoaderModal && json.message !== null && json.message.length > 0) {
             document.getElementsByClassName("appsPercent")[0].innerHTML = (document.getElementsByClassName("appsPercent")[0].innerText === "In Progress")?"<h2 class="+"text-white"+">"+"100%"+"</h2>":"100%"
             $("#loadingMsgs")[0].innerHTML = "Step " + (json.message.length-3) + ": " + json.message[json.message.length-3].shortExplanation;
@@ -807,7 +801,6 @@ export function createScore(scoreName, targetVariable) {
     dispatch(openAppsLoader(APPSLOADERPERVALUE, "Please wait while mAdvisor is scoring your model... "));
     return triggerCreateScore(getUserDetailsOrRestart.get().userToken, scoreName, targetVariable).then(([response, json]) => {
       if (response.status === 200) {
-
         dispatch(createScoreSuccess(json, dispatch))
       } else {
         dispatch(createScoreError(json));
@@ -818,10 +811,9 @@ export function createScore(scoreName, targetVariable) {
   }
 }
 
-function triggerCreateScore(token, scoreName, targetVariable) {
+function triggerCreateScore(token, scoreName) {
   var datasetSlug = store.getState().datasets.dataPreview.slug;
   var app_id = store.getState().apps.currentAppId;
-  var customDetails = createcustomAnalysisDetails();
   var details = {
     "selectedModel": store.getState().apps.selectedAlgObj,
     "variablesSelection": store.getState().datasets.dataPreview.meta_data.uiMetaData.varibaleSelectionArray,
@@ -980,9 +972,6 @@ export function openAppsLoader(value, text) {
 export function updateModelSummaryFlag(flag) {
   return { type: "UPDATE_MODEL_FLAG", flag }
 }
-export function updateAnalystModeSelectedFlag(flag) {
-  return { type: "UPDATE_MODE_SELECTION", flag }
-}
 export function updateScoreSummaryFlag(flag) {
   return { type: "UPDATE_SCORE_FLAG", flag }
 }
@@ -1007,7 +996,7 @@ export function saveEditTfInput(editTfInput){
   return { type:"EDIT_TENSORFLOW_INPUT",editTfInput}
 }
 
-export function addTensorFlowArray(id,layerType,name,val) {
+export function addTensorFlowArray(id,layerType) {
     if(layerType==="Dense"){
      var  tensorFlowArray={
         "layer":"Dense",
@@ -1055,7 +1044,6 @@ export function deleteTensorFlowArray(deleteId) {
 export function clearTensorFlowArray() {
   return { type: "CLEAR_LAYERS"}
 }
-
 
 export function getAppsRoboList(pageNo) {
   return (dispatch) => {
@@ -1122,7 +1110,6 @@ export function saveFilesToStore(files, uploadData) {
   } else if (uploadData == EXTERNALDATA) {
     return { type: "EXTERNAL_DATA_UPLOAD_FILE", files }
   }
-
 }
 
 export function uploadFiles(dialog, insightName) {
@@ -1168,7 +1155,7 @@ function dataUploadFilesSuccess(data, dispatch) {
   return { type: "ROBO_DATA_UPLOAD_SUCCESS", slug }
 }
 
-export function dataUploadFilesError(josn) {
+export function dataUploadFilesError(json) {
   return { type: "ROBO_DATA_UPLOAD_ERROR", json }
 }
 export function updateRoboSlug(slug) {
@@ -1188,7 +1175,7 @@ export function getRoboDataset(slug) {
           dispatch(showRoboDataUploadPreview(true));
           dispatch(showDataPreview());
         } else if (json.status == FAILED) {
-          bootbox.alert("Your robo insight could not created.Please try later.", function (result) {
+          bootbox.alert("Your robo insight could not created.Please try later.", function () {
             window.history.go(-2);
           });
           clearInterval(appsInterval);
@@ -1254,7 +1241,6 @@ export function showDialogBox(slug, dialog, dispatch, title, msgText, algoSlug) 
           deleteDeployment(slug, algoSlug, dialog, dispatch)
         else
           deleteScore(slug, dialog, dispatch)
-
       })
     ],
     bsSize: 'medium',
@@ -1267,7 +1253,6 @@ export function showDialogBox(slug, dialog, dispatch, title, msgText, algoSlug) 
 export function handleModelDelete(slug, dialog) {
   return (dispatch) => {
     showDialogBox(slug, dialog, dispatch, DELETEMODEL, renderHTML(statusMessages("warning", "Are you sure, you want to delete model?", "small_mascot")))
-
   }
 }
 function deleteModel(slug, dialog, dispatch) {
@@ -1307,7 +1292,6 @@ export function handleModelRename(slug, dialog, name) {
         </div>
       </div>
     </div>
-
   )
   return (dispatch) => {
     showRenameDialogBox(slug, dialog, dispatch, RENAMEMODEL, customBody)
@@ -1626,7 +1610,7 @@ export function getAudioFile(slug) {
           dispatch(clearAudioFile());
           dispatch(updateAudioFileSummaryFlag(true));
         } else if (json.status == FAILED) {
-          bootbox.alert("Your audio file could not analysed.Please try later.", function (result) {
+          bootbox.alert("Your audio file could not analysed.Please try later.", function () {
             dispatch(updateAudioFileSummaryFlag(false));
           });
           clearInterval(appsInterval);
@@ -1702,8 +1686,6 @@ export function fetchAudioListSuccess(doc) {
 export function storeAudioSearchElement(search_element) {
   return { type: "SEARCH_AUDIO_FILE", search_element }
 }
-
-//  Rename and Delete Audio files
 
 export function handleAudioDelete(slug, dialog) {
   return (dispatch) => {
@@ -1845,7 +1827,6 @@ export function addMoreStockSymbols() {
         return (prev.id > current.id)
           ? prev
           : current
-
       });
     } else {
       var max = { id: 0 };
@@ -1874,7 +1855,6 @@ export function removeStockSymbolsComponents(data) {
 }
 
 export function handleInputChange(event) {
-
   return (dispatch) => {
     var stockSymbolsArray = store.getState().apps.appsStockSymbolsInputs.slice();
     for (var i = 0; i < stockSymbolsArray.length; i++) {
@@ -1914,7 +1894,7 @@ function fetchStockList(pageNo, token) {
       method: 'get',
       headers: getHeader(token)
     }).then(response => Promise.all([response, response.json()]));
-  }else if(search_element != "" && search_element != null && (stock_apps_model_sorton === "" || stock_apps_model_sorton === null) && (stock_apps_model_sorttype === null)) {
+  }else if(search_element != "" && search_element != null && (stock_apps_model_sorton === "" || stock_apps_model_sorton === null) && (stock_apps_model_sorttype === "" || stock_apps_model_sorttype === null)) {
     return fetch(API + '/api/stockdataset/?name=' + search_element + '&page_number=' + pageNo + '&page_size=' + PERPAGE + '', {
       method: 'get',
       headers: getHeader(token)
@@ -2060,7 +2040,7 @@ export function getStockAnalysis(slug, appsInterval) {
             dispatch(uploadStockAnalysisFlag(true));
           }
         } else if (json.status == FAILED) {
-          bootbox.alert("Your stock analysis could not created.Please try later.", function (result) {
+          bootbox.alert("Your stock analysis could not created.Please try later.", function () {
             window.history.go(-2);
           });
           clearInterval(appsInterval);
@@ -2112,10 +2092,10 @@ function fetchConceptListSuccess(concepts) {
 }
 
 function fetchConceptListError(json) {
-  // return {
-  // 	type: "MODEL_LIST_ERROR",
-  // 	json
-  // }
+  return {
+  	type: "MODEL_LIST_ERROR",
+  	json
+  }
 }
 
 export function getAppsList(token, pageNo) {
@@ -2183,13 +2163,11 @@ export function getAppsFilteredList(token, pageNo) {
     return fetchFilteredApps(token, pageNo).then(([response, json]) => {
       if (response.status === 200) {
         dispatch(fetchAppsSuccess(json))
-
       } else {
         dispatch(fetchAppsError(json))
       }
     })
   }
-
 }
 
 function fetchFilteredApps(token, pageNo) {
@@ -2219,7 +2197,6 @@ export function selectMetricAction(name,displayName,selected) {
 
 export function checkCreateScoreToProceed(selectedDataset) {
   var modelSlug = store.getState().apps.modelSlug;
-  var response = "";
   return (dispatch) => {
     return triggerAPI(modelSlug, selectedDataset).then(([response, json]) => {
       if (response.status === 200) {
@@ -2302,9 +2279,9 @@ export function saveSelectedValuesForModel(modelName, targetType, levelCount) {
   return { type: "SAVE_SELECTED_VALES_FOR_MODEL", modelName, targetType, levelCount }
 }
 
-export function getRegressionAppAlgorithmData(slug, appType,mode) {
+export function getRegressionAppAlgorithmData(appType) {
   return (dispatch) => {
-    return triggerRegressionAppAlgorithmAPI(appType,mode).then(([response, json]) => {
+    return triggerRegressionAppAlgorithmAPI(appType).then(([response, json]) => {
       if (response.status === 200) {
         dispatch(saveRegressionAppAlgorithmData(json));
       }
@@ -2414,9 +2391,6 @@ export function clearPyTorchValues(){
     type : "CLEAR_PYTORCH_VALUES"
   }
 }
-export function setDefaultAutomatic(data) {
-  return { type: "SET_REGRESSION_DEFAULT_AUTOMATIC", data }
-}
 export function updateRegressionTechnique(name) {
   return { type: "UPDATE_REGRESSION_TECHNIQUE", name }
 }
@@ -2523,13 +2497,13 @@ export function checkSaveSelectedModels(checkObj, isChecked) {
 }
 export function sendSelectedAlgorithms(slug) {
   return (dispatch) => {
-    return triggerSendSelectedAlgorithmApi(getUserDetailsOrRestart.get().userToken, slug).then(([response, json]) => {
+    return triggerSendSelectedAlgorithmApi(slug).then(([response, json]) => {
       //if (response.status === 200)
       //dispatch(saveSelectedModels(json, dispatch))
     })
   }
 }
-function triggerSendSelectedAlgorithmApi(token, slug) {
+function triggerSendSelectedAlgorithmApi(slug) {
   var selectedAlgos = store.getState().apps.algorithmsList;
   var data = { "model_list": selectedAlgos };
   return fetch(API + '/api/trainer/' + slug + '/save_selected_hyperparameter_models/', {
@@ -2619,7 +2593,6 @@ export function handleStockModelRename(slug, dialog, name) {
         </div>
       </div>
     </div>
-
   )
   return (dispatch) => {
     showRenameDialogBox(slug, dialog, dispatch, RENAMESTOCKMODEL, customBody)
@@ -2689,7 +2662,7 @@ export function roboDataUploadFilesSuccessAnalysis(data) {
     dispatch(dataUploadFilesSuccess(data, dispatch))
   }
 }
-export function refreshRoboInsightsList(props) {
+export function refreshRoboInsightsList() {
   return (dispatch) => {
     if (refreshAppsModelInterval != null)
       clearInterval(refreshAppsModelInterval);

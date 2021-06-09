@@ -69,7 +69,7 @@ class Job(models.Model):
     deleted = models.BooleanField(default=False)
     submitted_by = models.ForeignKey(User, null=False)
     error_report = models.TextField(default="{}")
-    messages =  models.TextField(default="{}")
+    messages = models.TextField(default="{}")
     message_log = models.TextField(default="{}")
 
     def generate_slug(self):
@@ -425,31 +425,31 @@ class Dataset(models.Model):
         return "/home/marlabs" + self.get_hdfs_relative_path()
 
     def get_input_file(self):
-
+        print("File Upload in container logs- New Demo 12-04-2021")
         if self.datasource_type in ['file', 'fileUpload']:
             type = self.file_remote
             if type == 'emr_file':
                 return "file://{}".format(self.input_file.path)
             elif type == 'hdfs':
                 file_size = os.stat(self.input_file.path).st_size
-                # if file_size < 128000000:
-                #     if settings.USE_HTTPS:
-                #         protocol = 'https'
-                #     else:
-                #         protocol = 'http'
-                #     dir_path = "{0}://{1}".format(protocol, THIS_SERVER_DETAILS.get('host'))
+                if file_size < 128000000:
+                    if settings.USE_HTTPS:
+                        protocol = 'https'
+                    else:
+                        protocol = 'http'
+                    dir_path = "{0}://{1}".format(protocol, THIS_SERVER_DETAILS.get('host'))
 
-                #     path = str(self.input_file)
-                #     if '/home/' in path:
-                #         file_name=path.split("/config")[-1]
-                #     else:
-                #         file_name = os.path.join('/media/', str(self.input_file))
-                # else:
-                dir_path = "hdfs://{}:{}".format(
-                    settings.HDFS.get("host"),
-                    settings.HDFS.get("hdfs_port")
-                )
-                file_name = self.get_hdfs_relative_file_path()
+                    path = str(self.input_file)
+                    if '/home/' in path:
+                        file_name = path.split("/config")[-1]
+                    else:
+                        file_name = os.path.join('/media/', str(self.input_file))
+                else:
+                    dir_path = "hdfs://{}:{}".format(
+                        settings.HDFS.get("host"),
+                        settings.HDFS.get("hdfs_port")
+                    )
+                    file_name = self.get_hdfs_relative_file_path()
                 return dir_path + file_name
 
             elif type == 'fake':
@@ -976,11 +976,14 @@ class Trainer(models.Model):
                         config['config']["ALGORITHM_SETTING"][4].update({'tensorflow_params': configUI['TENSORFLOW']})
                     elif self.app_id in settings.CLASSIFICATION_APP_ID:
                         if config['config']["ALGORITHM_SETTING"][4]["algorithmName"] == "Neural Network (TensorFlow)":
-                            config['config']["ALGORITHM_SETTING"][4].update({'tensorflow_params': configUI['TENSORFLOW']})
+                            config['config']["ALGORITHM_SETTING"][4].update(
+                                {'tensorflow_params': configUI['TENSORFLOW']})
                         else:
-                            config['config']["ALGORITHM_SETTING"][5].update({'tensorflow_params': configUI['TENSORFLOW']})
+                            config['config']["ALGORITHM_SETTING"][5].update(
+                                {'tensorflow_params': configUI['TENSORFLOW']})
                 if 'nnptc_parameters' in config['config']["ALGORITHM_SETTING"][6]:
-                    config['config']["ALGORITHM_SETTING"][6]['nnptc_parameters'] = convert2native(config['config']["ALGORITHM_SETTING"][6]['nnptc_parameters'])
+                    config['config']["ALGORITHM_SETTING"][6]['nnptc_parameters'] = convert2native(
+                        config['config']["ALGORITHM_SETTING"][6]['nnptc_parameters'])
             except Exception as err:
                 print("Error adding Tesorflow Selection to Algorithm")
                 print(err)
@@ -1606,7 +1609,8 @@ class Trainer(models.Model):
                         try:
                             overall_settings[0]['number_of_bins'] = int(overall_data['numberOfBins'])
                             for col in column_data:
-                                if column_data[col]['columnType'] == 'measure' and column_data[col]['selected'] == True and column_data[col]['targetColumn'] == False:
+                                if column_data[col]['columnType'] == 'measure' and column_data[col][
+                                    'selected'] == True and column_data[col]['targetColumn'] == False:
                                     self.collect_column_slugs_which_all_got_transformations.append(col)
                                     self.generate_new_column_name_based_on_transformation(
                                         column_data[col],
@@ -2138,10 +2142,10 @@ class Score(models.Model):
     def add_to_job(self, *args, **kwargs):
         jobConfig = self.generate_config(*args, **kwargs)
         job = job_submission(
-                instance=self,
-                jobConfig=jobConfig,
-                job_type='score'
-            )
+            instance=self,
+            jobConfig=jobConfig,
+            job_type='score'
+        )
         self.job = job
         if job is None:
             self.status = "FAILED"
@@ -3058,8 +3062,8 @@ class StockDataset(models.Model):
         THIS_SERVER_DETAILS = settings.THIS_SERVER_DETAILS
 
         data_api = "{3}://{0}/api/stockdatasetfiles/{2}/".format(THIS_SERVER_DETAILS.get('host'),
-                                                                        THIS_SERVER_DETAILS.get('port'),
-                                                                        self.get_data_api(), protocol)
+                                                                 THIS_SERVER_DETAILS.get('port'),
+                                                                 self.get_data_api(), protocol)
 
         hdfs_path = self.get_hdfs_relative_path()
 
@@ -3090,7 +3094,7 @@ class StockDataset(models.Model):
         return str(self.slug)
 
     def add_to_job(self, *args, **kwargs):
-        job_type='stockAdvisor'
+        job_type = 'stockAdvisor'
         job = Job()
         job.name = "-".join([job_type, self.slug])
         job.job_type = job_type
@@ -5258,7 +5262,7 @@ node1 = {
                     x="DATE",
                     axes={},
                     widthPercent=100,
-                    title="Stock Performance Analysis"
+                    title="Stock Performance Trend"
                 ),
                 change_data_in_chart(
                     data=article_by_source,
@@ -5636,8 +5640,6 @@ class DatasetScoreDeployment(models.Model):
     def save(self, *args, **kwargs):
         self.generate_slug()
         super(DatasetScoreDeployment, self).save(*args, **kwargs)
-
-
 
 
 class OutlookToken(models.Model):

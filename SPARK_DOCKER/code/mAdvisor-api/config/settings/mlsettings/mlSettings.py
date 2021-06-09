@@ -107,30 +107,21 @@ SKLEARN_RANDOMSEARCH_PARAMS = [
     {
         "name": "evaluationMetric",
         "displayName": "Metric Used for Optimization",
-        "defaultValue": None,
+        "defaultValue": [
+            {
+                "name": "accuracy",
+                "selected": True,
+                "displayName": "Accuracy"
+            }
+        ],
+        "expectedDataType": [
+            None,
+            "string"
+        ],
         "paramType": "list",
         "uiElemType": "dropDown",
-        "display": True
+        "display": False
     },
-    # {
-    #     "name":"iidAssumption",
-    #     "displayName":"Independent and Identical Distributed",
-    #      "defaultValue":[
-    #             {
-    #                 "name":"true",
-    #                 "selected":True,
-    #                 "displayName":"True"
-    #             },
-    #             {
-    #                 "name":"false",
-    #                 "selected":False,
-    #                 "displayName":"False"
-    #             }
-    #            ],
-    #     "paramType":"list",
-    #     "uiElemType":"dropDown",
-    #     "display":True
-    # },
     {
         "name": "kFold",
         "displayName": "No Of Folds to Use",
@@ -140,7 +131,39 @@ SKLEARN_RANDOMSEARCH_PARAMS = [
         "paramType": "number",
         "uiElemType": "slider",
         "display": True
-    }
+    },
+
+]
+SKLEARN_RANDOMSEARCH_PARAMS_PT = [
+    {
+        "name": "evaluationMetric",
+        "displayName": "Metric Used for Optimization",
+        "defaultValue": [
+            {
+                "name": "accuracy",
+                "selected": False,
+                "displayName": "Accuracy"
+            }
+        ],
+        "expectedDataType": [
+            None,
+            "string"
+        ],
+        "paramType": "list",
+        "uiElemType": "dropDown",
+        "display": True
+    },
+    {
+        "name": "kFold",
+        "displayName": "No Of Folds to Use",
+        "defaultValue": 3,
+        "acceptedValue": None,
+        "valueRange": [2, 20],
+        "paramType": "number",
+        "uiElemType": "slider",
+        "display": True
+    },
+
 ]
 SKLEARN_NONE_PARAMS = [
     {
@@ -174,7 +197,6 @@ SKLEARN_NONE_PARAMS = [
     }
 ]
 EMPTY_SKLEARN_HYPERPARAMETER_OBJECT = []
-
 SKLEARN_HYPERPARAMETER_OBJECT = [
     {
         "name": "gridsearchcv",
@@ -182,12 +204,33 @@ SKLEARN_HYPERPARAMETER_OBJECT = [
         "displayName": "Grid Search",
         "selected": False
     },
-    # {
-    #     "name":"randomsearchcv",
-    #     "params":SKLEARN_RANDOMSEARCH_PARAMS,
-    #     "displayName":"Random Search",
-    #     "selected": False
-    # },
+    {
+        "name": "randomsearchcv",
+        "params": SKLEARN_RANDOMSEARCH_PARAMS,
+        "displayName": "Random Search",
+        "selected": False
+    },
+    {
+        "name": "none",
+        "params": None,
+        "displayName": "None",
+        "selected": True
+    }
+]
+
+SKLEARN_HYPERPARAMETER_OBJECT_PT = [
+    {
+        "name": "gridsearchcv",
+        "params": SKLEARN_GRIDSEARCH_PARAMS,
+        "displayName": "Grid Search",
+        "selected": False
+    },
+    {
+        "name": "randomsearchcv",
+        "params": SKLEARN_RANDOMSEARCH_PARAMS_PT,
+        "displayName": "Random Search",
+        "selected": False
+    },
     {
         "name": "none",
         "params": None,
@@ -197,6 +240,7 @@ SKLEARN_HYPERPARAMETER_OBJECT = [
 ]
 EMPTY_SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION = copy.deepcopy(EMPTY_SKLEARN_HYPERPARAMETER_OBJECT)
 SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION = copy.deepcopy(SKLEARN_HYPERPARAMETER_OBJECT)
+SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION_PT = copy.deepcopy(SKLEARN_HYPERPARAMETER_OBJECT_PT)
 SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION[0]["params"][0]["defaultValue"] = SKLEARN_CLASSIFICATION_EVALUATION_METRICS
 SKLEARN_HYPERPARAMETER_OBJECT_REGRESSION = copy.deepcopy(SKLEARN_HYPERPARAMETER_OBJECT)
 SKLEARN_HYPERPARAMETER_OBJECT_REGRESSION[0]["params"][0]["defaultValue"] = SKLEARN_REGRESSION_EVALUATION_METRICS
@@ -434,7 +478,7 @@ else:
                 "selected": False,
                 "parameters": SKLEARN_ML_TENSORFLOW_CLASSIFICATION_PARAMS,
                 "algorithmSlug": ALGORITHMRANDOMSLUG + "tfx",
-                "hyperParameterSetting": SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION,
+                "hyperParameterSetting": SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION_PT,
                 "description": "An end-to-end open source platform for machine learning. TensorFlow is a rich system for managing all aspects of a machine learning system."
             },
             {
@@ -442,7 +486,7 @@ else:
                 "selected": False,
                 "parameters": SKLEARN_ML_PYTORCH_CLASSIFICATION_PARAMS,
                 "algorithmSlug": ALGORITHMRANDOMSLUG + "nnpt",
-                "hyperParameterSetting": SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION,
+                "hyperParameterSetting": SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION_PT,
                 "description": "A python based library built to provide flexibility as a deep learning development platform. It is an open source machine learning library based on the Torch library, used for applications such as computer vision and natural language processing."
             }
         ]
@@ -493,7 +537,7 @@ else:
                 "selected": True,
                 "parameters": SKLEARN_ML_TENSORFLOW_CLASSIFICATION_PARAMS,
                 "algorithmSlug": ALGORITHMRANDOMSLUG + "tfx",
-                "hyperParameterSetting": SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION,
+                "hyperParameterSetting": SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION_PT,
                 "description": "An end-to-end open source platform for machine learning. TensorFlow is a rich system for managing all aspects of a machine learning system."
             },
             {
@@ -501,7 +545,7 @@ else:
                 "selected": True,
                 "parameters": SKLEARN_ML_PYTORCH_CLASSIFICATION_PARAMS,
                 "algorithmSlug": ALGORITHMRANDOMSLUG + "nnpt",
-                "hyperParameterSetting": SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION,
+                "hyperParameterSetting": SKLEARN_HYPERPARAMETER_OBJECT_CLASSIFICATION_PT,
                 "description": "A python based library built to provide flexibility as a deep learning development platform. It is an open source machine learning library based on the Torch library, used for applications such as computer vision and natural language processing."
             }
         ]

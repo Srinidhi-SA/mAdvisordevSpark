@@ -17,7 +17,6 @@ import { binningOptionsOnChangeAction } from "../../actions/featureEngineeringAc
 export class Bins extends React.Component {
   constructor(props) {
     super(props);
-    this.pickValue = this.pickValue.bind(this);
   }
 
   componentWillMount() {
@@ -40,24 +39,14 @@ export class Bins extends React.Component {
     return {};
   }
 
-  getbinningOptions() {
-    var binData = this.getBindata();
-    var measure = this.props.dataPreview.meta_data.uiMetaData.fe_config.fe.measure;
-    var binningOptions = (measure.level_creation_settings.operations.map(item => <option key={item.name} value={item.name}  >{item.displayName}</option>))
-    return (<select className="form-control" id="selectBinType" name="selectBinType" defaultValue={binData.selectBinType} onChange={this.binningOptionsOnChange.bind(this)}> <option value="">--Select--</option> {binningOptions}</select>);
-  }
-
   binningOptionsOnChange(event) {
     var selectedValue = event.target.value;
-    if (selectedValue == "") {
-      document.getElementById('specifyintervals').value = "";
-      document.getElementById('numberofbins').value = "";
-      this.props.dispatch(binningOptionsOnChangeAction(true, true));
-    }else if (selectedValue == "create_equal_sized_bins") {
-      document.getElementById('specifyintervals').value = "";
+    document.getElementById("fileErrorMsg").innerText = ""
+    document.getElementById('numberofbins').value = "";
+    document.getElementById('specifyintervals').value = "";
+    if (selectedValue == "create_equal_sized_bins") {
       this.props.dispatch(binningOptionsOnChangeAction(false, true));
     }else if (selectedValue == "create_custom_bins") {
-      document.getElementById('numberofbins').value = "";
       this.props.dispatch(binningOptionsOnChangeAction(true, false));
     }
     this.props.clearBinsAndIntervals(event);
@@ -69,11 +58,14 @@ export class Bins extends React.Component {
   }
 
   onchangeInput(event) {
+    document.getElementById("fileErrorMsg").innerText = ""
     return event.target.value;
   }
 
   render() {
     var binData = this.getBindata();
+    var binningOptions =  (this.props.dataPreview.meta_data.uiMetaData.fe_config.fe.measure.level_creation_settings.operations.map(item => 
+      <option key={item.name} value={item.name}>{item.displayName}</option>))
     return (
       <div>
         <Tab.Container id="left-tabs-example">
@@ -85,16 +77,16 @@ export class Bins extends React.Component {
                       <label for="sel_tobg" >{"Column name"}</label>
                       <input id="colName" type="text" title="Column name " placeholder="Column name" name="name" value={this.props.selectedItem.name} disabled className="form-control" />
                       <label for="sel_tobg" >Type of binning<span className="text-danger">*</span></label>
-                      {this.getbinningOptions()}
+                      <select className="form-control" id="selectBinType" name="selectBinType" defaultValue={binData.selectBinType} onChange={this.binningOptionsOnChange.bind(this)}> 
+                        <option value="">--Select--</option>
+                        {binningOptions}
+                      </select>
                       <label for="sel_tobg" >{"Number of bins"} <span className="text-danger">*</span></label>
-                      <input id="binNo" type="number" min="0" title="Number of bins " placeholder="Number of bins" id="numberofbins" name="numberofbins" defaultValue={binData.numberofbins} disabled={this.props.isNoOfBinsEnabled} onInput={this.pickValue} onChange={this.onchangeInput.bind(this)} className="form-control" />
+                      <input id="binNo" type="number" min="0" title="Number of bins " placeholder="Number of bins" id="numberofbins" name="numberofbins" defaultValue={binData.numberofbins} disabled={this.props.isNoOfBinsEnabled} onInput={this.pickValue.bind(this)} onChange={this.onchangeInput.bind(this)} className="form-control" />
                       <label for="sel_to bg" >{"Specify intervals"} <span className="text-danger">*</span></label>
-                      <input id="SpecifyInt" type="text" title="Specify intervals" placeholder="Specify intervals" id="specifyintervals" name="specifyintervals" defaultValue={binData.specifyintervals} disabled={this.props.isSpecifyIntervalsEnabled} onChange={this.onchangeInput.bind(this)} className="form-control" onInput={this.pickValue} />
+                      <input id="SpecifyInt" type="text" title="Specify intervals" placeholder="Specify intervals" id="specifyintervals" name="specifyintervals" defaultValue={binData.specifyintervals} disabled={this.props.isSpecifyIntervalsEnabled} onChange={this.onchangeInput.bind(this)} className="form-control" onInput={this.pickValue.bind(this)} />
                       <label for="sel_tobg" >{"New column name"} <span className="text-danger">*</span></label>
-                      <input id="newColName" type="text" title="New column name " placeholder="New column name" name="newcolumnname" defaultValue={binData.newcolumnname} onChange={this.onchangeInput.bind(this)} className="form-control" onInput={this.pickValue} />
-                      <div className="col-sm-12 text-center">
-                        <div className="text-danger visibilityHidden" id="fileErrorMsg"></div>
-                      </div>
+                      <input id="newColName" type="text" title="New column name " placeholder="New column name" name="newcolumnname" defaultValue={binData.newcolumnname} onChange={this.onchangeInput.bind(this)} className="form-control" onInput={this.pickValue.bind(this)} />
                     </form>
                 </Tab.Pane>
               </Tab.Content>

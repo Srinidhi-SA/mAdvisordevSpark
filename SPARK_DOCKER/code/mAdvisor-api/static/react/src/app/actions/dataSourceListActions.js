@@ -1,5 +1,5 @@
 import {API} from "../helpers/env";
-import {HOST,PORT,SCHEMA,USERNAME,PASSWORD,TABLENAME,getUserDetailsOrRestart} from "../helpers/helper";
+import {getUserDetailsOrRestart} from "../helpers/helper";
 
 function getHeader(token){
 	return {
@@ -8,11 +8,17 @@ function getHeader(token){
 	};
 }
 
+function dataSourceFlag(flag){
+	return{
+		type: "DATA_SOURCE_FLAG",flag
+	}
+}
 export function getDataSourceList(){
 	return (dispatch) => {
 		return fetchDataSourceList(getUserDetailsOrRestart.get().userToken).then(([response, json]) =>{
 			if(response.status === 200){
 				dispatch(fetchDataSrcSuccess(json))
+				dispatch(dataSourceFlag(false));
 			}
 			else{
 				dispatch(fetchdDataSrcError(json))
@@ -39,7 +45,7 @@ export function fileUpload(file){
 		})
 	}
 }
-function fetchDataSourceList(token,file) {
+function fetchDataSourceList(token) {
 	return fetch(API+'/api/datasource/get_config_list',{
 		method: 'get',
 		headers: getHeader(token)
@@ -48,7 +54,6 @@ function fetchDataSourceList(token,file) {
 
 export function saveFileToStore(files) {
 	$("#fileErrorMsg").addClass("visibilityHidden");
-	var file = files[0]
 	return {
 		type: "DATA_UPLOAD_FILE",
 		files
@@ -62,48 +67,6 @@ export function updateSelectedDataSrc(selectedDataSrcType) {
 }
 export function updateDbDetails(evt){
     $("#"+evt.target.id).css("border-color","#e0e0e0");
-	/*if(evt.target.name.toLowerCase() == HOST.toLowerCase()){
-		var host  = evt.target.value;
-		return {
-			type: "DB_HOST_NAME",
-			host
-		}
-	}
-	else if(evt.target.name.toLowerCase() == PORT.toLowerCase()){
-		var port  = evt.target.value;
-		return {
-			type: "DB_PORT_NAME",
-			port
-		}
-	}
-	else if(evt.target.name.toLowerCase() == USERNAME.toLowerCase()){
-		var username  = evt.target.value;
-		return {
-			type: "DB_USER_NAME",
-			username
-		}
-    }
-	else if(evt.target.name.toLowerCase() == SCHEMA.toLowerCase()){
-		var schema  = evt.target.value;
-		return {
-			type: "DB_SCHEMA",
-			schema
-		}
-    }
-	else if(evt.target.name.toLowerCase() == PASSWORD.toLowerCase()){
-		var password  = evt.target.value;
-		return {
-			type: "DB_PASSWORD",
-			password
-		}
-    }
-	else if(evt.target.name.toLowerCase() == TABLENAME.toLowerCase()){
-		var tablename  = evt.target.value;
-		return {
-			type: "DB_TABLENAME",
-			tablename
-		}
-    }*/
 }
 
 export function clearDataUploadFile(){

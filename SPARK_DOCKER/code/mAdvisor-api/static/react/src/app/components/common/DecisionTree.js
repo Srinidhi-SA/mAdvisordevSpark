@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Button, Modal } from "react-bootstrap";
-import {closeDtModalAction,saveDtDataFormat} from "../../actions/dataActions";
+import {closeDtModalAction} from "../../actions/dataActions";
 import {Scrollbars} from 'react-custom-scrollbars';
 import {STATIC_URL} from "../../helpers/env";
 import store from "../../store";
@@ -12,6 +12,7 @@ import store from "../../store";
     dtData: store.signals.signalAnalysis.listOfNodes,
     dtPath: store.datasets.dtPath,
     dtJsonFormat: store.datasets.dtJsonFormat,
+    dtName: store.datasets.dtName,
   };
 })
 
@@ -20,15 +21,33 @@ export class DecisionTree extends React.Component {
     super(props);
   }
  
+  componentDidMount(){
+    this.refs.test.innerHTML = this.props.dtRule;
+    let Json = "";
+    let newObject;
+    if(!window.location.href.includes("scores")){
+      if(store.getState().signals.signalAnalysis.listOfNodes.filter(i=>i.name==="Prediction")[0].listOfNodes!=undefined){
+        Json = this.props.dtData.filter(i=>i.name=="Prediction")[0].decisionTree 
+      }else{
+        var predConfig = store.getState().signals.signalAnalysis.listOfNodes.filter(i=>i.name==="Prediction")[0]
+        Json = predConfig[store.getState().datasets.dtName].decisionTree
+      }
+    }else{
+      Json = store.getState().apps.scoreSummary.data.listOfCards[0].decisionTree
+    }
+    if(Json != undefined && document.getElementById("tree-vertical").childNodes.length===0){
+      newObject =  JSON.parse(JSON.stringify(Json))
+      this.BuildHorizontalTree(newObject, "#tree-vertical")
+    }
+  }
+ 
   closeDTModal() {
     this.props.dispatch(closeDtModalAction());
   }
  
   BuildHorizontalTree(treeData, treeContainerDom) {
-
     var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-
     var margin = {
       top: 20,
       right: 120,
@@ -54,7 +73,6 @@ export class DecisionTree extends React.Component {
     var tree = d3.layout.tree()
       .size([300, 150]);
 
-
     var i = 0,
       duration = 750;
     var tree = d3.layout.tree()
@@ -71,20 +89,18 @@ export class DecisionTree extends React.Component {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
-
     var Root = treeData;
     String.prototype.unquoted = function () { return this.replace(/(^")|("$)/g, '') }
     var rootArr= this.props.dtPath;
     for (var i = 0; i < rootArr.length; i++) {
       collapse(eval(rootArr[i]));
     }
-       update(Root);
+    update(Root);
 
     function update(source) {
       // Compute the new tree layout.
       var nodes = tree.nodes(Root).reverse(),
-        links = tree.links(nodes);
+      links = tree.links(nodes);
       // Normalize for fixed-depth.
       nodes.forEach(function (d) {
         d.y = d.depth * 150;
@@ -97,7 +113,6 @@ export class DecisionTree extends React.Component {
 
       // Stash the old positions for transition.
       nodes.forEach(function (d) {
-
         d.x0 = d.x;
         d.y0 = d.y;
       });
@@ -113,7 +128,6 @@ export class DecisionTree extends React.Component {
         .on("mouseout", mouseout)
         .attr("fill", "red")
         .attr("r", 5.5)
-
         .attr("r", 10)
         .attr("stroke", function (d) {
           return d.children || d._children ? "steelblue" : "#00c13f";
@@ -124,7 +138,6 @@ export class DecisionTree extends React.Component {
       //.attr("r", 10)
       //.style("fill", "#fff");
       nodeEnter.append("text")
-
         .attr("y", function (d) {
           return d.children || d._children ? -18 : -18;
         })
@@ -149,13 +162,11 @@ export class DecisionTree extends React.Component {
         });
       nodeUpdate.select("circle")
         .attr("r", 10)
-
         .style("fill", function (d) {
           return d._children ? "lightsteelblue" : "#fff";
         });
       nodeUpdate.select("text")
         .style("fill-opacity", 1);
-
 
       // Transition exiting nodes to the parent's new position.
       var nodeExit = node.exit().transition()
@@ -178,7 +189,6 @@ export class DecisionTree extends React.Component {
       // Enter the links.
       link.enter().insert("path", "g")
         .attr("class", "link")
-
         .attr("d", function (d) {
           var o = {
             x: source.x0,
@@ -194,7 +204,6 @@ export class DecisionTree extends React.Component {
         .duration(duration)
         .attr("d", diagonal);
 
-
       // Transition exiting nodes to the parent's new position.
       link.exit().transition()
         .duration(duration)
@@ -209,7 +218,6 @@ export class DecisionTree extends React.Component {
           });
         })
         .remove();
-
     }
     function wrap(text, width) {
       text.each(function () {
@@ -267,7 +275,6 @@ export class DecisionTree extends React.Component {
         .duration(300)
         .style("opacity", 1);
     }
-
     function mousemove(d) {
       div
         // .text("Info about " + d.name1)
@@ -275,7 +282,6 @@ export class DecisionTree extends React.Component {
         .style("left", (d3.event.pageX) + "px")
         .style("top", (d3.event.pageY) + "px");
     }
-
     function mouseout() {
       div.transition()
         .duration(300)
@@ -284,75 +290,58 @@ export class DecisionTree extends React.Component {
   }
 
   render() {
-  return (
-  <div id="decisionTreePopup" role="dialog" className="modal fade modal-colored-header ">
-  <Modal show={this.props.dtModelShow} onHide={this.closeDTModal.bind(this)} dialogClassName="modal-colored-header dtModal modal-md modalOpacity">
-    <Modal.Header>
-      <h3 className="modal-title">Prediction Rule</h3>
-    </Modal.Header>
-    <Modal.Body>
-      {window.location.href.includes("scores")?
-          <div className="row">
-          <div className="col-sm-12" >
-            <div ref="test" style={{padding: '0 15px'}}></div>
-            {store.getState().apps.scoreSummary.data.listOfCards[0].decisionTree != undefined &&
-            <div className="legends">
-            <img src={STATIC_URL + "assets/images/node.jpg"} className="img-responsive dtImage" />
-            <span>node</span>
-            <img src={STATIC_URL + "assets/images/collapseNode.jpg"} className="img-responsive dtImage" />
-            <span>collapsed node</span>
-            <img src={STATIC_URL + "assets/images/endNode.jpg"} className="img-responsive dtImage" />
-            <span>end node</span>
+    return (
+      <div id="decisionTreePopup" role="dialog" className="modal fade modal-colored-header ">
+        <Modal show={this.props.dtModelShow} onHide={this.closeDTModal.bind(this)} dialogClassName="modal-colored-header dtModal modal-md modalOpacity">
+          <Modal.Header>
+            <h3 className="modal-title">Prediction Rule</h3>
+          </Modal.Header>
+          <Modal.Body>
+            {window.location.href.includes("scores")?
+            <div className="row">
+              <div className="col-sm-12" >
+                <div ref="test" style={{padding: '0 15px'}}></div>
+                {store.getState().apps.scoreSummary.data.listOfCards[0].decisionTree != undefined &&
+                  <div className="legends">
+                    <img src={STATIC_URL + "assets/images/node.jpg"} className="img-responsive dtImage" />
+                    <span>node</span>
+                    <img src={STATIC_URL + "assets/images/collapseNode.jpg"} className="img-responsive dtImage" />
+                    <span>collapsed node</span>
+                    <img src={STATIC_URL + "assets/images/endNode.jpg"} className="img-responsive dtImage" />
+                    <span>end node</span>
+                  </div>
+                }
+              </div>
+              <Scrollbars style={store.getState().apps.scoreSummary.data.listOfCards[0].decisionTree != undefined ? {height:450} : {minHeight:90,maxHeight:250} }>
+                <div id="tree-vertical"></div>
+              </Scrollbars>
+            </div>
+            :
+            <div className="row">
+              <div className="col-sm-12" >
+                <div ref="test" style={{padding: '0 15px'}}></div>
+                {this.props.dtData.filter(i=>i.name=="Prediction")[0].decisionTree != undefined &&
+                  <div className="legends">
+                    <img src={STATIC_URL + "assets/images/node.jpg"} className="img-responsive dtImage" />
+                    <span>node</span>
+                    <img src={STATIC_URL + "assets/images/collapseNode.jpg"} className="img-responsive dtImage" />
+                    <span>collapsed node</span>
+                    <img src={STATIC_URL + "assets/images/endNode.jpg"} className="img-responsive dtImage" />
+                    <span>end node</span>
+                  </div>
+                }
+              </div>
+              <Scrollbars style={this.props.dtData.filter(i=>i.name=="Prediction")[0].decisionTree != undefined ? {height:450} : {minHeight:250,maxHeight:450} }>
+                <div id="tree-vertical"></div>
+              </Scrollbars>
             </div>
             }
-          </div>
-          <Scrollbars style={store.getState().apps.scoreSummary.data.listOfCards[0].decisionTree != undefined ? {height:450} : {minHeight:90,maxHeight:250} }>
-            <div id="tree-vertical"></div>
-          </Scrollbars>
-           </div>
-         :
-     <div className="row">
-     <div className="col-sm-12" >
-       <div ref="test" style={{padding: '0 15px'}}></div>
-       {this.props.dtData.filter(i=>i.name=="Prediction")[0].decisionTree != undefined &&
-       <div className="legends">
-       <img src={STATIC_URL + "assets/images/node.jpg"} className="img-responsive dtImage" />
-       <span>node</span>
-       <img src={STATIC_URL + "assets/images/collapseNode.jpg"} className="img-responsive dtImage" />
-       <span>collapsed node</span>
-       <img src={STATIC_URL + "assets/images/endNode.jpg"} className="img-responsive dtImage" />
-       <span>end node</span>
-       </div>
-       }
-     </div>
-     <Scrollbars style={this.props.dtData.filter(i=>i.name=="Prediction")[0].decisionTree != undefined ? {height:450} : {minHeight:90,maxHeight:250} }>
-       <div id="tree-vertical"></div>
-     </Scrollbars>
-      </div>
-     }
-    </Modal.Body>
-    <Modal.Footer>
-      <Button onClick={this.closeDTModal.bind(this)}>Cancel</Button>
-     
-    </Modal.Footer>
-    </Modal> 
-               
-  </div>);}
-componentDidUpdate(){
-  this.refs.test.innerHTML = this.props.dtRule;
-  if(!window.location.href.includes("scores")){
-  var Json = this.props.dtData.filter(i=>i.name=="Prediction")[0].decisionTree 
-  var newObject;
-  Json != undefined && 
-  ( newObject =  JSON.parse(JSON.stringify(Json)),
-  this.BuildHorizontalTree(newObject, "#tree-vertical"))
+          </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.closeDTModal.bind(this)}>Cancel</Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+    );
   }
-  else{
-    var Json = store.getState().apps.scoreSummary.data.listOfCards[0].decisionTree
-    var newObject;
-    Json != undefined && 
-    ( newObject =  JSON.parse(JSON.stringify(Json)),
-    this.BuildHorizontalTree(newObject, "#tree-vertical"))
-  }
-}  
 }

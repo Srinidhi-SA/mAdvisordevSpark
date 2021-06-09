@@ -14,7 +14,7 @@ import pandas as pd
 from dateutil.relativedelta import relativedelta
 from pyspark.sql.functions import col, udf
 from pyspark.sql.functions import lit
-
+import pyspark.sql.functions as F
 from bi.common import NarrativesTree, NormalCard, HtmlData, C3ChartData
 from bi.common import ScatterChartData, NormalChartData, ChartJson
 from bi.common import utils as CommonUtils
@@ -423,6 +423,7 @@ class TimeSeriesNarrative(object):
                             result_column_levels = list(self._data_frame[self._result_column].unique())
                         else:
                             result_column_levels = [x[0] for x in self._data_frame.select(self._result_column).distinct().collect()]
+                            # result_column_levels = self._data_frame.agg((F.collect_set(self._result_column).alias(self._result_column))).first().asDict()[self._result_column]
 
                     print("-"*100)
                     # TODO Implement meta parser getter here

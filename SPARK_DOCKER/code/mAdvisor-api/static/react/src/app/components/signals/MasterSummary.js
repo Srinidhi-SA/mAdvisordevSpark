@@ -48,7 +48,6 @@ export class MasterSummary extends React.Component {
 			</div>
 		)
 
-    const overViewLink = "/signals/" + this.props.signalId + "/" + firstOverviewSlug;
     return (
 			<div className="side-body">
 				<div className="page-head">
@@ -76,7 +75,7 @@ export class MasterSummary extends React.Component {
 									
 							<div class="row wow bounceIn" data-wow-offset="20"  data-wow-iteration="20">					
 								<div className="col-md-12 xs-pt-50 text-right">
-									<Link to={overViewLink} className="btn btn-primary btn-md xs-pl-20 xs-pr-20 xs-pt-10 xs-pb-10">
+									<Link to={`/signals/${this.props.signalId}/${firstOverviewSlug}`} className="btn btn-primary btn-md xs-pl-20 xs-pr-20 xs-pt-10 xs-pb-10">
 											<i className="fa fa-file-text-o"></i>  View Summary
 										</Link>
 								</div>

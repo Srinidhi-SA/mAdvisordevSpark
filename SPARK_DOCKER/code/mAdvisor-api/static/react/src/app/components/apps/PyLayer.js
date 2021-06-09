@@ -1,6 +1,5 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Redirect} from "react-router";
 import store from "../../store";
 import { setPyTorchLayer, updateAlgorithmData, pytorchValidateFlag, deletePyTorchLayer } from "../../actions/appActions";
 
@@ -454,7 +453,7 @@ export class PyLayer extends React.Component {
                 </div>
                 <div className="collapse in" id={`collpseExample${this.props.idNum}`}>
                     <div className="card card-body">
-                        <div class="layerBody" style={{'paddingLeft':'15px'}}>
+                        <div class="layerBody xs-pl-15">
                             {renderPyTorchLayer}
                         </div>
                         <div id="suggest_pt" className="mb-20 error_pt"></div>

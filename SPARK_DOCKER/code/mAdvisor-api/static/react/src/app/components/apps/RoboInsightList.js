@@ -1,30 +1,17 @@
 import React from "react";
 import store from "../../store";
 import {connect} from "react-redux";
-import {Link, Redirect} from "react-router-dom";
-import {push} from "react-router-redux";
+import {Redirect} from "react-router-dom";
 
-import {MainHeader} from "../common/MainHeader";
-import {
-  Tabs,
-  Tab,
-  Pagination,
-  Tooltip,
-  OverlayTrigger,
-  Popover
-} from "react-bootstrap";
+import {Pagination} from "react-bootstrap";
 import {getAppsRoboList, getRoboDataset, handleInsightDelete, handleInsightRename, storeRoboSearchElement,clearRoboSummary,storeRoboSortElements,refreshRoboInsightsList} from "../../actions/appActions";
-import {DetailOverlay} from "../common/DetailOverlay";
 import {STATIC_URL} from "../../helpers/env.js";
 import {RoboDataUpload} from "./RoboDataUpload";
 import {AppsLoader} from "../common/AppsLoader";
 import Dialog from 'react-bootstrap-dialog'
-import {SEARCHCHARLIMIT,getUserDetailsOrRestart} from "../../helpers/helper";
+import {SEARCHCHARLIMIT} from "../../helpers/helper";
 import {RoboInsightCard} from "./RoboInsightCard";
 import {LatestRoboInsights} from "./LatestRoboInsights";
-
-
-var dateFormat = require('dateformat');
 
 @connect((store) => {
   return {
@@ -78,7 +65,7 @@ export class RoboInsightList extends React.Component {
     }
   }
   componentDidMount(){
-      this.props.dispatch(refreshRoboInsightsList(this.props));
+      this.props.dispatch(refreshRoboInsightsList());
   }
   onChangeOfSearchBox(e) {
     if (e.target.value == "" || e.target.value == null) {
@@ -132,7 +119,7 @@ export class RoboInsightList extends React.Component {
 				<div className="input-group">
 					<div className="search-wrapper">
 						<input type="text" name="robo_insights" value={this.props.robo_search_element} onKeyPress={this._handleKeyPress.bind(this)} onChange={this.onChangeOfSearchBox.bind(this)} title="Robo Insights" id="robo_insights" className="form-control search-box"  placeholder="Search robo insights..." required />
-						<span className="zmdi zmdi-search form-control-feedback"></span>
+						<span className="fa fa-search form-control-feedback"></span>
 						<button className="close-icon" type="reset" onClick={this.clearSearchElement.bind(this)}></button>
 					</div>
 				</div>
@@ -140,20 +127,20 @@ export class RoboInsightList extends React.Component {
 				
 				<div className="btn-group">
                     <button type="button" data-toggle="dropdown" title="Sorting" className="btn btn-default dropdown-toggle" aria-expanded="false">
-                    <i className="zmdi zmdi-hc-lg zmdi-sort-asc"></i>
+                    <i className="glyphicon glyphicon-sort"></i>
                     </button>
                     <ul role="menu" className="dropdown-menu dropdown-menu-right">
                     <li>
-                    <a href="javascript:;" onClick={this.doSorting.bind(this,'name','asc')}><i class="zmdi zmdi-sort-amount-asc"></i> Name Ascending</a>
+                    <a href="javascript:;" onClick={this.doSorting.bind(this,'name','asc')}><i class="fa fa-sort-alpha-asc"></i> Name Ascending</a>
                     </li>
                     <li>
-                    <a href="javascript:;" onClick={this.doSorting.bind(this,'name','desc')}><i class="zmdi zmdi-sort-amount-desc"></i> Name Descending</a>
+                    <a href="javascript:;" onClick={this.doSorting.bind(this,'name','desc')}><i class="fa fa-sort-alpha-desc"></i> Name Descending</a>
                     </li>
                     <li>
-                    <a href="javascript:;" onClick={this.doSorting.bind(this,'created_at','asc')}><i class="zmdi zmdi-calendar-alt"></i> Date Ascending</a>
+                    <a href="javascript:;" onClick={this.doSorting.bind(this,'created_at','asc')}><i class="fa fa-long-arrow-down arrIcon"></i><i style={{fontSize:12}} class="fa fa-calendar-check-o"></i> Date Ascending</a>
                     </li>
                     <li>
-                    <a href="javascript:;" onClick={this.doSorting.bind(this,'created_at','desc')}><i class="zmdi zmdi-calendar"></i> Date Descending</a>
+                    <a href="javascript:;" onClick={this.doSorting.bind(this,'created_at','desc')}><i class="fa fa-long-arrow-up arrIcon"></i><i style={{fontSize:12}} class="fa fa-calendar-check-o"></i> Date Descending</a>
                     </li>
                     </ul>
                 </div>				

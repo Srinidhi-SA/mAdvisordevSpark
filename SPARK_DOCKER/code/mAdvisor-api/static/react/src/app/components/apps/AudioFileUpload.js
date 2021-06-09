@@ -1,14 +1,12 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Link, Redirect} from "react-router-dom";
-import {push} from "react-router-redux";
-import {Modal,Button,Tab,Row,Col,Nav,NavItem} from "react-bootstrap";
+import {Modal,Button} from "react-bootstrap";
 import store from "../../store";
 import {showAudioFUModal,hideAudioFUModal,uploadAudioFileToStore,uploadAudioFile,clearAudioFile,pauseAudioFile,playAudioFile} from "../../actions/appActions";
 import Dropzone from 'react-dropzone'
 
 @connect((store) => {
-	return {login_response: store.login.login_response, 
+	return {
 		audioFileUploadShowFlag:store.apps.audioFileUploadShowFlag,
 		audioFileUpload:store.apps.audioFileUpload,
 		};

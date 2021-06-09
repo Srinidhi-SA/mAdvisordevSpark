@@ -5,7 +5,6 @@ import store from "../../store";
 import {clearSubset, selDatetimeCol, selDimensionCol, selectAllDimValues, selectDimValues, selMeasureCol, setAlreadyUpdated, setDatetimeColValues, setDimensionColValues, setMeasureColValues, updateSubSetting} from "../../actions/dataActions";
 import {decimalPlaces} from "../../helpers/helper.js"
 import {Scrollbars} from 'react-custom-scrollbars';
-import dateFormat from 'dateformat';
 import DatePicker from 'react-bootstrap-date-picker';
 
 @connect((store) => {

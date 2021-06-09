@@ -64,16 +64,16 @@ export class AppsStockAdvisorList extends React.Component {
 	_handleKeyPress = (e) => {
 		if (e.key === 'Enter') {
 			if (e.target.value != "" && e.target.value != null)
-				this.props.history.push('apps-stock-advisor?search=' + e.target.value + '');
+				this.props.history.push('?search=' + e.target.value + '');
 			this.props.dispatch(storeStockModelSearchElement(e.target.value));
 			this.props.dispatch(getAppsStockList(1));
 		}
 	}
 	doSorting(sortOn, type){
 		if(this.props.stock_model_search_element!="" && this.props.stock_model_search_element!=null){
-			this.props.history.push('apps-stock-advisor?search=' + this.props.stock_model_search_element + '&sort=' + sortOn + '&type='+type+'')
+			this.props.history.push('?search=' + this.props.stock_model_search_element + '&sort=' + sortOn + '&type='+type+'')
 		}else{
-			this.props.history.push('apps-stock-advisor?sort=' + sortOn + '&type='+type);
+			this.props.history.push('?sort=' + sortOn + '&type='+type);
 		}
 		this.props.dispatch(storeStockAppsModelSortElements(sortOn,type));
 		this.props.dispatch(getAppsStockList(1));
@@ -81,13 +81,13 @@ export class AppsStockAdvisorList extends React.Component {
 	onChangeOfSearchBox(e){
 		if(e.target.value==""||e.target.value==null){
 			this.props.dispatch(storeStockModelSearchElement(""));
-			this.props.history.push('apps-stock-advisor'+'')
 			this.props.dispatch(getAppsStockList(1));
+			this.props.history.push('/apps-stock-advisor');
 		}else if (e.target.value.length > SEARCHCHARLIMIT) {
 			if(this.props.stock_apps_model_sorton!="" && this.props.stock_apps_model_sorton!=null){
-				this.props.history.push('apps-stock-advisor?search=' + e.target.value + '&sort=' + this.props.stock_apps_model_sorton + '&type='+this.props.stock_apps_model_sorttype+ '')
+				this.props.history.push('?search=' + e.target.value + '&sort=' + this.props.stock_apps_model_sorton + '&type='+this.props.stock_apps_model_sorttype+ '')
 			}else{
-				this.props.history.push('apps-stock-advisor?search=' + e.target.value + '')
+				this.props.history.push('?search=' + e.target.value + '')
 			}
 			this.props.dispatch(storeStockModelSearchElement(e.target.value));
 			this.props.dispatch(getAppsStockList(1));
@@ -132,24 +132,24 @@ export class AppsStockAdvisorList extends React.Component {
           		      <div class="input-group">
               			  <div className="search-wrapper">
                     		<input type="text" name="search_stock" value={this.props.stock_model_search_element} onKeyPress={this._handleKeyPress.bind(this)} onChange={this.onChangeOfSearchBox.bind(this)} title="Search Stock" id="search_stock" className="form-control search-box" placeholder="Search Stock Analysis..." required />
-                    		<span className="zmdi zmdi-search form-control-feedback"></span>
+                    		<span className="fa fa-search form-control-feedback"></span>
                     		<button className="close-icon" type="reset" onClick={this.clearSearchElement.bind(this)}></button>
                 			</div>
                 		</div>
                   	<div class="btn-group">
-                    	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="zmdi zmdi-hc-lg zmdi-sort-asc"></i> </button>
+                    	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-sort"></i> </button>
                     	<ul role="menu" class="dropdown-menu dropdown-menu-right">
                         <li>
-                          <a href="#" onClick={this.doSorting.bind(this,'name','asc')}><i class="zmdi zmdi-sort-amount-asc"></i> Name Ascending</a>
+                          <a href="#" onClick={this.doSorting.bind(this,'name','asc')}><i class="fa fa-sort-alpha-asc"></i> Name Ascending</a>
                         </li>
                         <li>
-                          <a href="#" onClick={this.doSorting.bind(this,'name','desc')}><i class="zmdi zmdi-sort-amount-desc"></i> Name Descending</a>
+                          <a href="#" onClick={this.doSorting.bind(this,'name','desc')}><i class="fa fa-sort-alpha-desc"></i> Name Descending</a>
                         </li>
                         <li>
-                          <a href="#" onClick={this.doSorting.bind(this,'created_at','asc')}><i class="zmdi zmdi-calendar-alt"></i> Date Ascending</a>
+                          <a href="#" onClick={this.doSorting.bind(this,'created_at','asc')}><i class="fa fa-long-arrow-down arrIcon"></i><i style={{fontSize:12}} class="fa fa-calendar-check-o"></i> Date Ascending</a>
                         </li>
                         <li>
-                          <a href="#" onClick={this.doSorting.bind(this,'created_at','desc')}><i class="zmdi zmdi-calendar"></i> Date Descending</a>
+                          <a href="#" onClick={this.doSorting.bind(this,'created_at','desc')}><i class="fa fa-long-arrow-up arrIcon"></i><i style={{fontSize:12}} class="fa fa-calendar-check-o"></i> Date Descending</a>
                         </li>
                       </ul>
                   </div>

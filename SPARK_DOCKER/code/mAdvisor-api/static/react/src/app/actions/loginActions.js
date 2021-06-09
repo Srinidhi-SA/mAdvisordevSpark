@@ -1,10 +1,9 @@
 import store from "../store";
-import {sessionObject} from '../helpers/manageSessionStorage';
 import {API} from "../helpers/env";
 import {getUserDetailsOrRestart} from "../helpers/helper";
-import { sessionService } from 'redux-react-session';
-import { browserHistory } from 'react-router';
 import {cookieObj} from '../helpers/cookiesHandler';
+import {closeImg} from "../actions/dataUploadActions";
+import { COOKIEEXPIRETIMEINDAYS } from '../helpers/env.js';
 
 export function getHeaderWithoutContent(token) {
   return {'Authorization': token};
@@ -34,15 +33,13 @@ function fetchPosts(username,password) {
 				username: username,
 				password: password,
 		 })
-	}).then( response => Promise.all([response, response.json()])).catch(function(error) {
+	}).then( response => Promise.all([response, response.json()])).catch(function() {
         $("#errormsg").html("Login unsuccessful. Please try again in sometime.")
     });
 }
 
 
 function fetchPostsSuccess(payload) {
-var token = payload.token;
-//sessionObject.manageSession(payload);
 cookieObj.storeCookies(payload)
   return {
     type: "AUTHENTICATE_USER",
@@ -56,16 +53,6 @@ function fetchPostsError(json) {
     json
   }
 }
-
-//to fetch user Profile
-export function openImg() {
-  return {type: "SHOW_IMG_MODAL"}
-}
-
-export function closeImg() {
-  return {type: "HIDE_IMG_MODAL"}
-}
-
 
 export function getUserProfile(token) {
     return (dispatch) => {
@@ -105,7 +92,6 @@ function fetchProfileError(json) {
     json
   }
 }
-//for image upload
 
 export function uploadImg(){
     return (dispatch) => {
@@ -120,33 +106,32 @@ export function uploadImg(){
     }
   }
 
-  function clearImageURL(){
-    return{
-      type:"CLEAR_PROFILE_IMAGE"
-
-    }
-
-  }
   function triggerImgUpload() {
     var data = new FormData();
-    data.append("image", store.getState().dataSource.fileUpload);
-    // data.append("website",sessionStorage.email)
-    // data.append("bio","jfhsndfn")
-    // data.append("phone",sessionStorage.phone)
+    data.append("image", store.getState().dataSource.fileUpload[0]);
 
     return fetch(API + '/api/upload_photo/', {
-      method: 'put',
+      method: 'PUT',
       headers: getHeaderWithoutContent(getUserDetailsOrRestart.get().userToken),
       body: data
     }).then(response => Promise.all([response, response.json()]));
 
   }
 
-  export function imgUploadError(josn) {
+  export function imgUploadError(json) {
     return {type: "IMG_UPLOAD_TO_SERVER_ERROR", json}
   }
 
 export function saveProfileImage(imageURL) {
+  
+ if(getUserDetailsOrRestart.get().image_url=="null"){
+  var now = new Date();
+  var exp = new Date(now.getTime() + COOKIEEXPIRETIMEINDAYS * 24 * 60 * 60 * 1000);
+  var expires = exp.toUTCString();
+  document.cookie = "image_url=" + imageURL + "; " + "expires=" + expires + "; path=/";
+ }
+  if(imageURL!="null"||!imageURL)
+  imageURL=imageURL + new Date().getTime()
   return {
     type: "SAVE_PROFILE_IMAGE",
     imgUrl:imageURL

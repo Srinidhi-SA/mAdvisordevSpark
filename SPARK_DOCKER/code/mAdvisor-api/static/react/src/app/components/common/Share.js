@@ -44,12 +44,12 @@ export class Share extends React.Component {
   }
 
   render() {
-   var rendermultiselect= (this.props.usersList.allUsersList!=undefined? <div className="form-group">
+   var rendermultiselect= (this.props.usersList.allUsersList!=undefined && <div className="form-group">
        <div className="content-section implementation multiselect-demo width-multisel">
        <MultiSelect className="shareMultiselect" value={this.state.userIds} options={this.getMultiSelectOptions()} onChange={(e) => this.setState({userIds: e.value})}
-        style={{ "minWidth": '22em',"maxWidth":"22em","width": "90%"}}  filter={true} placeholder="Choose users" />
+        style={{ minWidth: '22em',maxWidth:"22em",width: "90%"}}  filter={true} placeholder="Choose users" />
        </div>
-       </div>:"")
+       </div>)
     var renderOptions =
       (
       <div>
@@ -63,7 +63,7 @@ export class Share extends React.Component {
     <Modal.Header>
       <h3 className="modal-title">Share</h3>
     </Modal.Header>
-    <Modal.Body style={{"minHeight":"320px","minWidth":"10px"}}>
+    <Modal.Body style={{minHeight:"320px",minWidth:"10px"}}>
      <div className="row">
      <div className="col-sm-3">
      <label>{this.props.shareItemType} name:</label>
@@ -71,10 +71,10 @@ export class Share extends React.Component {
      <div className="col-sm-9">
      <h4>{this.props.shareItemName}</h4>
      </div>
-     <div className="col-sm-3" style={{"paddingTop":"3%"}}>
+     <div className="col-sm-3" style={{paddingTop:"3%"}}>
      <label>Share with:</label>
      </div>
-     <div className="col-sm-9" style={{"paddingTop":"3%"}}>
+     <div className="col-sm-9" style={{paddingTop:"3%"}}>
               {renderOptions}
      </div>
            

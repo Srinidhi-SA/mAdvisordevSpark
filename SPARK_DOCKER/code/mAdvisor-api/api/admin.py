@@ -10,7 +10,8 @@ import simplejson as json
 
 from api.models import Dataset, Insight, Job, Score, Trainer,\
     CustomApps, CustomAppsUserMapping, StockDataset, \
-    Robo, TrainAlgorithmMapping, DatasetScoreDeployment, ModelDeployment
+    Robo, TrainAlgorithmMapping, DatasetScoreDeployment, ModelDeployment, \
+    OutlookToken
 from api.user_helper import Profile
 from django_celery_beat.models import PeriodicTask, IntervalSchedule, CrontabSchedule, SolarSchedule
 
@@ -241,6 +242,9 @@ class ModelDeploymentAdmin(admin.ModelAdmin):
 # class PeriodicTaskAdmin(admin.ModelAdmin):
 #     pass
 
+class OutlookTokenAdmin(admin.ModelAdmin):
+    list_display = ["id","updated_at", "created_at"]
+    readonly_fields = ("updated_at", "created_at")
 
 admin.site.register(User, MyUserAdmin)
 admin.site.register(ModelDeployment, ModelDeploymentAdmin)
@@ -270,3 +274,4 @@ if settings.KEEP_OTHERS_IN_ADMIN:
     admin.site.register(Robo, RoboAdmin)
     admin.site.register(Profile, ProfileAdmin)
     admin.site.register(Permission, PermissionAdmin)
+    admin.site.register(OutlookToken, OutlookTokenAdmin)

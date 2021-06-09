@@ -71,13 +71,22 @@ export function getPrevNext( rootNode, curSufix ) {
         for ( var i = 0; i < rootNode.listOfCards.length; i++ ) {
             if(rootNode.listOfCards[i]['display'] && rootNode.listOfCards[i]['display'] == false)
             continue;
-            else
-            listOfUrls.push( prefix + rootNode.listOfCards[i]['slug'] );
+            else{
+              let pre_url = (prefix.includes("maxdepth"))?prefix:prefix + rootNode.listOfCards[i]['slug']
+              listOfUrls.push(pre_url);
+            }
         }
         for ( var i = 0; i < rootNode.listOfNodes.length; i++ ) {
+        if(rootNode.listOfNodes[i]["Depth Of Tree 3"]!=undefined){
+          for(let j=0;j<Object.keys(rootNode.listOfNodes[i]).length;j++){
+            if(Object.keys(rootNode.listOfNodes[i])[j].includes("Depth Of Tree"))
+              generateAllUrls(rootNode.listOfNodes[i][Object.keys(rootNode.listOfNodes[i])[j]] , rootNode.listOfNodes[i].slug +"/"+ rootNode.listOfNodes[i][Object.keys(rootNode.listOfNodes[i])[j]].slug)
+          }
+        }else{
             generateAllUrls( rootNode.listOfNodes[i], prefix + rootNode.listOfNodes[i]["slug"] + "/" );
         }
     }
+  }
     //when listofNodes is empty append slug to prefix
     if(rootNode.listOfNodes.length == 0){
     	var rootSlug = curSufix.split("/")
@@ -115,4 +124,8 @@ if(output.listOfNodes.length!=0){
   else{
     return output.listOfCards[output.listOfCards.length - 1];
   }
+}
+
+export function fetchMaxDepthCard(node){
+  return node.listOfCards[0];
 }

@@ -65,7 +65,7 @@ def load_dataset(spark,dataframe_context):
             df = DataLoader.load_csv_file(spark, dataframe_context.get_input_file())
             cols = [re.sub('\W+','_', col.strip()) for col in df.columns]
             df = df.toDF(*cols)
-            df = df.replace(GLOBALSETTINGS.DEFAULT_NULL_VALUES, None)
+            df = df.replace(GLOBALSETTINGS.DEFAULT_NULL_VALUES, 'null')
             dataframe_context._pandas_flag = False
             print("####### PYSPARK ########### STARTED PYSPARK FLOW ################ PYSPARK #########")
             pyspark=True

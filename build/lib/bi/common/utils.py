@@ -31,7 +31,7 @@ from scipy import linspace
 from pyspark.conf import SparkConf
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import regexp_extract, col
-
+import pyspark.sql.functions as F
 
 from .decorators import accepts
 from math import log10, floor
@@ -244,6 +244,7 @@ def get_level_count_dict(df,categorical_columns,separator,output_type="string",d
     for col in categorical_columns:
         if dataType == "spark":
             count_dict[col] = len(df.select(col).distinct().collect())
+            # count_dict[col] = df.agg((F.countDistinct(col).alias(col))).first().asDict()[col]
         else:
             count_dict[col] = len(df[col].unique())
         out.append(col)

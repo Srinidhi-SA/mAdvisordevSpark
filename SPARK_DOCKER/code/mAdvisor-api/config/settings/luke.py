@@ -3,9 +3,9 @@ from builtins import zip
 from .base import *
 import datetime
 
-
 import environ
-env = environ.Env(DEBUG=(bool, False),) # set default values and casting
+
+env = environ.Env(DEBUG=(bool, False), )  # set default values and casting
 environ.Env.read_env()
 
 # Database
@@ -13,19 +13,18 @@ environ.Env.read_env()
 
 DEBUG = env('DEBUG')
 
-MODE=env('MODE')
-ALLOWED_HOSTS = ['madvisor-stg.marlabsai.com','*']
+MODE = env('MODE')
+ALLOWED_HOSTS = ['madvisor-stg.marlabsai.com', '*']
 DATABASES = {
     'default1': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
-    "default":  env.db(),
+    "default": env.db(),
     'TEST': {
-            'NAME': 'test_madvisor',
-        },
+        'NAME': 'test_madvisor',
+    },
 }
-
 
 PROJECT_APP = [
 ]
@@ -36,15 +35,16 @@ HADOOP_MASTER = env('HADOOP_MASTER')
 
 YARN = {
     "host": HADOOP_MASTER,
-    "port": env.int('YARN_PORT'), #8088,
-    "timeout": env.int('YARN_TIMEOUT') #30
+    "port": env.int('YARN_PORT'),  # 8088,
+    "timeout": env.int('YARN_TIMEOUT')  # 30
 }
 
 import os
 import json
-hdfs_config_key=json.loads(os.environ['HADOOP_CONFIG_KEY'])
-hdfs_config_value=json.loads(os.environ['HADOOP_CONFIG_VALUE'])
-HDFS=dict(list(zip(hdfs_config_key,hdfs_config_value)))
+
+hdfs_config_key = json.loads(os.environ['HADOOP_CONFIG_KEY'])
+hdfs_config_value = json.loads(os.environ['HADOOP_CONFIG_VALUE'])
+HDFS = dict(list(zip(hdfs_config_key, hdfs_config_value)))
 
 EMR = {
     "emr_pem_path": "",
@@ -52,15 +52,14 @@ EMR = {
 }
 
 KAFKA = {
-    'host': env('KAFKA_HOST'), #'localhost',
-    'port': env('KAFKA_PORT'), #'9092',
+    'host': env('KAFKA_HOST'),  # 'localhost',
+    'port': env('KAFKA_PORT'),  # '9092',
     'topic': 'my-topic'
 }
 
-
 JOBSERVER = {
-    'host': env('JOBSERVER_HOST'), #'172.31.50.84',
-    'port': env('JOBSERVER_PORT'), #'8090',
+    'host': env('JOBSERVER_HOST'),  # '172.31.50.84',
+    'port': env('JOBSERVER_PORT'),  # '8090',
     'app-name': 'luke',
     'context': 'pysql-context',
     'master': 'bi.sparkjobs.JobScript',
@@ -82,7 +81,7 @@ THIS_SERVER_DETAILS = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://"+env('REDIS_IP')+":"+env('REDIS_PORT1')+"/1",
+        "LOCATION": "redis://" + env('REDIS_IP') + ":" + env('REDIS_PORT') + "/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },
@@ -92,9 +91,8 @@ CACHES = {
 CACHE_TTL = 60 * 15
 REDIS_SALT = "123"
 
-
-APPEND_SLASH=False
-DATA_UPLOAD_MAX_MEMORY_SIZE = 1024*1024*1024
+APPEND_SLASH = False
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 1024
 
 SCORES_SCRIPTS_FOLDER = env('SCORES_SCRIPTS_DIR')
 IMAGE_URL = "/api/get_profile_image/"
@@ -118,12 +116,12 @@ JOBSERVER_EMAIL_TEMPLATE = "Please restart jobserver- IP-"
 
 DEPLOYMENT_ENV = env('DEPLOYMENT_ENV')
 
-HADOOP_CONF_DIR=False
-HADOOP_USER_NAME="hduser"
+HADOOP_CONF_DIR = False
+HADOOP_USER_NAME = "hduser"
 
-CELERY_BROKER_URL = "redis://"+env('REDIS_IP')+":"+env('REDIS_PORT1')+"/"
+CELERY_BROKER_URL = "redis://" + env('REDIS_IP') + ":" + env('REDIS_PORT') + "/"
 # CELERY_RESULT_BACKEND = "django-db"
-CELERY_RESULT_BACKEND = "redis://"+env('REDIS_IP')+":"+env('REDIS_PORT1')+"/"
+CELERY_RESULT_BACKEND = "redis://" + env('REDIS_IP') + ":" + env('REDIS_PORT') + "/"
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -141,33 +139,32 @@ CELERY_QUEUES = {
     }
 }
 
-
 PEM_KEY = env('PEM_KEY')
 ENABLE_KYLO = env.bool('ENABLE_KYLO')
 KYLO_UI_URL = env('KYLO_UI_URL')
-KYLO_UI_AUTH_URL= env('KYLO_UI_AUTH_URL')
+KYLO_UI_AUTH_URL = env('KYLO_UI_AUTH_URL')
 END_RESULTS_SHOULD_BE_PROCESSED_IN_CELERY = True
 KYLO_SERVER_DETAILS = {
     "host": env('KYLO_SERVER_HOST'),
-    "port" : env('KYLO_SERVER_PORT'),
+    "port": env('KYLO_SERVER_PORT'),
     "user": env('KYLO_SERVER_USER'),
     "key_path": env('KYLO_SERVER_KEY'),
     "group_propertie_quote": "madvisor,user",
-    "kylo_file_path":"/opt/kylo/"
+    "kylo_file_path": "/opt/kylo/"
 }
 
 CELERY_ONCE_CONFIG = {
-  'backend': 'celery_once.backends.Redis',
-  'settings': {
-    'url': "redis://"+env('REDIS_IP')+":"+env('REDIS_PORT1')+"/",
-    'default_timeout': 60 * 60
-  }
+    'backend': 'celery_once.backends.Redis',
+    'settings': {
+        'url': "redis://" + env('REDIS_IP') + ":" + env('REDIS_PORT') + "/",
+        'default_timeout': 60 * 60
+    }
 }
 
 SUBMIT_JOB_THROUGH_CELERY = True
-CELERY_SCRIPTS_DIR=env('CELERY_SCRIPTS_DIR')
-USE_YARN_DEFAULT_QUEUE=True
-USE_HTTPS=env.bool('USE_HTTPS',default=False)
+CELERY_SCRIPTS_DIR = env('CELERY_SCRIPTS_DIR')
+USE_YARN_DEFAULT_QUEUE = True
+USE_HTTPS = env.bool('USE_HTTPS', default=False)
 
 SEND_WELCOME_MAIL = env('SEND_WELCOME_MAIL')
 SEND_INFO_MAIL = env('SEND_INFO_MAIL')
@@ -177,15 +174,15 @@ OCR_SECONDARY_TASK_PERCENTAGE = 100
 OUTLOOK_DETAILS = {
     "client_id": '2e36be5f-0040-4f0d-bbef-12787ddc158b',
     "client_secret": '.5JwU-O9E_lY~uYUha5.3~dAUx3_0p_wu2',
-    #"authority":'https://login.microsoftonline.com',
-    #"authorize_url" : 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-    "tenant_id" : 'cc6b2eea-c864-4839-85f5-94736facc3be',
-    "redirect_uri" : 'http://localhost:8000/get_request/'
+    # "authority":'https://login.microsoftonline.com',
+    # "authorize_url" : 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+    "tenant_id": 'cc6b2eea-c864-4839-85f5-94736facc3be',
+    "redirect_uri": 'http://localhost:8000/get_request/'
 }
-OUTLOOK_SCOPES = [ 'openid',
-           'User.Read',
-           'Mail.Read',
-           'offline_access']
+OUTLOOK_SCOPES = ['openid',
+                  'User.Read',
+                  'Mail.Read',
+                  'offline_access']
 
 OUTLOOK_TOKEN_URL = 'https://login.microsoftonline.com/' + OUTLOOK_DETAILS['tenant_id'] + '/oauth2/v2.0/token'
 

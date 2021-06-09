@@ -40,12 +40,10 @@ export class AppsScoreDetail extends React.Component {
   render() {
 		let scoreSummary = store.getState().apps.scoreSummary;
 		let slink = window.location.pathname.includes("analyst")?"/analyst":"/autoML";
-		let scoreLink = "/apps/"+this.props.match.params.AppId+ slink +"/scores";
-		var scoreSlugtoDownload=(store.getState().apps.scoreSlugShared==null||store.getState().apps.scoreSlugShared==undefined)?store.getState().apps.scoreSlug:store.getState().apps.scoreSlugShared		
-    let scoreDataLink = "/apps/"+this.props.match.params.AppId+ slink +"/scores/"+scoreSlugtoDownload+"/dataPreview";
+		var scoreSlugtoDownload=(store.getState().apps.scoreSlugShared==null||store.getState().apps.scoreSlugShared==undefined)?store.getState().apps.scoreSlug:store.getState().apps.scoreSlugShared;
     var showViewButton = true;
     var showDownloadButton = true;
-		if (!$.isEmptyObject(scoreSummary)) {
+		if (!$.isEmptyObject(scoreSummary) && (this.props.scoreSummary.slug === this.props.match.params.slug)) {
 			showViewButton = scoreSummary.permission_details.download_score;
 			showDownloadButton = scoreSummary.permission_details.download_score;
 			if(this.props.currentAppDetails != null && this.props.currentAppDetails.app_type == "REGRESSION"){
@@ -94,7 +92,6 @@ export class AppsScoreDetail extends React.Component {
 				});
 			}
 			if(listOfCardList && listOfCardList.length!=0){
-				let downloadURL=API+'/api/get_score_data_and_return_top_n/?url='+scoreSlugtoDownload+'&download_csv=true&count=100'
 				return (
 					<div className="side-body">
 						<div className="main-content">
@@ -104,10 +101,10 @@ export class AppsScoreDetail extends React.Component {
 										<div className="btn-toolbar pull-right">
 											<div className="btn-group summaryIcons">
 												<button type="button" className="btn btn-default" disabled = "true" title="Document Mode">
-													<i class="zmdi zmdi-hc-lg zmdi-view-web"></i>
+													<i class="fa fa-columns"></i>
 												</button>
-												<Link className="continue btn btn-default" to={scoreLink} onClick={this.updateScoreSummaryFlag.bind(this,false)}>
-													<i class="zmdi zmdi-hc-lg zmdi-close"></i>
+												<Link className="continue btn btn-default" to={`/apps/${this.props.match.params.AppId}${slink}/scores`} onClick={this.updateScoreSummaryFlag.bind(this,false)}>
+													<i class="fa fa-times"></i>
 												</Link>
 											</div>
 										</div>
@@ -120,8 +117,8 @@ export class AppsScoreDetail extends React.Component {
 											</div>
 											<div className="row">
 												<div className="col-md-12 text-right">
-													{showViewButton?<Link to={scoreDataLink} className="btn btn-primary xs-pr-10"> View </Link>:""}
-													{showDownloadButton?<a  href={downloadURL} id="download" className="btn btn-primary" download>Download</a>:""}
+													{showViewButton?<Link to={`/apps/${this.props.match.params.AppId}${slink}/scores/${scoreSlugtoDownload}/dataPreview`} className="btn btn-primary xs-pr-10"> View </Link>:""}
+													{showDownloadButton?<a  href={`${API}/api/get_score_data_and_return_top_n/?url=${scoreSlugtoDownload}&download_csv=true&count=100`} id="download" className="btn btn-primary" download>Download</a>:""}
 												</div>
 											</div>
 										</div>

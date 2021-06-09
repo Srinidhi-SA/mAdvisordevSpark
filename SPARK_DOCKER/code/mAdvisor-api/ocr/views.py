@@ -22,8 +22,9 @@ import datetime
 import os
 import random
 import ast
+import string
 from typing import Dict
-
+import zipfile
 import cv2
 import simplejson as json
 from django.db.models import Q, Sum
@@ -47,6 +48,7 @@ from ocr.query_filtering import get_listed_data, get_image_list_data, \
     get_specific_listed_data, get_reviewer_data, get_filtered_ocrimage_list, get_filtered_project_list, \
     get_userlisted_data, get_image_data
 # -----------------------MODELS-------------------------------
+from ocrflow.serializers import TaskSerializer
 
 from .ITE.scripts.info_mapping import Final_json
 from .ITE.scripts.timesheet.timesheet_modularised import timesheet_main
@@ -726,7 +728,7 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
             created_by=self.request.user,
             project__slug=projectslug,
             deleted=False
-        ).order_by('-created_at')
+        ).exclude(doctype='pdf_page').order_by('-created_at')
 
     def get_backlog_queryset(self, projectslug):
         return OCRImage.objects.filter(
@@ -734,7 +736,7 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
             created_by=self.request.user,
             project__slug=projectslug,
             deleted=False
-        ).order_by('-created_at')
+        ).exclude(doctype='pdf_page').order_by('-created_at')
 
     def get_queryset_by_status(self, projectslug, imageStatus):
         if imageStatus == 'active':
@@ -752,7 +754,8 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
             slug=self.kwargs.get('slug'),
         )
 
-    def add_image_info(self, object_details):
+    @staticmethod
+    def add_image_info(object_details):
         temp_obj = Template.objects.first()
         values = list(json.loads(temp_obj.template_classification).keys())
         value = [i.upper() for i in values]
@@ -768,6 +771,8 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
         custom_data.update(generic_labels)
         object_details["labels_list"] = [key for key in custom_data]
         object_details["image_name"] = object_details['imagefile'].split('/')[-1]
+        object_details["imagefile"] = object_details['imagefile'].replace('http', 'https')
+        object_details["generated_image"] = object_details['generated_image'].replace('http', 'https')
         object_details['custom_data'] = [{'label_name': label, 'data': data} for label, data in custom_data.items()]
         desired_response = ['name', 'imagefile', 'slug', 'generated_image', 'is_recognized', 'tasks', 'values',
                             'classification', 'custom_data', 'labels_list', 'image_name']
@@ -777,6 +782,22 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
         dynamic_shape = dynamic_cavas_size(size[:-1])
         object_details.update({'height': dynamic_shape[0], 'width': dynamic_shape[1]})
         return object_details
+
+    @staticmethod
+    def create_export_file(output_format, result):
+        if output_format == 'json':
+            content_type = "application/json"
+        elif output_format == 'xml':
+            result = json_2_xml(result).decode('utf-8')
+            content_type = "application/xml"
+        elif output_format == 'csv':
+            df = timesheet_main(json.loads(result))
+            result = df.to_csv()
+            content_type = "application/text"
+        else:
+            result = JsonResponse({'message': 'Invalid export format!'})
+            content_type = None
+        return result, content_type
 
     @list_route(methods=['post'])
     def get_s3_files(self, request, **kwargs):
@@ -851,7 +872,6 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
 
         if serializer.is_valid():
             imageset_object = serializer.save()
-            imageset_object.create()
             imageset_id = imageset_object.id
             response['imageset_serializer_data'] = serializer.data
             response['imageset_message'] = 'SUCCESS'
@@ -863,14 +883,15 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
         image_query = self.get_queryset()
         for i in image_query:
             imagename_list.append(i.name)
-
         for file in files:
-            if file.name not in invalid_images:
+            if file not in invalid_images:
                 if data['dataSourceType'] == 'S3':
                     img_data = dict()
                     django_file = File(open(os.path.join(s3_dir, file), 'rb'), name=file)
                     img_data['imagefile'] = django_file
                     img_data['doctype'] = file.split('.')[-1]
+                    img_data['identifier'] = ''.join(
+                        random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
                     img_data['projectslug'] = data['projectslug']
                     img_data['imageset'] = OCRImageset.objects.filter(id=imageset_id)
                     if file is None:
@@ -889,6 +910,8 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
                 if data['dataSourceType'] == 'fileUpload':
                     img_data['imagefile'] = file
                     img_data['doctype'] = file.name.split('.')[-1]
+                    img_data['identifier'] = ''.join(
+                        random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
                     img_data['imageset'] = OCRImageset.objects.filter(id=imageset_id)
                     if file is None:
                         img_data['name'] = img_data.get('name',
@@ -978,7 +1001,9 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
 
         if instance is None:
             return retrieve_failed_exception("File Doesn't exist.")
-        queryset = OCRImage.objects.filter(imageset=instance.imageset, doctype='pdf_page').order_by('name')
+        queryset = OCRImage.objects.filter(imageset=instance.imageset,
+                                           doctype='pdf_page',
+                                           identifier=instance.identifier).order_by('name')
         response = get_image_data(self, request, queryset, OCRImageSerializer)
         object_details = response.data['data'][0]
         object_details = self.add_image_info(object_details)
@@ -1283,20 +1308,50 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
         data = request.data
         try:
             image_queryset = OCRImage.objects.get(slug=data['slug'])
-            final_result = json.loads(image_queryset.final_result)
-            final_result_user = cleaned_final_json(final_result)
-            final_result_user = sort_json(final_result_user)
-            data['google_response'] = json.dumps(final_result_user)
-            review_end_time = image_queryset.review_end
-            if not review_end_time:
-                data['review_end'] = datetime.datetime.now()
 
-            serializer = self.get_serializer(instance=image_queryset, data=data, partial=True,
-                                             context={"request": self.request})
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse({'message': 'SUCCESS'})
-            return Response(serializer.errors)
+            doctype = image_queryset.doctype
+            if doctype == 'pdf':
+                queryset = OCRImage.objects.filter(
+                    imageset=image_queryset.imageset,
+                    doctype='pdf_page').order_by('name')
+                pdf_slugs = [item.slug for item in queryset]
+                status_list = []
+                for page_slug in pdf_slugs:
+                    pdf_queryset = OCRImage.objects.get(slug=page_slug)
+                    final_result = json.loads(pdf_queryset.final_result)
+                    final_result_user = cleaned_final_json(final_result)
+                    final_result_user = sort_json(final_result_user)
+                    data['google_response'] = json.dumps(final_result_user)
+                    review_end_time = pdf_queryset.review_end
+                    if not review_end_time:
+                        data['review_end'] = datetime.datetime.now()
+
+                    serializer = self.get_serializer(instance=pdf_queryset, data=data, partial=True,
+                                                     context={"request": self.request})
+                    if serializer.is_valid():
+                        serializer.save()
+                        status_list.append(1)
+                    else:
+                        status_list.append(0)
+                if 0 in status_list:
+                    return Response(serializer.errors)
+                else:
+                    return JsonResponse({'message': 'SUCCESS'})
+            else:
+                final_result = json.loads(image_queryset.final_result)
+                final_result_user = cleaned_final_json(final_result)
+                final_result_user = sort_json(final_result_user)
+                data['google_response'] = json.dumps(final_result_user)
+                review_end_time = image_queryset.review_end
+                if not review_end_time:
+                    data['review_end'] = datetime.datetime.now()
+
+                serializer = self.get_serializer(instance=image_queryset, data=data, partial=True,
+                                                 context={"request": self.request})
+                if serializer.is_valid():
+                    serializer.save()
+                    return JsonResponse({'message': 'SUCCESS'})
+                return Response(serializer.errors)
         except Exception as e:
             return JsonResponse({'message': 'Failed to generate final results!', 'error': str(e)})
 
@@ -1306,32 +1361,59 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
         slug = ast.literal_eval(str(data['slug']))[0]
         try:
             image_queryset = OCRImage.objects.get(slug=slug)
-            final_result = json.loads(image_queryset.final_result)
-            flag = final_result['domain_classification']
-            if flag == 'Time Sheet':
-                data['format'] = 'csv'
-                df = timesheet_main(final_result)
-                result = df.to_csv()
-                response = HttpResponse(result, content_type="application/text")
-                response['Content-Disposition'] = 'attachment; filename={}.csv'.format(data['slug'])
+            doctype = image_queryset.doctype
+            if doctype == 'pdf':
+                queryset = OCRImage.objects.filter(
+                    imageset=image_queryset.imageset,
+                    doctype='pdf_page').order_by('name')
+                pdf_slugs = [item.slug for item in queryset]
+                filenames = []
+                for page_slug in pdf_slugs:
+                    pdf_queryset = OCRImage.objects.get(slug=page_slug)
+                    name = pdf_queryset.name
+                    final_result = json.loads(pdf_queryset.final_result)
+                    flag = final_result['domain_classification']
+                    if flag == 'Time Sheet':
+                        data['format'] = 'csv'
+                        df = timesheet_main(final_result)
+                        result = df.to_csv()
+                        with open('{}.{}'.format(name, data["format"]), 'w') as f:
+                            f.write(result)
+                        filenames.append('{}.{}'.format(name, data["format"]))
+                    else:
+                        result = pdf_queryset.final_result
+                        result, _ = self.create_export_file(data['format'], result)
+                        if isinstance(result, JsonResponse):
+                            return result
+                        with open('{}.{}'.format(name, data["format"]), 'w') as f:
+                            f.write(result)
+                        filenames.append('{}.{}'.format(name, data["format"]))
+                response = HttpResponse(content_type='application/zip')
+                zip_file = zipfile.ZipFile(response, 'w')
+                for filename in filenames:
+                    zip_file.write(filename)
+                    os.remove(filename)
+                zip_file.close()
+                response['Content-Disposition'] = 'attachment; filename={}'.format(image_queryset.name)
                 return response
-            result = image_queryset.final_result
-            if data['format'] == 'json':
-                response = HttpResponse(result, content_type="application/json")
-                response['Content-Disposition'] = 'attachment; filename={}.json'.format(data['slug'])
-            elif data['format'] == 'xml':
-                result = json_2_xml(result)
-                response = HttpResponse(result, content_type="application/xml")
-                response['Content-Disposition'] = 'attachment; filename={}.xml'.format(data['slug'])
-            elif data['format'] == 'csv':
-                df = timesheet_main(final_result)
-                result = df.to_csv()
-                # result = json_2_csv(json.loads(result))
-                response = HttpResponse(result, content_type="application/text")
-                response['Content-Disposition'] = 'attachment; filename={}.csv'.format(data['slug'])
             else:
-                response = JsonResponse({'message': 'Invalid export format!'})
-            return response
+                final_result = json.loads(image_queryset.final_result)
+                flag = final_result['domain_classification']
+                if flag == 'Time Sheet':
+                    data['format'] = 'csv'
+                    df = timesheet_main(final_result)
+                    result = df.to_csv()
+                    response = HttpResponse(result, content_type="application/text")
+                    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(data['slug'])
+                    return response
+                result = image_queryset.final_result
+                response, content_type = self.create_export_file(data['format'], result)
+                if isinstance(result, JsonResponse):
+                    return result
+                response = HttpResponse(response, content_type=content_type)
+                response['Content-Disposition'] = 'attachment; filename={}.{}'.format(image_queryset.name,
+                                                                                      data["format"])
+                return response
         except Exception as e:
             return JsonResponse({'message': 'Failed to export data!', 'error': str(e)})
 
@@ -1410,6 +1492,32 @@ class OCRImageView(viewsets.ModelViewSet, viewsets.GenericViewSet):
         return Response({
             "data": set(item['name'] for item in serializer.data)
         })
+
+    @list_route(methods=['get'])
+    def get_task_id(self, request, *args, **kwargs):
+        slug = self.request.query_params.get('slug')
+        pdfinstance = OCRImage.objects.get(slug=slug)
+
+        if pdfinstance is None:
+            return retrieve_failed_exception("File Doesn't exist.")
+        else:
+            task_id = []
+            ocrQueryset = OCRImage.objects.filter(
+                identifier=pdfinstance.identifier,
+                doctype='pdf_page'
+            )
+            for object in ocrQueryset:
+                reviewObject = ReviewRequest.objects.get(ocr_image_id=object.id)
+                task = Task.objects.get(
+                    object_id=reviewObject.id,
+                    is_closed=False,
+                    assigned_user_id=self.request.user.id
+                )
+                task_id.append(task.id)
+            return JsonResponse({
+                "message": "SUCCESS",
+                "task_ids": task_id
+            })
 
 
 class OCRImagesetView(viewsets.ModelViewSet, viewsets.GenericViewSet):

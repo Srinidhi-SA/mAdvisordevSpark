@@ -1,6 +1,6 @@
 import React from "react";
 import HeatMap from '../../helpers/heatmap';
-import {generateHeatMapHeaders,generateHeatMapRows,generateTextHeatMapRows} from "../../helpers/helper";
+import {generateHeatMapHeaders,generateTextHeatMapRows} from "../../helpers/helper";
 
 export class TextHeatMapTable extends React.Component {
   constructor(){

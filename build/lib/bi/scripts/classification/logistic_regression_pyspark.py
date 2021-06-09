@@ -29,7 +29,7 @@ from pyspark.ml.evaluation import BinaryClassificationEvaluator
 from pyspark.ml.feature import IndexToString
 from pyspark.sql.functions import udf,col
 from pyspark.sql.types import *
-
+import pyspark.sql.functions as F
 from pyspark.ml.classification import LogisticRegression, OneVsRest
 from pyspark2pmml import PMMLBuilder
 
@@ -225,9 +225,9 @@ class LogisticRegressionPysparkScript(object):
             else:
                 if automl_enable:
                     paramGrid = ParamGridBuilder()\
-                    .addGrid(clf.regParam, [0.1, 0.01]) \
-                    .addGrid(clf.fitIntercept, [False, True])\
-                    .addGrid(clf.elasticNetParam, [0.0, 0.5, 1.0])\
+                    .addGrid(clf.regParam, [0.2, 0.1,]) \
+                    .addGrid(clf.fitIntercept, [True, False])\
+                    .addGrid(clf.elasticNetParam, [0.2, 0.5])\
                     .build()
                 crossval = CrossValidator(estimator=estimator,
                               estimatorParamMaps=paramGrid,
@@ -271,7 +271,8 @@ class LogisticRegressionPysparkScript(object):
         modelmanagement_={param[0].name:param[1] for param in bestModel.stages[2].extractParamMap().items()}
         MLUtils.save_pipeline_or_model(bestModel,model_filepath)
         predsAndLabels = prediction.select(['prediction', 'label']).rdd.map(tuple)
-        label_classes = prediction.select("label").distinct().collect()
+        # label_classes = prediction.select("label").distinct().collect()
+        # label_classes = prediction.agg((F.collect_set('label').alias('label'))).first().asDict()['label']
         #results = transformed.select(["prediction","label"])
         # if len(label_classes) > 2:
         #     metrics = MulticlassMetrics(predsAndLabels)
@@ -311,9 +312,13 @@ class LogisticRegressionPysparkScript(object):
             gain_lift_ks_obj = GainLiftKS(pys_df, 'y_prob_for_eval', 'prediction', 'label', posLabel, self._spark)
             gain_lift_KS_dataframe = gain_lift_ks_obj.Run().toPandas()
         except:
-            print("gain chant failed")
-            pass
-
+            try:
+                temp_df = pys_df.toPandas()
+                gain_lift_ks_obj = GainLiftKS(temp_df, 'y_prob_for_eval', 'prediction', 'label', posLabel, self._spark)
+                gain_lift_KS_dataframe = gain_lift_ks_obj.Rank_Ordering()
+            except:
+                print("gain chant failed")
+                gain_lift_KS_dataframe = None
 
 
 
@@ -586,7 +591,7 @@ class LogisticRegressionPysparkScript(object):
                                                             self._scriptStages, self._slug, "completion", "info",
                                                             display=True, emptyBin=False, customMsg=None,
                                                             weightKey="total")
-
+        print("\n\n")
 
     def Predict(self):
         self._scriptWeightDict = self._dataframe_context.get_ml_model_prediction_weight()

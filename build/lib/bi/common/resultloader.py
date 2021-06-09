@@ -494,7 +494,7 @@ class ResultSetter(object):
         self.decisionTreeNode['decisionTree']=decision_tree
     def set_decision_tree_node_classifier(self,node,decision_tree,maxdepth):
         self.decisionTreeNode["name"] = "Prediction"
-        self.decisionTreeNode["slug"] = self.df_context.get_metadata_slugs()[0]
+        self.decisionTreeNode["slug"] = "prediction_maxdepth"
         self.decisionTreeNode['Depth Of Tree '+str(maxdepth)] = json.loads(CommonUtils.convert_python_object_to_json(node))
         self.decisionTreeNode['Depth Of Tree '+str(maxdepth)]['decisionTree'] = decision_tree
         self.decisionTreeNode['Depth Of Tree '+str(maxdepth)]["name"] = 'Depth Of Tree '+str(maxdepth)

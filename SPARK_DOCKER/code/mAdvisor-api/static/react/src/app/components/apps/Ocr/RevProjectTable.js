@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {saveRevDocumentPageFlag,storeProjectSearchElem, getOcrProjectsList,selectedProjectDetails,projectTablePagesize } from '../../../actions/ocrActions';
 import { connect } from "react-redux";
 import { Pagination } from "react-bootstrap";
@@ -36,20 +36,17 @@ export class RevProjectTable extends React.Component {
    }
 
 
-   handlePagination=(pageNo)=> {
-      this.props.dispatch(getOcrProjectsList(pageNo))
-    }
+   handlePagination=(pageNo) => this.props.dispatch(getOcrProjectsList(pageNo))
     handlePageRow=(e)=>{
-      let selectedVal= e.target.value;
-      this.props.dispatch(projectTablePagesize(selectedVal));
+      this.props.dispatch(projectTablePagesize(e.target.value));
       this.props.dispatch(getOcrProjectsList())
     }
-    handleSearchBox(){
+    handleSearchBox = ()=>{
       var searchElememt=document.getElementById('searchRevProject').value.trim()
       this.props.dispatch(storeProjectSearchElem(searchElememt))
       this.props.dispatch(getOcrProjectsList())
     }
-    clearSearchElement(){
+    clearSearchElement = () => {
       document.getElementById('searchRevProject').value=""
       this.props.dispatch(storeProjectSearchElem(''));
       this.props.dispatch(getOcrProjectsList())
@@ -134,8 +131,8 @@ export class RevProjectTable extends React.Component {
             <div className="form-inline">
             {(getUserDetailsOrRestart.get().userRole == "ReviewerL1" || getUserDetailsOrRestart.get().userRole == "ReviewerL2")?
               <span className="search-wrapper">
-                <input className="form-control btn-rounded xs-mb-20" type="text" title="Search Project..." id="searchRevProject" onKeyUp={this.handleSearchBox.bind(this)}  placeholder="Search project..."></input>
-                <button className="close-icon"  style={{position:"absolute",left:'165px',top:'-2px'}}  onClick={this.clearSearchElement.bind(this)}type="reset"></button>
+                <input className="form-control btn-rounded xs-mb-20" type="text" title="Search Project..." id="searchRevProject" onKeyUp={this.handleSearchBox}  placeholder="Search project..."></input>
+                <button className="close-icon"  style={{position:"absolute",left:'165px',top:'-2px'}}  onClick={this.clearSearchElement}type="reset"></button>
                
                 </span>:""}
             </div>

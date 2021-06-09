@@ -2,13 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { Button, Modal } from "react-bootstrap";
 import {
-  openBinsOrLevelsModalAction,
-  closeBinsOrLevelsModalAction,
-  openTransformColumnModalAction,
-  closeTransformColumnModalAction,
   selectedBinsOrLevelsTabAction,
   saveBinLevelTransformationValuesAction,
   saveTopLevelValuesAction,
+  showBinsLevelsTransformModalAction,
 } from "../../actions/featureEngineeringActions";
 import { getRemovedVariableNames } from "../../helpers/helper.js"
 import { getDataSetPreview, getValueOfFromParam } from "../../actions/dataActions";
@@ -23,8 +20,8 @@ import { searchTable, sortTable } from "../../actions/dataCleansingActions";
   return {
     dataPreview: store.datasets.dataPreview,
     datasets: store.datasets,
-    binsOrLevelsShowModal: store.datasets.binsOrLevelsShowModal,
-    transferColumnShowModal: store.datasets.transferColumnShowModal,
+    showBinsLevelsTransformModal: store.datasets.showBinsLevelsTransformModal,
+    selectedButton: store.datasets.selectedButton,
     selectedItem: store.datasets.selectedItem,
     apps_regression_modelName: store.apps.apps_regression_modelName,
     currentAppDetails: store.apps.currentAppDetails,
@@ -44,9 +41,6 @@ export class FeatureEngineering extends React.Component {
       filterElement:""
     };
     this.state.topLevelRadioButton = "false";
-    this.pickValue = this.pickValue.bind(this);
-    this.clearBinsAndIntervals = this.clearBinsAndIntervals.bind(this);
-    this.updateLevelsData = this.updateLevelsData.bind(this);
   }
 
   componentWillMount() {
@@ -301,6 +295,8 @@ export class FeatureEngineering extends React.Component {
     }
     if (event.target.type == "checkbox") {
       this.state[this.props.selectedItem.slug][actionType][event.target.name] = event.target.checked;
+      if(event.target.name === "encoding_dimensions" && !event.target.checked)
+        this.state[this.props.selectedItem.slug][actionType]["encoding_type"] = ""
     } else {
       this.state[this.props.selectedItem.slug][actionType][event.target.name] = event.target.value;
     }
@@ -323,7 +319,7 @@ export class FeatureEngineering extends React.Component {
     return []
   }
 
-  handleCreateClicked(actionType, event) {
+  handleCreateClicked(actionType) {
     if (actionType == "binData") {
       this.validateBinData(actionType);
     } else if (actionType == "levelData") {
@@ -333,56 +329,47 @@ export class FeatureEngineering extends React.Component {
     } else {
       var dataToSave = JSON.parse(JSON.stringify(this.state[this.props.selectedItem.slug][actionType]));
       this.props.dispatch(saveBinLevelTransformationValuesAction(this.props.selectedItem.slug, actionType, dataToSave));
-      this.closeBinsOrLevelsModal();
-      this.closeTransformColumnModal();
+      this.openCloseModal(false,{},"")
     }
   }
 
   validateBinData(actionType) {
     var slugData = this.state[this.props.selectedItem.slug];
-    if (slugData != undefined && this.state[this.props.selectedItem.slug][actionType] != undefined) {
+    if(slugData != undefined && this.state[this.props.selectedItem.slug][actionType] != undefined) {
       var binData = this.state[this.props.selectedItem.slug][actionType];
-      if (binData.selectBinType == undefined || binData.selectBinType == "none") {
-        $("#fileErrorMsg").removeClass("visibilityHidden");
-        $("#fileErrorMsg").html("Please select type of binning");
+      if(binData.selectBinType == undefined || binData.selectBinType == "none" || binData.selectBinType === "") {
+        document.getElementById("fileErrorMsg").innerText = "Please select type of binning";
         $("select[name='selectBinType']").focus();
         return;
-      } else {
-        if (binData.selectBinType == "create_equal_sized_bins") {
-          if (binData.numberofbins == undefined || binData.numberofbins == null || binData.numberofbins == "") {
-            $("#fileErrorMsg").removeClass("visibilityHidden");
-            $("#fileErrorMsg").html("Please enter number of bins");
-            $("input[name='numberofbins']").focus();
-            return;
-          }
-          else if (parseInt(binData.numberofbins) <= 0) {
-            $("#fileErrorMsg").removeClass("visibilityHidden");
-            $("#fileErrorMsg").html("Please enter number greater than zero");
-            $("input[name='numberofbins']").focus();
-            return;
-          }
-        } else if (binData.selectBinType == "create_custom_bins") {
-          if (binData.specifyintervals == undefined || binData.specifyintervals == null || binData.specifyintervals == "") {
-            $("#fileErrorMsg").removeClass("visibilityHidden");
-            $("#fileErrorMsg").html("Please enter 'Specify Intervals' field");
-            $("input[name='specifyintervals']").focus();
-            return;
-          }
+      }
+      if(binData.selectBinType == "create_equal_sized_bins"){
+        if(binData.numberofbins == undefined || binData.numberofbins == null || binData.numberofbins == "") {
+          document.getElementById("fileErrorMsg").innerText = "Please enter number of bins";
+        document.getElementById("numberofbins").focus();
+          return;
+        }
+        else if(parseInt(binData.numberofbins) <= 0) {
+          document.getElementById("fileErrorMsg").innerText = "Please enter number greater than zero";
+        document.getElementById("numberofbins").focus();
+          return;
         }
       }
+      if(binData.selectBinType == "create_custom_bins" && (binData.specifyintervals == undefined || binData.specifyintervals == null || binData.specifyintervals == "") ){
+        document.getElementById("fileErrorMsg").innerText = "Please enter 'Specify Intervals' field";
+        document.getElementById("specifyintervals").focus();
+        return;
+      }
+      
       if (binData.newcolumnname == undefined || binData.newcolumnname == null || binData.newcolumnname == "") {
-        $("#fileErrorMsg").removeClass("visibilityHidden");
-        $("#fileErrorMsg").html("Please enter the new column name");
-        $("input[name='newcolumnname']").focus();
+        document.getElementById("fileErrorMsg").innerText = "Please enter the new column name";
+        document.getElementById("newColName").focus();
         return;
       }
       var dataToSave = JSON.parse(JSON.stringify(this.state[this.props.selectedItem.slug][actionType]));
       this.props.dispatch(saveBinLevelTransformationValuesAction(this.props.selectedItem.slug, actionType, dataToSave));
-      this.closeBinsOrLevelsModal();
-      this.closeTransformColumnModal();
-    } else {
-      $("#fileErrorMsg").removeClass("visibilityHidden");
-      $("#fileErrorMsg").html("Please enter Mandatory fields * ");
+      this.openCloseModal(false,{},"")
+    }else{
+      document.getElementById("fileErrorMsg").innerText = "Please enter Mandatory fields * ";
     }
   }
 
@@ -392,21 +379,18 @@ export class FeatureEngineering extends React.Component {
       let totalOptions=0;
       lvlar = this.state[this.props.selectedItem.slug];
       if(lvlar === undefined){
-        $("#fileErrorMsg").removeClass("visibilityHidden");
-        $("#fileErrorMsg").html("Please enter some values");
+        document.getElementById("fileErrorMsg").innerText = "Please enter some values";
         return false;
       }
       var lvl = lvlar.levelData;
       let lvllen=lvl.length;
       for(i in lvl){ 
         if(lvl[i].inputValue == "" || undefined){
-          $("#fileErrorMsg").removeClass("visibilityHidden");
-          $("#fileErrorMsg").html("Please enter the new column name");
-          $("input[name='newcolumnname']").focus();
+          document.getElementById("fileErrorMsg").innerText = "Please enter the new column name";
+          document.getElementById("Level#"+(parseInt(i)+1)).focus()
           return;
         }else if(lvl[i].multiselectValue == "" || undefined){
-          $("#fileErrorMsg").removeClass("visibilityHidden");
-          $("#fileErrorMsg").html("Please Select Options");
+          document.getElementById("fileErrorMsg").innerText = "Please Select Options";
           $("input[name='multiselect-demo']").focus();
           return;
         }
@@ -417,8 +401,7 @@ export class FeatureEngineering extends React.Component {
       var noOfLvls = this.props.selectedItem.columnStats.filter(lc=>lc.name=="numberOfUniqueValues").map(i=>i.value)[0];
       var lvlCount = noOfLvls-totalOptions+lvllen;
       if(lvlCount>Math.min(200,rowCount)){
-        $("#fileErrorMsg").removeClass("visibilityHidden");
-        $("#fileErrorMsg").html("Add more levels so that total level count is less than "+ Math.min(200,rowCount));
+        document.getElementById("fileErrorMsg").innerText = "Add more levels so that total level count is less than "+ Math.min(200,rowCount);
         return;
       }
     }
@@ -431,20 +414,16 @@ export class FeatureEngineering extends React.Component {
           var startDate = levelData[i].startDate;
           var endDate = levelData[i].endDate;
           var inputValue = levelData[i].inputValue;
-          var multiselect = levelData[i].multiselectValue;
           if((startDate == "" || undefined) || (endDate == "" || undefined) ){
-            $("#fileErrorMsg").removeClass("visibilityHidden");
-            $("#fileErrorMsg").html("Enter Dates");
+            document.getElementById("fileErrorMsg").innerText = "Enter Dates";
             return;
           }
           else if ((Date.parse(startDate) > Date.parse(endDate))) {
-            $("#fileErrorMsg").removeClass("visibilityHidden");
-            $("#fileErrorMsg").html("Start Date should be before End Date");
+            document.getElementById("fileErrorMsg").innerText = "Start Date should be before End Date";
             return;
           }
           else if (inputValue == undefined || inputValue == null || inputValue == "") {
-            $("#fileErrorMsg").removeClass("visibilityHidden");
-            $("#fileErrorMsg").html("Please enter level name");
+            document.getElementById("fileErrorMsg").innerText = "Please enter level name";
             $("input[name='newcolumnname']").focus();
             return;
           }
@@ -452,11 +431,9 @@ export class FeatureEngineering extends React.Component {
       }
       var dataToSave = JSON.parse(JSON.stringify(this.state[this.props.selectedItem.slug][actionType]));
       this.props.dispatch(saveBinLevelTransformationValuesAction(this.props.selectedItem.slug, actionType, dataToSave));
-      this.closeBinsOrLevelsModal();
-      this.closeTransformColumnModal();
+      this.openCloseModal(false,{},"")
     } else {
-      $("#fileErrorMsg").removeClass("visibilityHidden");
-      $("#fileErrorMsg").html("Please enter new level ");
+      document.getElementById("fileErrorMsg").innerText = "Please enter new level ";
     }
   }
 
@@ -467,117 +444,94 @@ export class FeatureEngineering extends React.Component {
 
       if(this.props.selectedItem.columnType == "measure"){
         if(!$('#replace_values_with').prop('checked') && !$('#feature_scaling').prop('checked') && !$('#variable_transformation').prop('checked')){
-          $("#fileErrorMsg").removeClass("visibilityHidden");
-          $("#fileErrorMsg").html("No fields Selected");
+          document.getElementById("fileErrorMsg").innerText = "No fields Selected";
         }else{
           if (transformationData.replace_values_with == true || $('#replace_values_with').prop('checked') ) {
             if (transformationData.replace_values_with_input == undefined || transformationData.replace_values_with_input == null || transformationData.replace_values_with_input == "" || $('#replace_values_with_input').val() == "") {
-              $("#fileErrorMsg").removeClass("visibilityHidden");
-              $("#fileErrorMsg").html("Enter value");
+              document.getElementById("fileErrorMsg").innerText = "Enter value";
               $("input[name='replace_values_with_input']").focus();
               return;
             }
             else if (transformationData.replace_values_with_selected == undefined || transformationData.replace_values_with_selected == null || transformationData.replace_values_with_selected == "" || $('#replace_values_with_selected').val() == "" || $('#replace_values_with_selected').val() == "None") {
-              $("#fileErrorMsg").removeClass("visibilityHidden");
-              $("#fileErrorMsg").html("Select value to replace with");
+              document.getElementById("fileErrorMsg").innerText = "Select value to replace with";
               $("select[name='replace_values_with_selected']").focus();
               return;
-            }else
-              $("#fileErrorMsg").addClass("visibilityHidden");
+          }
           }
 
             if((transformationData.feature_scaling == true) || $('#feature_scaling').prop('checked')){
               if (transformationData.perform_standardization_select == undefined || transformationData.perform_standardization_select == null || transformationData.perform_standardization_select == "" || $('#perform_standardization_select').val() == "" || $('#perform_standardization_select').val() == "None") {
-                $("#fileErrorMsg").removeClass("visibilityHidden");
-                $("#fileErrorMsg").html("Select value for feature scaling");
+                document.getElementById("fileErrorMsg").innerText = "Select value for feature scaling";
                 $("select[name='perform_standardization_select']").focus();
                 return;
-              }else{
-                $("#fileErrorMsg").addClass("visibilityHidden");
               }
             }
 
           if (transformationData.variable_transformation == true || $('#variable_transformation').prop('checked')) {
             if (transformationData.variable_transformation_select == undefined || transformationData.variable_transformation_select == null || transformationData.variable_transformation_select == ""|| $('#variable_transformation_select').val() == "" || $('#variable_transformation_select').val() == "None") {
-              $("#fileErrorMsg").removeClass("visibilityHidden");
-              $("#fileErrorMsg").html("Select value for variable transformation");
+              document.getElementById("fileErrorMsg").innerText = "Select value for variable transformation";
               $("select[name='variable_transformation_select']").focus();
               return;
-            }else
-              $("#fileErrorMsg").addClass("visibilityHidden");
+            }
           }
 
           var dataToSave = JSON.parse(JSON.stringify(this.state[this.props.selectedItem.slug][actionType]));
           this.props.dispatch(saveBinLevelTransformationValuesAction(this.props.selectedItem.slug, actionType, dataToSave));
-          dataToSave.encoding_dimensions?dataToSave.encoding_type=dataToSave.encoding_type:dataToSave.encoding_type="";
-          this.closeBinsOrLevelsModal();
-          this.closeTransformColumnModal();
+          dataToSave.encoding_type = dataToSave.encoding_dimensions?dataToSave.encoding_type:"";
+          this.openCloseModal(false,{},"")
         }
       }
       else if(this.props.selectedItem.columnType == "dimension"){
         if(!document.getElementById("encoding_dimensions").checked && !document.getElementById("return_character_count").checked && !document.getElementById("is_custom_string_in").checked){
-          $("#fileErrorMsg").removeClass("visibilityHidden");
-          $("#fileErrorMsg").html("No fields Selected");
+          document.getElementById("fileErrorMsg").innerText = "No fields Selected";
         }else{
           if (transformationData.encoding_dimensions == true || document.getElementById("encoding_dimensions").checked) {
             if (transformationData.encoding_type == undefined || transformationData.encoding_type == null || transformationData.encoding_type == "" || $("#encoding_type").val() == "") {
-              $("#fileErrorMsg").removeClass("visibilityHidden");
-              $("#fileErrorMsg").html("Select Encoding Type");
+              document.getElementById("fileErrorMsg").innerText = "Select Encoding Type";
               $("select[name='encoding_type']").focus();
               return;
-            }else
-              $("#fileErrorMsg").addClass("visibilityHidden");
+            }
           }
 
           if (transformationData.is_custom_string_in == true || document.getElementById("is_custom_string_in").checked) {
             if (transformationData.is_custom_string_in_input == undefined || transformationData.is_custom_string_in_input == null || transformationData.is_custom_string_in_input == "" || $("input[name='is_custom_string_in_input']").val() == "") {
-              $("#fileErrorMsg").removeClass("visibilityHidden");
-              $("#fileErrorMsg").html("Enter value for custom String");
+              document.getElementById("fileErrorMsg").innerText = "Enter value for custom String";
               $("input[name='is_custom_string_in_input']").focus();
               return;
-            }else
-              $("#fileErrorMsg").addClass("visibilityHidden");
+            }
           }
           var dataToSave = JSON.parse(JSON.stringify(this.state[this.props.selectedItem.slug][actionType]));
           this.props.dispatch(saveBinLevelTransformationValuesAction(this.props.selectedItem.slug, actionType, dataToSave));
-          dataToSave.encoding_dimensions?dataToSave.encoding_type=dataToSave.encoding_type:dataToSave.encoding_type="";
-          this.closeBinsOrLevelsModal();
-          this.closeTransformColumnModal();
+          dataToSave.encoding_type = dataToSave.encoding_dimensions?dataToSave.encoding_type:"";
+          this.openCloseModal(false,{},"")
         }
       }else if(this.props.selectedItem.columnType == "datetime"){
         if(!document.getElementById("extract_time_feature").checked && !document.getElementById("time_since").checked && !document.getElementById("is_date_weekend").checked ){
-          $("#fileErrorMsg").removeClass("visibilityHidden");
-          $("#fileErrorMsg").html("No fields Selected");
+          document.getElementById("fileErrorMsg").innerText = "No fields Selected";
         }else{
           if (transformationData.extract_time_feature == true || document.getElementById("extract_time_feature").checked) {
             if (transformationData.extract_time_feature_select == undefined || transformationData.extract_time_feature_select == null || transformationData.extract_time_feature_select == "" || $("select[name='extract_time_feature_select']").val() == "" ){
-              $("#fileErrorMsg").removeClass("visibilityHidden");
-              $("#fileErrorMsg").html("Select value for time feature");
+              document.getElementById("fileErrorMsg").innerText = "Select value for time feature";
               $("select[name='extract_time_feature_select']").focus();
               return;
-            }else
-              $("#fileErrorMsg").addClass("visibilityHidden");
+            }
           }
 
           if (transformationData.time_since == true || document.getElementById("time_since").checked) {
             if (transformationData.time_since_input == undefined || transformationData.time_since_input == null || transformationData.time_since_input == "" || $("input[name='time_since_input']").val()== "") {
-              $("#fileErrorMsg").removeClass("visibilityHidden");
-              $("#fileErrorMsg").html("Enter value for Time Since");
+              document.getElementById("fileErrorMsg").innerText = "Enter value for Time Since";
               $("input[name='time_since_input']").focus();
               return;
-            }else
-              $("#fileErrorMsg").addClass("visibilityHidden");
+            }
           }
           var dataToSave = JSON.parse(JSON.stringify(this.state[this.props.selectedItem.slug][actionType]));
           this.props.dispatch(saveBinLevelTransformationValuesAction(this.props.selectedItem.slug, actionType, dataToSave));
-          dataToSave.encoding_dimensions?dataToSave.encoding_type=dataToSave.encoding_type:dataToSave.encoding_type="";
-          this.closeBinsOrLevelsModal();
-          this.closeTransformColumnModal();
+          dataToSave.encoding_type = dataToSave.encoding_dimensions?dataToSave.encoding_type:"";
+          this.openCloseModal(false,{},"")
         }
       }
     }else{
-      $("#fileErrorMsg").removeClass("visibilityHidden");
-      $("#fileErrorMsg").html("Please enter some values");
+      document.getElementById("fileErrorMsg").innerText = "Please enter some values";
       return false;
     }
   }
@@ -604,7 +558,6 @@ export class FeatureEngineering extends React.Component {
       return false;
     }
     else{
-      $("#binErrorMsg").addClass("visibilityHidden");
       $("#binErrorMsg").html("");
       this.state.topLevelInput = event.target.value;
       this.saveTopLevelValues();
@@ -614,7 +567,7 @@ export class FeatureEngineering extends React.Component {
     this.props.dispatch(saveTopLevelValuesAction(this.state.topLevelRadioButton, this.state.topLevelInput));
     this.setState({ state: this.state });
   }
-  handleProcedClicked(dataPreview,event) {
+  handleProcedClicked(dataPreview) {
     var datasetRow = dataPreview.meta_data.uiMetaData.metaDataUI[0].value
     if(this.props.convertUsingBin === "true" && document.getElementById("flight_number").value === "" ){
       bootbox.alert(statusMessages("warning", "Please resolve errors", "small_mascot"));
@@ -633,9 +586,7 @@ export class FeatureEngineering extends React.Component {
   }
 
   handleBack=()=>{
-    const appId = this.props.match.params.AppId;
-    const slug = this.props.match.params.slug;
-    this.props.history.replace(`/apps/${appId}/analyst/models/data/${slug}/createModel/dataCleansing?from=feature_Engineering`);
+    this.props.history.replace(`/apps/${this.props.match.params.AppId}/analyst/models/data/${this.props.match.params.slug}/createModel/dataCleansing?from=feature_Engineering`);
   }
   filterFeTable(e){
     var table = document.getElementById("fetable");
@@ -668,7 +619,7 @@ export class FeatureEngineering extends React.Component {
   }
 
   render() {
-    var feHtml = "", binsOrLevelsPopup = "", transformColumnPopup = "", binOrLevels = "", binOrLevelData = "";
+    var feHtml = "", binOrLevelsOrTransform = "", binOrLevelOrTransformData = "";
     var removedVariables = getRemovedVariableNames(this.props.datasets);
     var numberOfSelectedMeasures = 0, numberOfSelectedDimensions = 0;
 
@@ -696,69 +647,53 @@ export class FeatureEngineering extends React.Component {
           <tr key={key} className={('all ' + item.columnType)}>
             <td className="text-left"> {item.name}</td>
             <td> {item.columnType.charAt(0).toUpperCase() + item.columnType.slice(1)}</td>
-            <td> <Button className= "btn btn-cst_button" id={`bin_${item.name}`} onClick={this.openBinsOrLevelsModal.bind(this, item)} disabled={this.isBinningOrLevelsDisabled(item)} >Create Bins or Levels</Button></td>
-            <td> <Button className= "btn btn-cst_button" id={`tranform_${item.name}`} onClick={this.openTransformColumnModal.bind(this, item)} >Transform</Button></td>
+            <td> <Button className= "btn btn-cst_button" id={`bin_${item.name}`} onClick={this.openCloseModal.bind(this,true,item,"BinBtn")} disabled={this.isBinningOrLevelsDisabled(item)} >Create Bins or Levels</Button></td>
+            <td> <Button className= "btn btn-cst_button" id={`tranform_${item.name}`} onClick={this.openCloseModal.bind(this,true,item,"TransformBtn")} >Transform</Button></td>
           </tr>
         );
       })
     }
-    if (this.props.selectedItem.columnType == "measure") {
-      binOrLevels = <Bins parentPickValue={this.pickValue} clearBinsAndIntervals={this.clearBinsAndIntervals} />
-      binOrLevelData = "binData";
-    }else if (this.props.selectedItem.columnType == "dimension") {
-      binOrLevels = <Levels parentPickValue={this.pickValue} parentUpdateLevelsData={this.updateLevelsData} levelsData={this.getLevelsData()} />
-      binOrLevelData = "levelData";
-    }else {
-      binOrLevels = <Levels parentPickValue={this.pickValue} parentUpdateLevelsData={this.updateLevelsData} levelsData={this.getLevelsData()} />
-      binOrLevelData = "levelData";
+    let popUp = "", title = "";
+    if(this.props.selectedButton==="BinBtn"){
+      if(this.props.selectedItem.columnType == "measure"){
+        binOrLevelsOrTransform = <Bins parentPickValue={this.pickValue.bind(this)} clearBinsAndIntervals={this.clearBinsAndIntervals.bind(this)} />
+        binOrLevelOrTransformData = "binData";
+        title = "Create Bins"
+      }else{
+        binOrLevelsOrTransform = <Levels parentUpdateLevelsData={this.updateLevelsData.bind(this)} levelsData={this.getLevelsData()} />
+        binOrLevelOrTransformData = "levelData";
+        title = "Create Levels"
+      }
+    }else if(this.props.selectedButton==="TransformBtn"){
+      binOrLevelsOrTransform = <Transform parentPickValue={this.pickValue.bind(this)} />
+      binOrLevelOrTransformData = "transformationData"
+      title = "Transform column";
     }
 
-    binsOrLevelsPopup = (
-      <div id="binsOrLevels" role="dialog" className="modal fade modal-colored-header">
-        <Modal show={this.props.binsOrLevelsShowModal} onHide={this.closeBinsOrLevelsModal.bind(this)} dialogClassName="modal-colored-header modal-md" style={{ overflow: 'inherit' }} >
+    popUp = (
+      <div role="dialog" className="modal fade modal-colored-header">
+        <Modal show={this.props.showBinsLevelsTransformModal} onHide={this.openCloseModal.bind(this,false,{},"")} dialogClassName="modal-colored-header modal-md" backdrop="static">
           <Modal.Header closeButton>
-            <h3 className="modal-title">Create {(this.props.selectedItem.columnType == "measure") ? "Bins" : "Levels"}</h3>
+            <h3 className="modal-title">{title}</h3>
           </Modal.Header>
           <Modal.Body>
-            <div>
-              <h4>What you want to do?</h4>
-              {binOrLevels}
-            </div>
-            <div id="errorMsgs" className="text-danger"></div>
+            {this.props.selectedButton === "BinBtn" && <h4>What you want to do?</h4> }
+            {binOrLevelsOrTransform}
           </Modal.Body>
           <Modal.Footer>
-            <Button id="binsCancel" onClick={this.closeBinsOrLevelsModal.bind(this)}>Cancel</Button>
-            <Button id="binsCreate" bsStyle="primary" form="binsForm" content="Submit" value="Submit" onClick={this.handleCreateClicked.bind(this, binOrLevelData)}>Create</Button>
+            <div className="text-danger" id="fileErrorMsg" style={{float:"left"}}></div>
+            <Button id="cancel"  onClick={this.openCloseModal.bind(this,false,{},"")}>Cancel</Button>
+            <Button id="create"  bsStyle="primary" onClick={this.handleCreateClicked.bind(this,binOrLevelOrTransformData)}>Create</Button>
           </Modal.Footer>
         </Modal>
       </div>
-    )
-    transformColumnPopup = (
-      <div class="col-md-3 xs-mb-15 list-boxes" >
-        <div id="transformColumnPopup" role="dialog" className="modal fade modal-colored-header">
-          <Modal show={this.props.transferColumnShowModal} onHide={this.closeTransformColumnModal.bind(this)} dialogClassName="modal-colored-header">
-            <Modal.Header closeButton>
-              <h3 className="modal-title">Transform {this.props.selectedItem.columnType} column</h3>
-            </Modal.Header>
-            <Modal.Body>
-              <Transform parentPickValue={this.pickValue} />
-            </Modal.Body>
-            <Modal.Footer>
-              <Button id="transformCancel"  onClick={this.closeTransformColumnModal.bind(this)}>Cancel</Button>
-              <Button id="transformCreate"  bsStyle="primary" onClick={this.handleCreateClicked.bind(this, "transformationData")}>Create</Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-      </div>
-    )
-
+    );
     return (
         <div className="side-body">
           <div class="page-head">
             <h3 class="xs-mt-0 xs-mb-0 text-capitalize">Feature Engineering</h3>
           </div>
-          {binsOrLevelsPopup}
-          {transformColumnPopup}
+          {popUp}
           <div className="main-content">
             <div class="row">
               <div class="col-md-12">
@@ -844,21 +779,9 @@ export class FeatureEngineering extends React.Component {
     );
   }
 
-  openBinsOrLevelsModal(item) {
-    this.props.dispatch(openBinsOrLevelsModalAction(item));
-   }
-
-  closeBinsOrLevelsModal(event) {
-    this.props.dispatch(closeBinsOrLevelsModalAction());
+  openCloseModal(flag,item,btn){
+    this.props.dispatch(showBinsLevelsTransformModalAction(flag,item,btn));
   }
-  openTransformColumnModal(item) {
-    this.props.dispatch(openTransformColumnModalAction(item));
-  }
-
-  closeTransformColumnModal() {
-    this.props.dispatch(closeTransformColumnModalAction());
-  }
-
   handleSelect(selectedKey) {
     this.props.dispatch(selectedBinsOrLevelsTabAction(selectedKey));
   }

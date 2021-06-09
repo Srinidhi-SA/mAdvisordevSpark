@@ -1,6 +1,5 @@
 import React from "react";
 import {connect} from "react-redux";
-import store from "../../store";
 import {STATIC_URL} from "../../helpers/env.js";
 import { Scrollbars } from 'react-custom-scrollbars';
 import {getScoreSummaryInCSV,getAppDetails,fetchScoreSummaryCSVSuccess} from "../../actions/appActions";
@@ -27,9 +26,7 @@ export class DataPreviewLeftPanel extends React.Component {
     }
 
     render() {
-        var modeSelected= store.getState().apps.analystModeSelectedFlag?'/analyst' :'/autoML'
-		var scoreSlug=(store.getState().apps.scoreSlug!=null||store.getState().apps.scoreSlug!=undefined)?store.getState().apps.scoreSlug:this.props.match.params.slug;
-        var scoreLink = "/apps/" + this.props.match.params.AppId + modeSelected+"/scores/" + scoreSlug;
+        var scoreLink = this.props.match.url.slice(0, this.props.match.url.lastIndexOf('/'));
         const scoreData = this.props.scoreCSVData;
 		var tableThTemplate = "";
 		var tableRowTemplate = "";
@@ -104,12 +101,10 @@ export class DataPreviewLeftPanel extends React.Component {
             );
 		}else{
 		    return ( 
-	                 <div className="side-body">
-	                      <img id="loading" src={ STATIC_URL + "assets/images/Preloader_2.gif" } />
-	                  </div>
-	                );
+                <div className="side-body">
+                    <img id="loading" src={ STATIC_URL + "assets/images/Preloader_2.gif" } />
+                </div>
+            );
 		}
-
-
-		}
+    }
 }

@@ -1,13 +1,11 @@
 import React from 'react'
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { saveDocumentPageFlag, getOcrProjectsList, selectedProjectDetails, projectPage, projectTablePagesize } from '../../../actions/ocrActions';
 import { connect } from "react-redux";
-import { store } from '../../../store';
-import { Pagination } from "react-bootstrap";
 import { OcrCreateProject } from './OcrCreateProject';
 import { STATIC_URL } from '../../../helpers/env';
 import ReactTooltip from 'react-tooltip';
-import { Modal, Button, } from "react-bootstrap/";
+import { Modal, Button,Pagination } from "react-bootstrap/";
 import { API } from "../../../helpers/env";
 import { getUserDetailsOrRestart, statusMessages } from "../../../helpers/helper";
 
@@ -32,7 +30,7 @@ export class OcrProjectScreen extends React.Component {
 
    }
 
-   handleDocumentPageFlag(slug, name) {
+   handleDocumentPageFlag = (slug, name) => {
       this.props.dispatch(saveDocumentPageFlag(true));
       this.props.dispatch(selectedProjectDetails(slug, name))
    }
@@ -45,8 +43,7 @@ export class OcrProjectScreen extends React.Component {
       this.props.dispatch(getOcrProjectsList(pageNo))
    }
    handlePageRow=(e)=>{
-      let selectedVal= e.target.value;
-      this.props.dispatch(projectTablePagesize(selectedVal));
+      this.props.dispatch(projectTablePagesize(e.target.value));
       this.props.dispatch(getOcrProjectsList())
     }
    closePopup = () => {
@@ -137,7 +134,7 @@ export class OcrProjectScreen extends React.Component {
             return (
                <tr key={index} id={index}>
                   <td>
-                     <Link to='/apps/ocr-mq44ewz7bp/project/' onClick={this.handleDocumentPageFlag.bind(this, item.slug, item.name)}>{item.name}</Link>
+                     <Link to='/apps/ocr-mq44ewz7bp/project/' onClick={() => this.handleDocumentPageFlag(item.slug,item.name)}>{item.name}</Link>
                   </td>
                   <td>{item.project_overview.workflows}</td>
                   <td>{item.project_overview.completion}%</td>
@@ -178,14 +175,14 @@ export class OcrProjectScreen extends React.Component {
             </div>
 
             <div id="editProject" role="dialog" className="modal fade modal-colored-header">
-               <Modal backdrop="static" show={this.state.editProjectFlag} onHide={this.closePopup.bind(this)} dialogClassName="modal-colored-header">
+               <Modal backdrop="static" show={this.state.editProjectFlag} onHide={this.closePopup} dialogClassName="modal-colored-header">
                   <Modal.Header closeButton>
                      <h3 className="modal-title">Edit Project</h3>
                   </Modal.Header>
                   <Modal.Body>
                      <div className="row">
                         <div className="col-md-12">
-                        <div class="form-group">
+                        <div className="form-group">
                               <label for="projectName" className="form-label">Project Name <span className="text-danger">*</span></label>
                               <input className="form-control" id="projectName" type="text" defaultValue={this.state.editProjectName} onChange={this.handleNameChange} />
                         </div>
@@ -194,14 +191,14 @@ export class OcrProjectScreen extends React.Component {
                   </Modal.Body>
                   <Modal.Footer>
                      <div id="resetMsg"></div>
-                     <Button onClick={this.closePopup.bind(this)}> Close</Button>
+                     <Button onClick={this.closePopup}> Close</Button>
                      <Button bsStyle="primary" onClick={this.saveProjectName}>Save</Button>
                   </Modal.Footer>
                </Modal>
             </div>
 
             <div id="deleteProject" role="dialog" className="modal fade modal-colored-header">
-               <Modal backdrop="static" show={this.state.deleteProjectFlag} onHide={this.closeDeletePopup.bind(this)} dialogClassName="modal-colored-header">
+               <Modal backdrop="static" show={this.state.deleteProjectFlag} onHide={this.closeDeletePopup} dialogClassName="modal-colored-header">
                   <Modal.Header closeButton>
                      <h3 className="modal-title">Delete Project</h3>
                   </Modal.Header>
@@ -215,7 +212,7 @@ export class OcrProjectScreen extends React.Component {
                            <div>Are you sure you want to delete {this.state.deleteProjectName} project?</div>
                            <div className="xs-mt-10">
                               <Button bsStyle="primary" onClick={this.deleteProject}>Yes</Button>
-                              <Button onClick={this.closeDeletePopup.bind(this)}>No</Button>
+                              <Button onClick={this.closeDeletePopup}>No</Button>
                            </div>
                         </div>
                      </div>

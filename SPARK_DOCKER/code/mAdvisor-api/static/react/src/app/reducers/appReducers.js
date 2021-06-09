@@ -1,18 +1,13 @@
-import { displayName } from "react-bootstrap-dialog";
 
 export default function reducer(state = {
-        analystModeSelectedFlag:false,
         appsModelShowModal:false,
         modelList: {},
         allModelList: {},
         algoList:{},
         deploymentData:{},
         viewDeploymentFlag:false,
-        filter:"",
-        selectedProject: "",
         allProjects: {},
         deploymentList:{},
-        summarySelected:{},
         deployShowModal:false,
         algo_search_element:"",
         deployItem:{},
@@ -22,7 +17,6 @@ export default function reducer(state = {
         testValue:50,
         scoreList:{},
         appsScoreShowModal:false,
-        score_current_page:1,
         modelSlug:"",
         modelSummary:{},
         algorithmsList:null,
@@ -58,7 +52,6 @@ export default function reducer(state = {
         appsSelectedTabId:"model",
         audioFileUploadShowFlag:false,
         audioFileUpload:{},
-        appsLoaderImage:"assets/images/Processing_mAdvisor.gif",
         audioFileSummary:{},
         audioFileSlug :"",
         audioFileSummaryFlag:false,
@@ -101,7 +94,6 @@ export default function reducer(state = {
         apps_regression_levelCount:"",
         regression_algorithm_data:[],
         regression_algorithm_data_manual:[],
-        regression_isAutomatic:1,
         regression_selectedTechnique:"crossValidation",
         regression_crossvalidationvalue:2,
         selectedModelCount:0,
@@ -125,14 +117,6 @@ export default function reducer(state = {
 }, action) {
 
     switch (action.type) {
-        case "UPDATE_MODE_SELECTION":
-    {
-        return {
-            ...state,
-            analystModeSelectedFlag:action.flag,
-        }
-    }
-    break;
     case "APPS_MODEL_SHOW_POPUP":
     {
         return {
@@ -316,7 +300,6 @@ export default function reducer(state = {
       return {
         ...state,
         allProjects: action.data,
-        selectedProject: action.slug
       }
     }
     break;
@@ -1021,7 +1004,6 @@ export default function reducer(state = {
         return {
             ...state,
             appsList: action.json,
-            //app_filtered_keywords:action.json.data[0].tag_keywords,
             current_page:action.current_page,
         }
     }
@@ -1165,14 +1147,6 @@ export default function reducer(state = {
         }
     }
     break;
-    case "SET_REGRESSION_DEFAULT_AUTOMATIC":
-    {
-        return{
-            ...state,
-            regression_isAutomatic:action.data,
-        }
-    }
-    break;
     case "UPDATE_REGRESSION_TECHNIQUE":
     {
         return{
@@ -1195,7 +1169,6 @@ export default function reducer(state = {
             ...state,
             regression_algorithm_data:[],
             regression_algorithm_data_manual:[],
-            regression_isAutomatic:1,
             regression_selectedTechnique:"crossValidation",
             regression_crossvalidationvalue:2,
         }

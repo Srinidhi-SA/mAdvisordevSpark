@@ -43,7 +43,7 @@ from bi.settings import setting as GLOBALSETTINGS
 from pyspark.ml.feature import StringIndexer, VectorAssembler
 from pyspark.ml.pipeline import PipelineModel
 from pyspark.ml.classification import GBTClassifier, OneVsRest,DecisionTreeClassifier
-
+import pyspark.sql.functions as F
 
 
 # os.environ['PYSPARK_SUBMIT_ARGS'] = "--jars xgboost4j-spark-0.72.jar,xgboost4j-0.72.jar pyspark-shell"
@@ -218,7 +218,7 @@ class XGBoostPysparkScript(object):
 
             else:
                 if automl_enable:
-                    paramGrid=(ParamGridBuilder().addGrid(clf.maxDepth,[2,4,5,6]).addGrid(clf.minInfoGain,[0.0, 0.05]).addGrid(clf.impurity,['entropy' , 'gini']).addGrid(clf.maxBins, [32]).build())
+                    paramGrid=(ParamGridBuilder().addGrid(clf.maxDepth,[4, 5]).addGrid(clf.minInfoGain,[0.01, 0.05]).addGrid(clf.impurity,['gini']).addGrid(clf.maxBins, [32]).build())
                 crossval = CrossValidator(estimator=estimator,
                               estimatorParamMaps=paramGrid,
                               evaluator=BinaryClassificationEvaluator().setRawPredictionCol("probability") if levels == 2 else MulticlassClassificationEvaluator(),
@@ -262,7 +262,8 @@ class XGBoostPysparkScript(object):
         modelmanagement_={param[0].name:param[1] for param in bestModel.stages[2].extractParamMap().items()}
         MLUtils.save_pipeline_or_model(bestModel,model_filepath)
         predsAndLabels = prediction.select(['prediction', 'label']).rdd.map(tuple)
-        label_classes = prediction.select("label").distinct().collect()
+        # label_classes = prediction.select("label").distinct().collect()
+        # label_classes = prediction.agg((F.collect_set('label').alias('label'))).first().asDict()['label']
         # if len(label_classes) > 2:
         #     metrics = MulticlassMetrics(predsAndLabels) # accuracy of the model
         # else:
@@ -301,8 +302,13 @@ class XGBoostPysparkScript(object):
             gain_lift_ks_obj = GainLiftKS(pys_df, 'y_prob_for_eval', 'prediction', 'label', posLabel, self._spark)
             gain_lift_KS_dataframe = gain_lift_ks_obj.Run().toPandas()
         except:
-            print("gain chant failed")
-            pass
+            try:
+                temp_df = pys_df.toPandas()
+                gain_lift_ks_obj = GainLiftKS(temp_df, 'y_prob_for_eval', 'prediction', 'label', posLabel, self._spark)
+                gain_lift_KS_dataframe = gain_lift_ks_obj.Rank_Ordering()
+            except:
+                print("gain chant failed")
+                gain_lift_KS_dataframe = None
 
 
 

@@ -37,7 +37,7 @@ export class CardHtml extends React.Component {
    }
    else if(this.props.classTag === "noTable"){
     return(
-      <div className="noTable" style={{marginTop:"15px"}}>
+      <div className="noTable xs-mt-15">
        {renderHTML(element)}
        </div>
   ); 

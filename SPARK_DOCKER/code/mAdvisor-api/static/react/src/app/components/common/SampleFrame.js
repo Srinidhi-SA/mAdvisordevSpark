@@ -1,8 +1,6 @@
 import React from "react";
-import Iframe from 'react-iframe'
 import {getUserDetailsOrRestart,hidechatbot,removeChatbotOnLogout} from "../../helpers/helper";
-import {KYLO_UI,API} from "../../helpers/env";
-
+import {KYLO_UI} from "../../helpers/env";
 
 export class SampleFrame extends React.Component {
   constructor(){
@@ -22,15 +20,7 @@ export class SampleFrame extends React.Component {
    <div class="page-head"></div>
    <div class="clearfix"></div>
 	<div class="main-content">
-     <Iframe url={kylo_url}
-             width="100%"
-             height="600px"
-             id="myId"
-             className="myClassname"
-             display="initial"
-             position="relative"
-             allowFullScreen/>
-	
+  <iframe id="myId" className="myClassname"src={kylo_url} style={{height:'600px',width:"100%",display:'initial',position:'relative'}} allowFullScreen={true}></iframe>
 	</div>
 	</div>
        );

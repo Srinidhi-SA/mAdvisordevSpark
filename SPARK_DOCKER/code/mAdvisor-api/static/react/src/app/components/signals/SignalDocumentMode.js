@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import store from "../../store";
 import {Card} from "./Card";
 import {STATIC_URL} from "../../helpers/env.js";
-import {getSignalAnalysis,saveDocmodeConfig} from "../../actions/signalActions";
+import {getSignalAnalysis} from "../../actions/signalActions";
 import {isEmpty,getUserDetailsOrRestart} from "../../helpers/helper";
 import {hideDataPreview} from "../../actions/dataActions";
 
@@ -27,17 +27,31 @@ export class SignalDocumentMode extends React.Component {
   }
 
   searchTree(_Node, cardLists, lastVar) {
-    if (_Node.listOfCards.length!=0&&_Node.listOfCards[_Node.listOfCards.length - 1].slug == lastVar) {
+    if(_Node.name!="Prediction" && _Node.listOfCards.length!=0&&_Node.listOfCards[_Node.listOfCards.length - 1].slug == lastVar) {
       cardLists.push(_Node.listOfCards);
       return cardLists;
     } else {
       var i;
       var result = null;
-      cardLists.push(_Node.listOfCards);
-      for (i = 0; i < _Node.listOfNodes.length; i++) {
-        result = this.searchTree(_Node.listOfNodes[i], cardLists, lastVar);
+      if(_Node.name==="Prediction" && _Node.listOfCards===undefined){
+        for(let i=0;i<Object.keys(_Node).length;i++){
+          var clone_Node = JSON.parse(JSON.stringify(_Node));
+          if(Object.keys(clone_Node)[i].includes("Depth Of Tree")){
+            let node = clone_Node[Object.keys(clone_Node)[i]].listOfCards;
+            if(!clone_Node[Object.keys(clone_Node)[i]].listOfCards[0].cardData[0].data.includes("Depth") ){
+              clone_Node[Object.keys(clone_Node)[i]].listOfCards[0].cardData[0].data = "<h3 style=text-align:left;padding-bottom:15px>" + Object.keys(clone_Node)[i] + ": "+ /<h3>(.*?)<\/h3>/g.exec(clone_Node[Object.keys(clone_Node)[i]].listOfCards[0].cardData[0].data)[1] + "</h3>"
+            }
+            clone_Node[Object.keys(clone_Node)[i]].listOfCards[0].cardData.filter(i=>i.dataType==="dropdown")[0]["dropdownName"] = clone_Node[Object.keys(clone_Node)[i]].name
+            clone_Node[Object.keys(clone_Node)[i]].listOfCards[0].cardData.filter(i=>i.dataType==="table")[0].data["name"] = clone_Node[Object.keys(clone_Node)[i]].name
+            cardLists.push(node);
+          }
+        }
+      }else{
+        cardLists.push(_Node.listOfCards);
+        for (i = 0; i < _Node.listOfNodes.length; i++) {
+          result = this.searchTree(_Node.listOfNodes[i], cardLists, lastVar);
+        }
       }
-      result!=null && this.props.dispatch(saveDocmodeConfig(result))
       return result;
     }
   }
@@ -89,20 +103,20 @@ export class SignalDocumentMode extends React.Component {
 								<div className="btn-group summaryIcons">
 								<button type="button" className="btn btn-default" onClick={this.print.bind(this)} title="Print Document"><i className="fa fa-print"></i></button>
 								<Link className="btn btn-default continue" to={cardModeLink} title="Card mode">
-								<i class="zmdi zmdi-hc-lg zmdi-view-carousel"></i>
+								<i class="fa fa-columns"></i>
 								</Link>
 								<button type="button" className="btn btn-default" disabled="true" title="Document Mode">
-								<i class="zmdi zmdi-hc-lg zmdi-view-web"></i>
+								<i  style={{fontSize:16}} class="fa fa-file-text-o"></i>
 								</button>
 								<button type="button" className="btn btn-default" onClick = {this.closeDocumentMode.bind(this)}>
-								<i class="zmdi zmdi-hc-lg zmdi-close"></i>
+								<i class="fa fa-times"></i>
 								</button>
 								</div>
 							</div>
 						</h3>
 
                         <div className="clearfix"></div>
-					
+     
                     <div className="panel panel-mAd box-shadow">                      
 
                       <div className="panel-body no-border documentModeSpacing">

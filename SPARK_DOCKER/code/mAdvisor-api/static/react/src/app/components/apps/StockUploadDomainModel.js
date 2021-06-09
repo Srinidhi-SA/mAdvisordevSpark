@@ -1,27 +1,13 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Link, Redirect} from "react-router-dom";
-import {push} from "react-router-redux";
-import {
-  Modal,
-  Button,
-  Tab,
-  Row,
-  Col,
-  Nav,
-  NavItem,
-  OverlayTrigger,
-  Popover
-} from "react-bootstrap";
-import Dropzone from 'react-dropzone'
+import { Modal,Button,OverlayTrigger,Popover } from "react-bootstrap";
 import store from "../../store";
-import $ from "jquery";
 import {STATIC_URL} from "../../helpers/env";
 import {capitalizeArray} from "../../helpers/helper.js";
-import {updateUploadStockPopup,uploadStockFiles,triggerStockAnalysis,uploadStockFile} from "../../actions/appActions";
+import {updateUploadStockPopup,uploadStockFiles,uploadStockFile} from "../../actions/appActions";
 
 @connect((store) => {
-  return {login_response: store.login.login_response,
+  return {
 		 			stockUploadDomainModal: store.apps.stockUploadDomainModal,
 					stockUploadDomainFiles: store.apps.stockUploadDomainFiles,
 					conceptList: store.apps.conceptList,
@@ -32,16 +18,12 @@ export class StockUploadDomainModel extends React.Component {
 
   constructor(props) {
     super(props);
-    this.onDrop = this.onDrop.bind(this);
   }
 
   updateUploadStockPopup(flag) {
     this.props.dispatch(updateUploadStockPopup(flag))
   }
-  onDrop(files) {
-    this.props.dispatch(uploadStockFiles(files))
-  }
-
+  
 	triggerStockAnalysis(){
 			this.props.dispatch(uploadStockFile(store.getState().apps.stockSlug))
 		}

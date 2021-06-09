@@ -127,7 +127,8 @@ class TaskView(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     model = Task
     permission_classes = (IsAuthenticated,)
-    pagination_class = CustomOCRPagination
+    pagination_class = CustomOCRPagination,
+    lookup_field = 'id'
 
     def get_queryset(self):
         queryset = Task.objects.all()
@@ -140,70 +141,123 @@ class TaskView(viewsets.ModelViewSet):
             request=request,
             list_serializer=TaskSerializer
         )
+    # def get_object(self,id):
+    #     return Task.objects.get(id=id)
 
-    @property
-    def task(self):
-        return self.get_object()
+    # @property
+    # def task(self,id):
+    #     return self.get_object(id)
+    def update_pdfReview(self,user,slug):
+        imageObject = OCRImage.objects.get(slug=slug)
+        reviewObject = ReviewRequest.objects.get(ocr_image_id=imageObject.id)
 
-    def post(self, request, *args, **kwargs):
-        task_object = self.task
-        if request.user == task_object.assigned_user:
-            form = self.task.get_approval_form(request.POST)
-            if form.is_valid():
-                self.task.submit(
-                    form,
-                    request.user
-                )
-                return JsonResponse({
-                    "submitted": True,
-                    "is_closed": True,
-                    "message": "Task Updated Successfully."
-                })
-            else:
-                return JsonResponse({
-                    "submitted": False,
-                    "is_closed": True,
-                    "message": form.errors
-                })
+        if imageObject.is_L2assigned == True:
+            ocrImageStatus = 'ready_to_export'
+            reviewObject.status = "reviewerL2_reviewed"
         else:
-            raise PermissionDenied("Not allowed to perform this POST action.")
+            ocrImageStatus = 'l1_verified'
+            reviewObject.status = "reviewerL1_reviewed"
+
+        imageObject.modified_at = datetime.datetime.now()
+        imageObject.modified_by = user
+        imageObject.update_status(status=ocrImageStatus)
+
+        reviewObject.modified_at = datetime.datetime.now()
+        reviewObject.modified_by = user
+        reviewObject.save()
+
+
+    @list_route(methods=['post'])
+    def submit_task(self, request, *args, **kwargs):
+        try:
+            data = request.data
+
+            for id in data['task_id']:
+                task_object = Task.objects.get(id=id)
+                if request.user == task_object.assigned_user:
+                    form = task_object.get_approval_form(request.POST)
+                    form.data['status'] = data['status']
+                    form.data['remarks'] = data['remarks']
+                    if form.is_valid():
+                        task_object.submit(
+                            form,
+                            request.user
+                        )
+                    else:
+                        return JsonResponse({
+                            "submitted": False,
+                            "is_closed": True,
+                            "message": form.errors
+                        })
+                else:
+                    raise PermissionDenied("Not allowed to perform this action.")
+
+            if data['slug']!="":
+                self.update_pdfReview(request.user,slug=data['slug'])
+
+            return JsonResponse({
+                        "submitted": True,
+                        "is_closed": True,
+                        "message": "Task Updated Successfully."
+                    })
+        except Exception as err:
+            return JsonResponse({
+                        "submitted": False,
+                        "Error": str(err)
+                    })
 
     @list_route(methods=['post'])
     def feedback(self, request, *args, **kwargs):
-        data = request.data
-        instance = Task.objects.get(id=self.request.query_params.get('feedbackId'))
-        if request.user == instance.assigned_user:
-            form = feedbackForm(request.POST)
-            if form.is_valid():
-                bad_scan = form.cleaned_data['bad_scan']
-                instance.bad_scan = bad_scan
-                instance.is_closed = True
-                instance.save()
-                reviewrequest = ReviewRequest.objects.get(id=instance.object_id)
-                reviewrequest.status = "reviewerL1_reviewed"
-                reviewrequest.modified_at = datetime.datetime.now()
-                reviewrequest.modified_by = request.user
-                reviewrequest.save()
-                image_queryset = OCRImage.objects.get(slug=data['slug'])
-                image_queryset.status = "bad_scan"
-                image_queryset.modified_by = self.request.user
-                image_queryset.save()
-                # data = {'status': 'bad_scan'}
-                # serializer = self.get_serializer(instance=image_queryset, data=data, partial=True,
-                #                                  context={"request": self.request})
-                # if serializer.is_valid():
-                #     serializer.save()
-                return JsonResponse({
-                    "submitted": True,
-                    "message": "Feedback submitted Successfully."
-                })
-            else:
-                return JsonResponse({
-                    "submitted": False,
-                    "message": form.errors
-                })
-        else:
-            raise PermissionDenied("Not allowed to perform this POST action.")
+        try:
+            data = request.data
+            for id in data['task_id']:
+                instance = Task.objects.get(id=id)
+                if request.user == instance.assigned_user:
+                    form = feedbackForm(request.POST)
+                    form.data['bad_scan'] = data['bad_scan']
+                    if form.is_valid():
+                        instance.bad_scan = form.cleaned_data['bad_scan']
+                        instance.is_closed = True
+                        instance.save()
+                        reviewrequest = ReviewRequest.objects.get(id=instance.object_id)
+                        reviewrequest.status = "reviewerL1_reviewed"
+                        reviewrequest.modified_at = datetime.datetime.now()
+                        reviewrequest.modified_by = request.user
+                        reviewrequest.save()
+                        image_queryset = OCRImage.objects.get(id=reviewrequest.ocr_image.id)
+                        image_queryset.status = "bad_scan"
+                        image_queryset.modified_by = self.request.user
+                        image_queryset.save()
+                    else:
+                        return JsonResponse({
+                            "submitted": False,
+                            "message": form.errors
+                        })
+                else:
+                    raise PermissionDenied("Not allowed to perform this POST action.")
+            if data['slug']!="":
+                imageObject = OCRImage.objects.get(slug=data['slug'])
+                reviewObject = ReviewRequest.objects.get(ocr_image_id=imageObject.id)
+
+                reviewObject.status = "reviewerL1_reviewed"
+                reviewObject.modified_at = datetime.datetime.now()
+                reviewObject.modified_by = request.user
+                reviewObject.save()
+
+                imageObject.status = "bad_scan"
+                imageObject.modified_by = self.request.user
+                imageObject.save()
+
+            return JsonResponse({
+                            "submitted": True,
+                            "message": "Feedback submitted Successfully."
+                        })
+        except Exception as error:
+            return JsonResponse({
+                        "submitted": False,
+                        "message": str(error)
+                    })
+
 
 
 class ReviewRequestView(viewsets.ModelViewSet):
@@ -222,9 +276,10 @@ class ReviewRequestView(viewsets.ModelViewSet):
 
     def get_specific_assigned_queryset(self, username):
         queryset = ReviewRequest.objects.filter(
-            tasks__assigned_user__username=username,
+            #tasks__assigned_user__username=username,
+            ocr_image__assignee__username=username,
             ocr_image__deleted=False
-        ).order_by('-created_on')
+        ).exclude(doc_type='pdf_page').order_by('-created_on')
         return queryset
 
     def get_object_from_all(self):
@@ -256,59 +311,6 @@ class ReviewRequestView(viewsets.ModelViewSet):
             list_serializer=ReviewRequestSerializer,
             username=username
         )
-        # add_key = response.data['data']
-        # if 'accuracy' in request.GET or 'field_count' in request.GET or 'project' in request.GET:
-        #     accuracy_operator, accuracy = request.GET['accuracy'][:3], request.GET['accuracy'][3:]
-        #     fields_operator, fields = request.GET['field_count'][:3], request.GET['field_count'][3:]
-        #
-        #     if accuracy:
-        #         if accuracy_operator == 'GTE':
-        #             buffer = list()
-        #             for user in add_key:
-        #                 if not float(user['ocrImageData']['confidence']) >= float(accuracy):
-        #                     buffer.append(user)
-        #             add_key = [ele for ele in add_key if ele not in buffer]
-        #         if accuracy_operator == 'LTE':
-        #             buffer = list()
-        #             for user in add_key:
-        #                 if not float(user['ocrImageData']['confidence']) <= float(accuracy):
-        #                     buffer.append(user)
-        #             add_key = [ele for ele in add_key if ele not in buffer]
-        #         if accuracy_operator == 'EQL':
-        #             buffer = list()
-        #             for user in add_key:
-        #                 if not float(user['ocrImageData']['confidence']) == float(accuracy):
-        #                     buffer.append(user)
-        #             add_key = [ele for ele in add_key if ele not in buffer]
-        #
-        #     if fields:
-        #         if fields_operator == 'GTE':
-        #             buffer = list()
-        #             for user in add_key:
-        #                 if not int(user['ocrImageData']['fields']) >= int(fields):
-        #                     buffer.append(user)
-        #             add_key = [ele for ele in add_key if ele not in buffer]
-        #         if fields_operator == 'LTE':
-        #             buffer = list()
-        #             for user in add_key:
-        #                 if not int(user['ocrImageData']['fields']) <= int(fields):
-        #                     buffer.append(user)
-        #             add_key = [ele for ele in add_key if ele not in buffer]
-        #         if fields_operator == 'EQL':
-        #             buffer = list()
-        #             for user in add_key:
-        #                 if not int(user['ocrImageData']['fields']) == int(fields):
-        #                     buffer.append(user)
-        #             add_key = [ele for ele in add_key if ele not in buffer]
-        #
-        #     if request.GET['project']:
-        #         buffer = list()
-        #         for user in add_key:
-        #             if not request.GET['project'] in user['project']:
-        #                 buffer.append(user)
-        #         add_key = [ele for ele in add_key if ele not in buffer]
-        #
-        #     response.data['data'] = add_key
         temp_obj = Template.objects.first()
         values = list(json.loads(temp_obj.template_classification).keys())
         value = [i.upper() for i in values]

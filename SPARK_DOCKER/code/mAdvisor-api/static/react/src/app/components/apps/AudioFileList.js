@@ -1,30 +1,23 @@
 import React from "react";
-import {MainHeader} from "../common/MainHeader";
-import {Tabs,Tab,Pagination,Tooltip,OverlayTrigger,Popover} from "react-bootstrap";
-import {Link, Redirect} from "react-router-dom";
+import {Pagination} from "react-bootstrap";
+import {Redirect} from "react-router-dom";
 import store from "../../store";
 import {connect} from "react-redux";
-import {APPID4,APPNAME4} from "../../helpers/helper.js";
-import {AudioFileUpload} from "./AudioFileUpload";
 import {AppsLoader} from "../common/AppsLoader";
 import {getAudioFile,getAudioFileList,storeAudioSearchElement,handleAudioDelete,handleAudioRename} from "../../actions/appActions";
 import {STATIC_URL} from "../../helpers/env.js"
-import {isEmpty,SEARCHCHARLIMIT,getUserDetailsOrRestart} from "../../helpers/helper";
-import {DetailOverlay} from "../common/DetailOverlay";
+import {SEARCHCHARLIMIT} from "../../helpers/helper";
 import Dialog from 'react-bootstrap-dialog'
-import Breadcrumb from 'react-breadcrumb';
 import {AudioFileCard} from "./AudioFileCard";
 import {LatestAudioFile} from "./LatestAudioFiles";
-var dateFormat = require('dateformat');
 
 @connect((store) => {
-	return {login_response: store.login.login_response,
-        currentAppId:store.apps.currentAppId,
-        audioFileSummaryFlag:store.apps.audioFileSummaryFlag,
-        audioFileSlug:store.apps.audioFileSlug,
-        audioList:store.apps.audioList,
-        audio_search_element:store.apps.audio_search_element
-		};
+	return {
+		audioFileSummaryFlag:store.apps.audioFileSummaryFlag,
+		audioFileSlug:store.apps.audioFileSlug,
+		audioList:store.apps.audioList,
+		audio_search_element:store.apps.audio_search_element
+	};
 })
 
 
@@ -95,10 +88,6 @@ export class AudioFileList extends React.Component {
 				<div className="main-content">
 
 					<div className="row">
-					{/* <div className="col-md-8">
-                     
-                    <h3 className="xs-mt-0 text-capitalize">Media Files</h3>
-                    </div>*/}
 					  
 						<div className="col-md-12">
 							
@@ -108,7 +97,7 @@ export class AudioFileList extends React.Component {
 				<div className="search-wrapper">
 					<form>
 					<input type="text" name="audio_file" onKeyPress={this._handleKeyPress.bind(this)} onChange={this.onChangeOfSearchBox.bind(this)} title="Media Files" id="audio_file" className="form-control search-box" placeholder="Search Audio files..." required />
-					<span className="zmdi zmdi-search form-control-feedback"></span>
+					<span className="fa fa-search form-control-feedback"></span>
 					<button className="close-icon" type="reset"></button>
 					</form>
 				</div>
@@ -116,20 +105,20 @@ export class AudioFileList extends React.Component {
 				</div>
                   <div class="btn-group hidden">
                     <button type="button" data-toggle="dropdown" title="Sorting" class="btn btn-default dropdown-toggle" aria-expanded="false">
-                      <i class="zmdi zmdi-hc-lg zmdi-sort-asc"></i>
+                      <i class="glyphicon glyphicon-sort"></i>
                     </button>
                     <ul role="menu" class="dropdown-menu dropdown-menu-right">
                         <li>
-                          <a href="#" ><i class="zmdi zmdi-sort-amount-asc"></i>&nbsp;&nbsp;Name Ascending</a>
+                          <a href="#" ><i class="fa fa-sort-alpha-asc"></i>&nbsp;&nbsp;Name Ascending</a>
                         </li>
                         <li>
-                          <a href="#" ><i class="zmdi zmdi-sort-amount-desc"></i>&nbsp;&nbsp;Name Descending</a>
+                          <a href="#" ><i class="fa fa-sort-alpha-desc"></i>&nbsp;&nbsp;Name Descending</a>
                         </li>
                         <li>
-                          <a href="#" ><i class="zmdi zmdi-calendar-alt"></i>&nbsp;&nbsp;Date Ascending</a>
+                          <a href="#" ><i class="fa fa-long-arrow-down arrIcon"></i><i style={{fontSize:12}} class="fa fa-calendar-check-o"></i>&nbsp;&nbsp;Date Ascending</a>
                         </li>
                         <li>
-                          <a href="#" ><i class="zmdi zmdi-calendar"></i>&nbsp;&nbsp;Date Descending</a>
+                          <a href="#" ><i class="fa fa-long-arrow-up arrIcon"></i><i style={{fontSize:12}} class="fa fa-calendar-check-o"></i>&nbsp;&nbsp;Date Descending</a>
                         </li>
                     </ul>
                   </div>

@@ -322,6 +322,7 @@ def process_image(data, response, slug, image_queryset):
         data['imagefile'] = File(name='{}_original_image.png'.format(slug),
                                  file=open('ocr/ITE/database/{}_original_image.png'.format(slug), 'rb'))
         data['imageset'] = image_queryset.imageset.id
+        data['identifier'] = image_queryset.identifier
         data['project'] = image_queryset.project.id
         data['created_by'] = image_queryset.created_by.id
         data['name'] = response['image_name']

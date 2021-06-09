@@ -570,7 +570,7 @@ class StockAdvisor(object):
         outDf = pd.concat([topIncrease,topDecrease])
         outDf["time"] = outDf["time"].apply(self.change_date_format)
         # print outDf.shape
-        output = [["Date","% increase/ Decrease stock Price","Source","Title","Sentiment"]]
+        output = [["Date","% Increase/ Decrease Stock Price","Source","Title","Sentiment"]]
         for idx,dfRow in outDf.iterrows():
             row = [dfRow["time"],str(CommonUtils.round_sig(dfRow["closePerChange"],sig=2))+"%",dfRow["source"],dfRow["title"],CommonUtils.round_sig(dfRow["overallSentiment"],sig=2)]
             output.append(row)
@@ -588,9 +588,9 @@ class StockAdvisor(object):
         topDecrease = relevantDf.iloc[0:3] #top3
         outDf = pd.concat([topIncrease,topDecrease])
         outDf["time"] = outDf["time"].apply(self.change_date_format)
-        output = [["Date","Source","Title","Sentiment","% increase/ Decrease"]]
+        output = [["Date", "Source", "Title", "Sentiment"]]
         for idx,dfRow in outDf.iterrows():
-            row = [dfRow["time"],dfRow["source"],dfRow["title"],CommonUtils.round_sig(dfRow["overallSentiment"],sig=2),str(CommonUtils.round_sig(dfRow["sentimentPerChange"],sig=2))+"%"]
+            row = [dfRow["time"], dfRow["source"], dfRow["title"],CommonUtils.round_sig(dfRow["overallSentiment"], sig=2)]
             output.append(row)
         return output
 
@@ -677,6 +677,8 @@ class StockAdvisor(object):
                     df = pd.read_json(self.dataFilePath.format("bluemix",stock_symbol))
                     df_historic = pd.read_json(self.dataFilePath.format("historical",stock_symbol))
                 #stockPriceData = df_historic.select(["date","close","open"]).toPandas()
+                df_historic = df_historic.sort_values("date")
+                df = df.sort_values("time")
                 stockPriceData = df_historic[["date", "close", "open"]]
                 stockPriceData["close"] = stockPriceData["close"].apply(float)
                 stockPriceData["open"] = stockPriceData["open"].apply(float)

@@ -1,28 +1,20 @@
 import React from "react";
-import {MainHeader} from "../common/MainHeader";
 import {Tabs,Tab} from "react-bootstrap";
-import {DataPreview} from "../data/DataPreview";
-import {Link, Redirect} from "react-router-dom";
 import store from "../../store";
 import {connect} from "react-redux";
 import {getDataSetPreview,storeSignalMeta} from "../../actions/dataActions";
 import {clearDataPreview,updateRoboUploadTab,getRoboDataset} from "../../actions/appActions";
 import {RoboDUTabsContent} from "./RoboDUTabsContent";
-import {RoboDUHistorialData} from "./RoboDUHistorialData";
-import {RoboDUExternalData} from "./RoboDUExternalData";
 import ReactDOM from 'react-dom';
 import {Provider} from "react-redux";
 import {isEmpty,CUSTOMER,HISTORIAL,EXTERNAL} from "../../helpers/helper";
 
 @connect((store) => {
-	return {login_response: store.login.login_response, 
-		currentAppId:store.apps.currentAppId,
-		dataPreview: store.datasets.dataPreview,
+	return {
 		customerDataset_slug:store.apps.customerDataset_slug,
 		historialDataset_slug:store.apps.historialDataset_slug,
 		externalDataset_slug:store.apps.externalDataset_slug,
 		roboUploadTabId:store.apps.roboUploadTabId,
-		signal: store.signals.signalAnalysis,
 		roboDatasetSlug:store.apps.roboDatasetSlug,
 		roboSummary:store.apps.roboSummary,
 		};
