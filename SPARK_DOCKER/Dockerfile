@@ -52,7 +52,7 @@ RUN pip3 install -r requirements.txt
 #copy api code
 #ADD code /home/mAdvisor/
 #ADD code.tgz /home/mAdvisor
-#WORKDIR /home/mAdvisor/mAdvisor-api/
+WORKDIR /home/mAdvisor/mAdvisor-api/
 RUN mkdir hadoop_conf/
 ENV HADOOP_CONF_DIR=/home/mAdvisor/mAdvisor-api/hadoop_conf/
 #Virtual Env
