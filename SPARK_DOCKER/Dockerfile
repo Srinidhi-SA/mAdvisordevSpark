@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install enchant libssl-dev libmysqlclient-dev -y
 #RUN pip3 install --upgrade pip
 
 RUN pip3 install pbr
-RUN pip3 install pywebhdfs==0.4.1
+RreUN pip3 install pywebhdfs==0.4.1
 
 RUN pip3 install python-sjsclient
 #RUN rm -rf myenv/
