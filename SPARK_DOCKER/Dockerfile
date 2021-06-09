@@ -1,4 +1,4 @@
-FROM 210201387539.dkr.ecr.us-east-2.amazonaws.com/ubuntu-docker-image:latest
+FROM 115502491259.dkr.ecr.us-west-1.amazonaws.com/ubuntu:latest
 ENV TZ=US
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 LABEL project="apache-spark"
