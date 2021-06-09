@@ -25,9 +25,9 @@ echo "spark.driver.memoryOverhead 500" >> /usr/local/spark-2.4.0-bin-hadoop2.7/c
 #        if [ "$value" = "master" ]; then
                 sh /usr/local/spark-2.4.0-bin-hadoop2.7/sbin/start-master.sh
                 #celery worker -A config.celery -l info -Q $QUEUE_NAME
-		celery worker -A config.celery --beat --scheduler 'django_celery_beat.schedulers:DatabaseScheduler' -l info -Q $QUEUE_NAME &
-		sh lock.sh &
-                tail -f /dev/null
+		#celery worker -A config.celery --beat --scheduler 'django_celery_beat.schedulers:DatabaseScheduler' -l info -Q $QUEUE_NAME &
+		#sh lock.sh &
+                #tail -f /dev/null
 #        else
 #                for word in $value
 #                do
