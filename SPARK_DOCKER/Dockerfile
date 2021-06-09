@@ -103,8 +103,8 @@ RUN pip install fabric3
 RUN apt-get install curl -y
 RUN apt-get install python3-tk -y
 RUN pip3 install scipy==1.2.3
-COPY celery_reload.sh /home/mAdvisor/mAdvisor-api/
-RUN chmod +x /home/mAdvisor/mAdvisor-api/celery_reload.sh
+#COPY celery_reload.sh /home/mAdvisor/mAdvisor-api/
+#RUN chmod +x /home/mAdvisor/mAdvisor-api/celery_reload.sh
 RUN pip3 install json2xml
 RUN pip3 install Shapely
 RUN apt-get update 
