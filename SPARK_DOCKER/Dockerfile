@@ -77,7 +77,7 @@ WORKDIR /home/mAdvisor/mAdvisor-api/
 COPY marlabs_bi_jobs-0.0.0-py3.6.egg /home/mAdvisor/mAdvisor-api/scripts 
 RUN chmod +x $SPARK_HOME/startup.sh 
 WORKDIR /home/mAdvisor/mAdvisor-api/
-ls -l /home/mAdvisor/mAdvisor-api/scripts
+RUN ls -l /home/mAdvisor/mAdvisor-api/scripts
 RUN chmod +x /home/mAdvisor/mAdvisor-api/scripts/marlabs_bi_jobs-0.0.0-py3.6.egg
 EXPOSE 8080 4040 6379
 WORKDIR /home/mAdvisor/mAdvisor-api/
